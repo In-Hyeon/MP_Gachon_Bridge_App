@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- 공통 임시 페이지 루트 레이아웃: WIND, 학과연락, 동아리, LAB 화면에서 재사용 -->
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/bg_app">
+
+    <!-- 공통 페이지 상단 앱 바: 제목만 표시 -->
+    <LinearLayout
+        android:id="@+id/pageTopBar"
+        android:layout_width="0dp"
+        android:layout_height="72dp"
+        android:background="@color/gb_surface_low"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingStart="18dp"
+        android:paddingEnd="18dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <!-- 페이지 제목: Java에서 각 화면 이름으로 교체 -->
+        <TextView
+            android:id="@+id/pageTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:textColor="@color/gb_on_surface"
+            android:textSize="22sp"
+            android:textStyle="bold" />
+    </LinearLayout>
+
+    <ScrollView
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toTopOf="@id/bottomNav"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/pageTopBar">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="20dp">
+
+            <!-- 페이지 큰 제목: Java에서 각 화면 이름으로 교체 -->
+            <TextView
+                android:id="@+id/pageHeading"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/gb_on_surface"
+                android:textSize="30sp"
+                android:textStyle="bold" />
+
+            <!-- 페이지 설명: Java에서 각 화면 설명 문구로 교체 -->
+            <TextView
+                android:id="@+id/pageDescription"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:textColor="@color/gb_on_surface_variant"
+                android:textSize="16sp" />
+
+            <TextView
+                style="@style/DummyBadge"
+                android:layout_marginTop="16dp"
+                android:text="@string/dummy_data_badge" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:text="@string/dummy_data_notice"
+                android:textColor="@color/gb_on_surface_variant"
+                android:textSize="12sp" />
+
+            <!-- DUMMY DATA: Replace this card with page-specific backend content later. -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="28dp"
+                android:background="@drawable/bg_card"
+                android:orientation="vertical"
+                android:padding="18dp">
+
+                <!-- 카드 제목: Java에서 더미 카드 제목 또는 API 데이터 제목으로 교체 -->
+                <TextView
+                    android:id="@+id/pageCardTitle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/gb_on_surface"
+                    android:textSize="20sp"
+                    android:textStyle="bold" />
+
+                <!-- 카드 본문: Java에서 더미 카드 본문 또는 API 데이터 본문으로 교체 -->
+                <TextView
+                    android:id="@+id/pageCardBody"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:lineSpacingExtra="4dp"
+                    android:textColor="@color/gb_on_surface_variant"
+                    android:textSize="15sp" />
+            </LinearLayout>
+        </LinearLayout>
+    </ScrollView>
+
+    <!-- 하단 네비게이션: 공통 임시 페이지에서도 페이지 이동 유지 -->
+    <include
+        android:id="@+id/bottomNav"
+        layout="@layout/view_bottom_nav"
+        android:layout_width="0dp"
+        android:layout_height="72dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+</androidx.constraintlayout.widget.ConstraintLayout>

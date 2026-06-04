@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="72dp"
+    android:background="@drawable/bg_bottom_nav"
+    android:gravity="center"
+    android:orientation="horizontal"
+    android:paddingStart="6dp"
+    android:paddingEnd="6dp">
+
+    <!-- 홈 버튼: 메인 화면으로 이동 -->
+    <TextView
+        android:id="@+id/navHome"
+        style="@style/BottomNavItem"
+        android:text="@string/nav_home" />
+
+    <!-- WIND 버튼: WIND 화면으로 이동 -->
+    <TextView
+        android:id="@+id/navWind"
+        style="@style/BottomNavItem"
+        android:text="@string/nav_wind" />
+
+    <!-- 학과연락 버튼: 학과연락 화면으로 이동 -->
+    <TextView
+        android:id="@+id/navContact"
+        style="@style/BottomNavItem"
+        android:text="@string/nav_contact" />
+
+    <!-- 동아리 버튼: 동아리 화면으로 이동 -->
+    <TextView
+        android:id="@+id/navClub"
+        style="@style/BottomNavItem"
+        android:text="@string/nav_club" />
+
+    <!-- 학사공지 버튼: 학사공지 화면으로 이동 -->
+    <TextView
+        android:id="@+id/navNotice"
+        style="@style/BottomNavItem"
+        android:text="@string/nav_notice" />
+
+    <!-- LAB 버튼: LAB 화면으로 이동 -->
+    <TextView
+        android:id="@+id/navLab"
+        style="@style/BottomNavItem"
+        android:text="@string/nav_lab" />
+</LinearLayout>

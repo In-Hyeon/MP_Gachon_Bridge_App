@@ -1,0 +1,10 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <!-- Base application theme. -->
+    <style name="Base.Theme.GachonBridge" parent="Theme.Material3.DayNight.NoActionBar">
+        <item name="android:windowBackground">@color/gb_background</item>
+        <item name="android:statusBarColor">@color/gb_surface_low</item>
+        <item name="android:navigationBarColor">@color/gb_surface_low</item>
+        <item name="android:windowLightStatusBar">false</item>
+        <item name="android:windowLightNavigationBar">false</item>
+    </style>
+</resources>

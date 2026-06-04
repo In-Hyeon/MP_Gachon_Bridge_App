@@ -1,0 +1,750 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- 메인 화면 루트 레이아웃: 전체 홈 화면의 기준 View -->
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/bg_app"
+    tools:context=".MainActivity">
+
+    <!-- 상단 앱 바: 로고, 앱 이름, 사용자 영역을 표시 -->
+    <LinearLayout
+        android:id="@+id/topBar"
+        android:layout_width="0dp"
+        android:layout_height="72dp"
+        android:background="@color/gb_surface_low"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingStart="16dp"
+        android:paddingEnd="16dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:background="@drawable/bg_icon_circle"
+            android:gravity="center"
+            android:text="@string/home_logo"
+            android:textColor="@color/gb_primary"
+            android:textSize="16sp"
+            android:textStyle="bold" />
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="12dp"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/app_name"
+                android:textColor="@color/gb_on_surface"
+                android:textSize="21sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/home_subtitle"
+                android:textColor="@color/gb_on_surface_variant"
+                android:textSize="12sp" />
+        </LinearLayout>
+
+        <TextView
+            android:layout_width="44dp"
+            android:layout_height="44dp"
+            android:background="@drawable/bg_icon_circle"
+            android:gravity="center"
+            android:text="@string/home_my"
+            android:textColor="@color/gb_on_surface_variant"
+            android:textSize="13sp"
+            android:textStyle="bold" />
+    </LinearLayout>
+
+    <!-- 홈 스크롤 영역: 하단 네비게이션을 제외한 메인 콘텐츠 전체 -->
+    <ScrollView
+        android:id="@+id/homeScroll"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:clipToPadding="false"
+        android:paddingBottom="16dp"
+        app:layout_constraintBottom_toTopOf="@id/bottomNav"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/topBar">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingStart="16dp"
+            android:paddingTop="16dp"
+            android:paddingEnd="16dp"
+            android:paddingBottom="24dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="112dp"
+                android:background="@drawable/bg_banner"
+                android:gravity="bottom"
+                android:orientation="vertical"
+                android:padding="16dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="28dp"
+                    android:background="@drawable/bg_chip_inactive"
+                    android:gravity="center"
+                    android:paddingStart="12dp"
+                    android:paddingEnd="12dp"
+                    android:text="@string/home_banner_chip"
+                    android:textColor="@color/gb_primary"
+                    android:textSize="11sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:text="@string/home_banner_title"
+                    android:textColor="@color/gb_on_surface"
+                    android:textSize="18sp"
+                    android:textStyle="bold" />
+            </LinearLayout>
+
+            <TextView
+                style="@style/DummyBadge"
+                android:layout_marginTop="12dp"
+                android:text="@string/dummy_data_badge" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:text="@string/dummy_data_notice"
+                android:textColor="@color/gb_on_surface_variant"
+                android:textSize="12sp" />
+
+            <!-- 학사일정 섹션: 홈 설정에서 학사일정 영역 전체 on/off용 -->
+            <LinearLayout
+                android:id="@+id/sectionSchedule"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dp"
+                android:orientation="vertical">
+
+                <TextView
+                    style="@style/SectionTitle"
+                    android:text="@string/section_schedule" />
+
+                <!-- DUMMY DATA: Replace this fixed schedule row with backend schedule data later. -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="112dp"
+                    android:orientation="horizontal">
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_marginEnd="8dp"
+                        android:layout_weight="1"
+                        android:background="@drawable/bg_primary_card"
+                        android:orientation="vertical"
+                        android:padding="12dp">
+
+                        <TextView
+                            style="@style/CardDate"
+                            android:text="@string/schedule_date_1"
+                            android:textColor="@color/white" />
+
+                        <TextView
+                            style="@style/CardBody"
+                            android:text="@string/schedule_title_1"
+                            android:textColor="@color/white"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            style="@style/CardDday"
+                            android:text="@string/schedule_dday_1"
+                            android:textColor="@color/white" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_marginEnd="8dp"
+                        android:layout_weight="1"
+                        android:background="@drawable/bg_card"
+                        android:orientation="vertical"
+                        android:padding="12dp">
+
+                        <TextView
+                            style="@style/CardDate"
+                            android:text="@string/schedule_date_2"
+                            android:textColor="@color/gb_on_surface" />
+
+                        <TextView
+                            style="@style/CardBody"
+                            android:text="@string/schedule_title_2" />
+
+                        <TextView
+                            style="@style/CardDday"
+                            android:text="@string/schedule_dday_2" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:background="@drawable/bg_card"
+                        android:orientation="vertical"
+                        android:padding="12dp">
+
+                        <TextView
+                            style="@style/CardDate"
+                            android:text="@string/schedule_date_3"
+                            android:textColor="@color/gb_on_surface" />
+
+                        <TextView
+                            style="@style/CardBody"
+                            android:text="@string/schedule_title_3" />
+
+                        <TextView
+                            style="@style/CardDday"
+                            android:text="@string/schedule_dday_3" />
+                    </LinearLayout>
+                </LinearLayout>
+            </LinearLayout>
+
+            <!-- 가천 MAP 섹션: 홈 설정에서 지도 영역 전체 on/off용 -->
+            <FrameLayout
+                android:id="@+id/sectionMap"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <TextView
+                        style="@style/SectionTitle"
+                        android:text="@string/section_map" />
+
+                    <!-- DUMMY DATA: Replace map labels/places with campus map service data later. -->
+                    <FrameLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="220dp"
+                        android:background="@drawable/bg_map_preview"
+                        android:padding="16dp">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="top|start"
+                            android:background="@drawable/bg_chip_inactive"
+                            android:paddingStart="12dp"
+                            android:paddingTop="6dp"
+                            android:paddingEnd="12dp"
+                            android:paddingBottom="6dp"
+                            android:text="@string/map_campus"
+                            android:textColor="@color/gb_on_surface"
+                            android:textSize="12sp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:gravity="center"
+                            android:text="@string/map_places"
+                            android:textColor="@color/gb_on_surface"
+                            android:textSize="16sp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="bottom|end"
+                            android:text="@string/map_action"
+                            android:textColor="@color/gb_primary"
+                            android:textSize="13sp"
+                            android:textStyle="bold" />
+                    </FrameLayout>
+                </LinearLayout>
+            </FrameLayout>
+
+            <!-- 학사공지 섹션: 홈 설정에서 공지 미리보기 영역 전체 on/off용 -->
+            <LinearLayout
+                android:id="@+id/sectionNotice"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dp"
+                android:orientation="vertical"
+                android:padding="0dp">
+
+                <TextView
+                    style="@style/SectionTitle"
+                    android:text="@string/section_notice" />
+
+                <!-- DUMMY DATA: Replace notice preview rows with latest notice API data later. -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/bg_card"
+                    android:orientation="vertical"
+                    android:padding="12dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="36dp"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:id="@+id/tabNoticeAll"
+                            style="@style/TabActive"
+                            android:text="@string/tab_all" />
+
+                        <TextView
+                            android:id="@+id/tabNoticeAcademic"
+                            style="@style/TabInactive"
+                            android:text="@string/tab_academic" />
+
+                        <TextView
+                            android:id="@+id/tabNoticeScholarship"
+                            style="@style/TabInactive"
+                            android:text="@string/tab_scholarship" />
+                    </LinearLayout>
+
+                    <TextView
+                        android:id="@+id/noticePreview1"
+                        style="@style/NoticeItem"
+                        android:text="@string/notice_1" />
+
+                    <View style="@style/Divider" />
+
+                    <TextView
+                        android:id="@+id/noticePreview2"
+                        style="@style/NoticeItem"
+                        android:text="@string/notice_2" />
+
+                    <View style="@style/Divider" />
+
+                    <TextView
+                        android:id="@+id/noticePreview3"
+                        style="@style/NoticeItem"
+                        android:text="@string/notice_3" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <!-- WIND 섹션: 홈 설정에서 WIND 프로그램 영역 전체 on/off용 -->
+            <LinearLayout
+                android:id="@+id/sectionWind"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dp"
+                android:orientation="vertical">
+
+                <TextView
+                    style="@style/SectionTitle"
+                    android:text="@string/section_wind" />
+
+                <!-- DUMMY DATA: Replace WIND cards with backend program list later. -->
+                <HorizontalScrollView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:overScrollMode="never"
+                    android:scrollbars="none">
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <!-- WIND 더미 카드 1: 팀원이 cardWindDummyProgram1에 사이트 이동 클릭 리스너 연결 -->
+                        <LinearLayout
+                            android:id="@+id/cardWindDummyProgram1"
+                            android:layout_width="300dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginEnd="12dp"
+                            android:background="@drawable/bg_card"
+                            android:clickable="true"
+                            android:focusable="true"
+                            android:orientation="vertical">
+
+                            <FrameLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="148dp"
+                                android:background="@drawable/bg_wind_image"
+                                android:padding="16dp">
+
+                                <TextView
+                                    android:layout_width="58dp"
+                                    android:layout_height="52dp"
+                                    android:background="@drawable/bg_primary_card"
+                                    android:gravity="center"
+                                    android:text="@string/wind_status"
+                                    android:textColor="@color/white"
+                                    android:textSize="12sp"
+                                    android:textStyle="bold" />
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="bottom|end"
+                                    android:text="@string/wind_hits"
+                                    android:textColor="@color/gb_on_surface"
+                                    android:textSize="12sp"
+                                    android:textStyle="bold" />
+                            </FrameLayout>
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="vertical"
+                                android:padding="16dp">
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="@string/wind_category"
+                                    android:textColor="@color/gb_primary"
+                                    android:textSize="12sp"
+                                    android:textStyle="bold" />
+
+                                <TextView
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="8dp"
+                                    android:text="@string/wind_title"
+                                    android:textColor="@color/gb_on_surface"
+                                    android:textSize="18sp"
+                                    android:textStyle="bold" />
+
+                                <TextView
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="8dp"
+                                    android:text="@string/wind_period"
+                                    android:textColor="@color/gb_on_surface_variant"
+                                    android:textSize="13sp" />
+
+                                <FrameLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="8dp"
+                                    android:layout_marginTop="14dp"
+                                    android:background="@drawable/bg_progress_track">
+
+                                    <View
+                                        android:layout_width="230dp"
+                                        android:layout_height="match_parent"
+                                        android:background="@drawable/bg_progress_fill" />
+                                </FrameLayout>
+                            </LinearLayout>
+                        </LinearLayout>
+
+                        <!-- WIND 더미 카드 2: 팀원이 cardWindDummyProgram2에 사이트 이동 클릭 리스너 연결 -->
+                        <LinearLayout
+                            android:id="@+id/cardWindDummyProgram2"
+                            android:layout_width="300dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginEnd="12dp"
+                            android:background="@drawable/bg_card"
+                            android:clickable="true"
+                            android:focusable="true"
+                            android:orientation="vertical">
+
+                            <FrameLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="148dp"
+                                android:background="@drawable/bg_wind_image"
+                                android:padding="16dp">
+
+                                <TextView
+                                    android:layout_width="58dp"
+                                    android:layout_height="52dp"
+                                    android:background="@drawable/bg_primary_card"
+                                    android:gravity="center"
+                                    android:text="@string/wind_status_2"
+                                    android:textColor="@color/white"
+                                    android:textSize="12sp"
+                                    android:textStyle="bold" />
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="bottom|end"
+                                    android:text="@string/wind_hits_2"
+                                    android:textColor="@color/gb_on_surface"
+                                    android:textSize="12sp"
+                                    android:textStyle="bold" />
+                            </FrameLayout>
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="vertical"
+                                android:padding="16dp">
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="@string/wind_category_2"
+                                    android:textColor="@color/gb_primary"
+                                    android:textSize="12sp"
+                                    android:textStyle="bold" />
+
+                                <TextView
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="8dp"
+                                    android:text="@string/wind_title_2"
+                                    android:textColor="@color/gb_on_surface"
+                                    android:textSize="18sp"
+                                    android:textStyle="bold" />
+
+                                <TextView
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="8dp"
+                                    android:text="@string/wind_period_2"
+                                    android:textColor="@color/gb_on_surface_variant"
+                                    android:textSize="13sp" />
+
+                                <FrameLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="8dp"
+                                    android:layout_marginTop="14dp"
+                                    android:background="@drawable/bg_progress_track">
+
+                                    <View
+                                        android:layout_width="160dp"
+                                        android:layout_height="match_parent"
+                                        android:background="@drawable/bg_progress_fill" />
+                                </FrameLayout>
+                            </LinearLayout>
+                        </LinearLayout>
+
+                        <!-- WIND 더미 카드 3: 팀원이 cardWindDummyProgram3에 사이트 이동 클릭 리스너 연결 -->
+                        <LinearLayout
+                            android:id="@+id/cardWindDummyProgram3"
+                            android:layout_width="300dp"
+                            android:layout_height="wrap_content"
+                            android:background="@drawable/bg_card"
+                            android:clickable="true"
+                            android:focusable="true"
+                            android:orientation="vertical">
+
+                            <FrameLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="148dp"
+                                android:background="@drawable/bg_wind_image"
+                                android:padding="16dp">
+
+                                <TextView
+                                    android:layout_width="58dp"
+                                    android:layout_height="52dp"
+                                    android:background="@drawable/bg_primary_card"
+                                    android:gravity="center"
+                                    android:text="@string/wind_status_3"
+                                    android:textColor="@color/white"
+                                    android:textSize="12sp"
+                                    android:textStyle="bold" />
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="bottom|end"
+                                    android:text="@string/wind_hits_3"
+                                    android:textColor="@color/gb_on_surface"
+                                    android:textSize="12sp"
+                                    android:textStyle="bold" />
+                            </FrameLayout>
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="vertical"
+                                android:padding="16dp">
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="@string/wind_category_3"
+                                    android:textColor="@color/gb_primary"
+                                    android:textSize="12sp"
+                                    android:textStyle="bold" />
+
+                                <TextView
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="8dp"
+                                    android:text="@string/wind_title_3"
+                                    android:textColor="@color/gb_on_surface"
+                                    android:textSize="18sp"
+                                    android:textStyle="bold" />
+
+                                <TextView
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="8dp"
+                                    android:text="@string/wind_period_3"
+                                    android:textColor="@color/gb_on_surface_variant"
+                                    android:textSize="13sp" />
+
+                                <FrameLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="8dp"
+                                    android:layout_marginTop="14dp"
+                                    android:background="@drawable/bg_progress_track">
+
+                                    <View
+                                        android:layout_width="110dp"
+                                        android:layout_height="match_parent"
+                                        android:background="@drawable/bg_progress_fill" />
+                                </FrameLayout>
+                            </LinearLayout>
+                        </LinearLayout>
+                    </LinearLayout>
+                </HorizontalScrollView>
+            </LinearLayout>
+
+            <!-- 동아리 섹션: 홈 설정에서 동아리 목록 영역 전체 on/off용 -->
+            <LinearLayout
+                android:id="@+id/sectionClub"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dp"
+                android:orientation="vertical">
+
+                <TextView
+                    style="@style/SectionTitle"
+                    android:text="@string/section_club" />
+
+                <!-- DUMMY DATA: Replace club chips with club category/list API data later. -->
+                <HorizontalScrollView
+                    android:layout_width="match_parent"
+                    android:layout_height="92dp"
+                    android:overScrollMode="never"
+                    android:scrollbars="none">
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:id="@+id/clubCategoryMusic"
+                            style="@style/ClubItem"
+                            android:text="@string/club_music" />
+
+                        <TextView
+                            android:id="@+id/clubCategoryShow"
+                            style="@style/ClubItem"
+                            android:text="@string/club_show" />
+
+                        <TextView
+                            android:id="@+id/clubCategoryStudy"
+                            style="@style/ClubItem"
+                            android:text="@string/club_study" />
+
+                        <TextView
+                            android:id="@+id/clubCategorySports"
+                            style="@style/ClubItem"
+                            android:text="@string/club_sports" />
+
+                        <TextView
+                            android:id="@+id/clubCategoryService"
+                            style="@style/ClubItem"
+                            android:text="@string/club_service" />
+
+                        <TextView
+                            android:id="@+id/clubCategoryReligion"
+                            style="@style/ClubItem"
+                            android:text="@string/club_religion" />
+                    </LinearLayout>
+                </HorizontalScrollView>
+            </LinearLayout>
+
+            <!-- 오늘의 학식 섹션: 홈 설정에서 학식 영역 전체 on/off용 -->
+            <LinearLayout
+                android:id="@+id/sectionMeal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dp"
+                android:orientation="vertical"
+                android:padding="0dp">
+
+                <TextView
+                    style="@style/SectionTitle"
+                    android:text="@string/section_meal" />
+
+                <!-- DUMMY DATA: Replace meal tabs and menu text with cafeteria API data later. -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/bg_card"
+                    android:orientation="vertical"
+                    android:padding="12dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="36dp"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:id="@+id/tabMealGraduate"
+                            style="@style/TabActive"
+                            android:text="@string/cafeteria_1" />
+
+                        <TextView
+                            android:id="@+id/tabMealVision"
+                            style="@style/TabInactive"
+                            android:text="@string/cafeteria_2" />
+
+                        <TextView
+                            android:id="@+id/tabMealStudent"
+                            style="@style/TabInactive"
+                            android:text="@string/cafeteria_3" />
+                    </LinearLayout>
+
+                    <TextView
+                        android:id="@+id/mealPreview1"
+                        style="@style/MealItem"
+                        android:text="@string/meal_breakfast" />
+
+                    <View style="@style/Divider" />
+
+                    <TextView
+                        android:id="@+id/mealPreview2"
+                        style="@style/MealItemHighlight"
+                        android:text="@string/meal_lunch" />
+
+                    <View style="@style/Divider" />
+
+                    <TextView
+                        android:id="@+id/mealPreview3"
+                        style="@style/MealItem"
+                        android:text="@string/meal_dinner" />
+                </LinearLayout>
+            </LinearLayout>
+        </LinearLayout>
+    </ScrollView>
+
+    <!-- 하단 네비게이션: 홈, WIND, 학과연락, 동아리, 학사공지, LAB 이동 버튼 영역 -->
+    <include
+        android:id="@+id/bottomNav"
+        layout="@layout/view_bottom_nav"
+        android:layout_width="0dp"
+        android:layout_height="72dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,0 +1,335 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/bg_app">
+
+    <LinearLayout
+        android:id="@+id/pageTopBar"
+        android:layout_width="0dp"
+        android:layout_height="72dp"
+        android:background="@color/gb_surface_low"
+        android:gravity="center"
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/page_wind_title"
+            android:textColor="@color/gb_primary_container"
+            android:textSize="22sp"
+            android:textStyle="bold" />
+    </LinearLayout>
+
+    <ScrollView
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:clipToPadding="false"
+        android:paddingBottom="24dp"
+        app:layout_constraintBottom_toTopOf="@id/bottomNav"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/pageTopBar">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingStart="20dp"
+            android:paddingTop="42dp"
+            android:paddingEnd="20dp"
+            android:paddingBottom="32dp">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/page_wind_title"
+                android:textColor="@color/gb_on_surface"
+                android:textSize="30sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="14dp"
+                android:lineSpacingExtra="4dp"
+                android:text="@string/page_wind_subtitle"
+                android:textColor="@color/gb_on_surface_variant"
+                android:textSize="17sp" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="38dp"
+                android:text="@string/wind_recommended_title"
+                android:textColor="@color/gb_on_surface"
+                android:textSize="22sp"
+                android:textStyle="bold" />
+
+            <HorizontalScrollView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="18dp"
+                android:clipToPadding="false"
+                android:overScrollMode="never"
+                android:paddingEnd="20dp"
+                android:scrollbars="none">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <LinearLayout
+                        android:id="@+id/cardWindRecommended1"
+                        style="@style/WindRecommendedCard"
+                        android:layout_marginEnd="14dp">
+
+                        <FrameLayout style="@style/WindRecommendedImage">
+
+                            <TextView
+                                style="@style/WindCenterBadge"
+                                android:text="@string/wind_category" />
+
+                            <TextView
+                                style="@style/WindDdayBadge"
+                                android:text="@string/wind_recommended_dday_1" />
+                        </FrameLayout>
+
+                        <LinearLayout
+                            style="@style/WindRecommendedBody">
+
+                            <TextView
+                                style="@style/WindRecommendedTitle"
+                                android:text="@string/wind_recommended_program_1" />
+
+                            <View style="@style/Divider" />
+
+                            <LinearLayout
+                                style="@style/WindMetaRow">
+
+                                <TextView
+                                    style="@style/WindMetaText"
+                                    android:layout_width="0dp"
+                                    android:layout_weight="1"
+                                    android:text="@string/wind_recommended_period_1" />
+
+                                <TextView
+                                    style="@style/WindMetaText"
+                                    android:text="@string/wind_recommended_hits_1" />
+                            </LinearLayout>
+                        </LinearLayout>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/cardWindRecommended2"
+                        style="@style/WindRecommendedCard"
+                        android:layout_marginEnd="14dp">
+
+                        <FrameLayout style="@style/WindRecommendedImage">
+
+                            <TextView
+                                style="@style/WindCenterBadge"
+                                android:text="@string/wind_category_2" />
+
+                            <TextView
+                                style="@style/WindDdayBadge"
+                                android:text="@string/wind_recommended_dday_2" />
+                        </FrameLayout>
+
+                        <LinearLayout style="@style/WindRecommendedBody">
+
+                            <TextView
+                                style="@style/WindRecommendedTitle"
+                                android:text="@string/wind_recommended_program_2" />
+
+                            <View style="@style/Divider" />
+
+                            <LinearLayout style="@style/WindMetaRow">
+
+                                <TextView
+                                    style="@style/WindMetaText"
+                                    android:layout_width="0dp"
+                                    android:layout_weight="1"
+                                    android:text="@string/wind_recommended_period_2" />
+
+                                <TextView
+                                    style="@style/WindMetaText"
+                                    android:text="@string/wind_recommended_hits_2" />
+                            </LinearLayout>
+                        </LinearLayout>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/cardWindRecommended3"
+                        style="@style/WindRecommendedCard">
+
+                        <FrameLayout style="@style/WindRecommendedImage">
+
+                            <TextView
+                                style="@style/WindCenterBadge"
+                                android:text="@string/wind_category_3" />
+
+                            <TextView
+                                style="@style/WindDdayBadge"
+                                android:text="@string/wind_recommended_dday_3" />
+                        </FrameLayout>
+
+                        <LinearLayout style="@style/WindRecommendedBody">
+
+                            <TextView
+                                style="@style/WindRecommendedTitle"
+                                android:text="@string/wind_recommended_program_3" />
+
+                            <View style="@style/Divider" />
+
+                            <LinearLayout style="@style/WindMetaRow">
+
+                                <TextView
+                                    style="@style/WindMetaText"
+                                    android:layout_width="0dp"
+                                    android:layout_weight="1"
+                                    android:text="@string/wind_recommended_period_3" />
+
+                                <TextView
+                                    style="@style/WindMetaText"
+                                    android:text="@string/wind_recommended_hits_3" />
+                            </LinearLayout>
+                        </LinearLayout>
+                    </LinearLayout>
+                </LinearLayout>
+            </HorizontalScrollView>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="48dp"
+                android:text="@string/wind_latest_title"
+                android:textColor="@color/gb_on_surface"
+                android:textSize="22sp"
+                android:textStyle="bold" />
+
+            <LinearLayout
+                android:id="@+id/cardWindLatest1"
+                style="@style/WindLatestCard">
+
+                <FrameLayout style="@style/WindLatestImage">
+
+                    <TextView
+                        style="@style/WindImageGlyph"
+                        android:text="@string/wind_image_glyph_1" />
+                </FrameLayout>
+
+                <LinearLayout style="@style/WindLatestBody">
+
+                    <TextView
+                        style="@style/WindLatestCenter"
+                        android:text="@string/wind_category" />
+
+                    <TextView
+                        style="@style/WindLatestProgram"
+                        android:text="@string/wind_latest_program_1" />
+
+                    <TextView
+                        style="@style/WindLatestSummary"
+                        android:text="@string/wind_latest_summary_1" />
+
+                    <TextView
+                        style="@style/WindLatestPeriod"
+                        android:text="@string/wind_latest_period_1" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/cardWindLatest2"
+                style="@style/WindLatestCard">
+
+                <FrameLayout style="@style/WindLatestImage">
+
+                    <TextView
+                        style="@style/WindImageGlyph"
+                        android:text="@string/wind_image_glyph_2" />
+                </FrameLayout>
+
+                <LinearLayout style="@style/WindLatestBody">
+
+                    <TextView
+                        style="@style/WindLatestCenter"
+                        android:text="@string/wind_category_2" />
+
+                    <TextView
+                        style="@style/WindLatestProgram"
+                        android:text="@string/wind_latest_program_2" />
+
+                    <TextView
+                        style="@style/WindLatestSummary"
+                        android:text="@string/wind_latest_summary_2" />
+
+                    <TextView
+                        style="@style/WindLatestPeriod"
+                        android:text="@string/wind_latest_period_2" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/cardWindLatest3"
+                style="@style/WindLatestCard">
+
+                <FrameLayout style="@style/WindLatestImagePlaceholder">
+
+                    <TextView
+                        style="@style/WindImageGlyph"
+                        android:text="@string/wind_image_glyph_3" />
+                </FrameLayout>
+
+                <LinearLayout style="@style/WindLatestBody">
+
+                    <TextView
+                        style="@style/WindLatestCenter"
+                        android:text="@string/wind_latest_center_3" />
+
+                    <TextView
+                        style="@style/WindLatestProgram"
+                        android:text="@string/wind_latest_program_3" />
+
+                    <TextView
+                        style="@style/WindLatestSummary"
+                        android:text="@string/wind_latest_summary_3" />
+
+                    <TextView
+                        style="@style/WindLatestPeriod"
+                        android:text="@string/wind_latest_period_3" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/buttonWindMorePrograms"
+                android:layout_width="match_parent"
+                android:layout_height="58dp"
+                android:layout_marginTop="26dp"
+                android:background="@drawable/bg_primary_card"
+                android:clickable="true"
+                android:focusable="true"
+                android:foreground="?attr/selectableItemBackground"
+                android:gravity="center"
+                android:text="@string/wind_more_programs"
+                android:textColor="@color/gb_on_primary"
+                android:textSize="20sp"
+                android:textStyle="bold" />
+        </LinearLayout>
+    </ScrollView>
+
+    <include
+        android:id="@+id/bottomNav"
+        layout="@layout/view_bottom_nav"
+        android:layout_width="0dp"
+        android:layout_height="72dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+</androidx.constraintlayout.widget.ConstraintLayout>

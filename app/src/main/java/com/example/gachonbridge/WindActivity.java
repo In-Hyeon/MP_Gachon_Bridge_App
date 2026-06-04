@@ -1,0 +1,242 @@
+package com.example.gachonbridge;
+
+import android.content.Intent;
+import android.net.Uri;
+import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.LinearLayout;
+import android.widget.TextView;
+import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
+
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
+public class WindActivity extends BaseActivity {
+
+    public static final String WIND_URL = "https://wind.gachon.ac.kr/";
+    private static final String WIND_BASE_URL = "https://wind.gachon.ac.kr";
+    private static final String WIND_LIST_URL = "https://wind.gachon.ac.kr/ko/program/all";
+
+    private TextView tvLoading;
+    private RecyclerView rvTop3;
+    private RecyclerView rvLatest;
+    private View sectionLatest;
+
+    static class WindProgram {
+        String title;
+        String institution;
+        String applyPeriod;
+        String period;
+        int    hits;
+        long   startTimestamp; // 운영 시작일 unix timestamp
+        String detailUrl;
+
+        WindProgram(String title, String institution, String applyPeriod,
+                    String period, int hits, long startTimestamp, String detailUrl) {
+            this.title          = title;
+            this.institution    = institution;
+            this.applyPeriod    = applyPeriod;
+            this.period         = period;
+            this.hits           = hits;
+            this.startTimestamp = startTimestamp;
+            this.detailUrl      = detailUrl;
+        }
+    }
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_wind);
+        bindBottomNavigation(R.id.navWind);
+
+        tvLoading    = findViewById(R.id.tvWindLoading);
+        rvTop3       = findViewById(R.id.windRecyclerView);
+        rvLatest     = findViewById(R.id.windLatestRecyclerView);
+        sectionLatest= findViewById(R.id.windSectionLatest);
+
+        rvTop3.setLayoutManager(new LinearLayoutManager(this));
+        rvLatest.setLayoutManager(new LinearLayoutManager(this));
+
+        View btnMore = findViewById(R.id.buttonWindMorePrograms);
+        if (btnMore != null) {
+            btnMore.setOnClickListener(v ->
+                startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(WIND_LIST_URL))));
+        }
+
+        loadWindData();
+    }
+
+    private void loadWindData() {
+        tvLoading.setVisibility(View.VISIBLE);
+        rvTop3.setVisibility(View.GONE);
+        sectionLatest.setVisibility(View.GONE);
+
+        new Thread(() -> {
+            try {
+                Document doc = Jsoup.connect(WIND_LIST_URL)
+                        .userAgent("Mozilla/5.0")
+                        .timeout(10000)
+                        .get();
+
+                Elements items = doc.select("div[data-role=item]");
+                List<WindProgram> all = new ArrayList<>();
+
+                for (Element item : items) {
+                    // 제목
+                    Element titleEl = item.selectFirst("b.title");
+                    String title = titleEl != null ? titleEl.text().trim() : "";
+
+                    // HITS
+                    Element hitEl = item.selectFirst("span.hit");
+                    int hits = 0;
+                    if (hitEl != null) {
+                        String hitText = hitEl.text().replaceAll("[^0-9]", "");
+                        if (!hitText.isEmpty()) hits = Integer.parseInt(hitText);
+                    }
+
+                    // 센터명
+                    Element instEl = item.selectFirst("span.institution");
+                    String institution = instEl != null ? instEl.text().trim() : "";
+
+                    // 신청기간 / 운영기간 + 운영 시작 timestamp
+                    Elements dateLayerEls = item.select("small.date_layer");
+                    String applyPeriod = "";
+                    String period      = "";
+                    long   startTimestamp = 0;
+
+                    for (Element dl : dateLayerEls) {
+                        String dateTitle = dl.select(".date_title").text();
+                        Elements times   = dl.select("time");
+                        if (times.size() >= 2) {
+                            String range = times.get(0).text() + " ~ " + times.get(1).text();
+                            if (dateTitle.contains("신청")) {
+                                applyPeriod = range;
+                            } else if (dateTitle.contains("운영")) {
+                                period = range;
+                                // 운영 시작일 timestamp 파싱
+                                String dt = times.get(0).attr("data-time");
+                                if (!dt.isEmpty()) {
+                                    try { startTimestamp = Long.parseLong(dt); } catch (Exception ignored) {}
+                                }
+                            }
+                        }
+                    }
+
+                    // 상세 링크
+                    Element aEl = item.selectFirst("a[href]");
+                    String detailUrl = aEl != null ? WIND_BASE_URL + aEl.attr("href") : WIND_LIST_URL;
+
+                    if (!title.isEmpty()) {
+                        boolean isDuplicate = false;
+                        for (WindProgram existing : all) {
+                            if (existing.title.equals(title)) {
+                                isDuplicate = true;
+                                break;
+                            }
+                        }
+                        if (!isDuplicate) {
+                            all.add(new WindProgram(title, institution, applyPeriod,
+                                    period, hits, startTimestamp, detailUrl));
+                        }
+                    }
+                }
+
+                // TOP3: HITS 내림차순
+                List<WindProgram> top3 = new ArrayList<>(all);
+                Collections.sort(top3, (a, b) -> b.hits - a.hits);
+                final List<WindProgram> top3Final = top3.subList(0, Math.min(3, top3.size()));
+
+                // 최신 4개: 운영 시작일 내림차순
+                List<WindProgram> latest = new ArrayList<>(all);
+                Collections.sort(latest, (a, b) -> Long.compare(b.startTimestamp, a.startTimestamp));
+                final List<WindProgram> latestFinal = latest.subList(0, Math.min(4, latest.size()));
+
+                runOnUiThread(() -> {
+                    tvLoading.setVisibility(View.GONE);
+                    rvTop3.setVisibility(View.VISIBLE);
+                    sectionLatest.setVisibility(View.VISIBLE);
+
+                    rvTop3.setAdapter(new WindAdapter(new ArrayList<>(top3Final), true));
+                    rvLatest.setAdapter(new WindAdapter(new ArrayList<>(latestFinal), false));
+                });
+
+            } catch (IOException e) {
+                runOnUiThread(() ->
+                    tvLoading.setText("데이터를 불러오지 못했습니다.\n잠시 후 다시 시도해주세요."));
+            }
+        }).start();
+    }
+
+    // ── Adapter ──
+    class WindAdapter extends RecyclerView.Adapter<WindAdapter.VH> {
+
+        private List<WindProgram> list;
+        private boolean showRank;
+
+        WindAdapter(List<WindProgram> list, boolean showRank) {
+            this.list     = list;
+            this.showRank = showRank;
+        }
+
+        @NonNull @Override
+        public VH onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+            View v = LayoutInflater.from(parent.getContext())
+                    .inflate(R.layout.item_wind_card, parent, false);
+            return new VH(v);
+        }
+
+        @Override
+        public void onBindViewHolder(@NonNull VH h, int pos) {
+            WindProgram p = list.get(pos);
+
+            if (showRank) {
+                h.tvRank.setVisibility(View.VISIBLE);
+                h.tvRank.setText(String.valueOf(pos + 1));
+            } else {
+                h.tvRank.setVisibility(View.GONE);
+            }
+
+            h.tvTitle.setText(p.title);
+            h.tvInstitution.setText(p.institution);
+            h.tvHits.setText(p.hits + " HITS");
+            h.tvApplyPeriod.setText("신청  " + p.applyPeriod);
+            h.tvPeriod.setText("운영  " + p.period);
+
+            h.itemView.setOnClickListener(v -> {
+                try {
+                    startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(p.detailUrl)));
+                } catch (Exception e) {
+                    Toast.makeText(WindActivity.this, "브라우저를 열 수 없습니다.", Toast.LENGTH_SHORT).show();
+                }
+            });
+        }
+
+        @Override public int getItemCount() { return list.size(); }
+
+        class VH extends RecyclerView.ViewHolder {
+            TextView tvRank, tvTitle, tvInstitution, tvHits, tvApplyPeriod, tvPeriod;
+            VH(View v) {
+                super(v);
+                tvRank        = v.findViewById(R.id.tvWindRank);
+                tvTitle       = v.findViewById(R.id.tvWindTitle);
+                tvInstitution = v.findViewById(R.id.tvWindInstitution);
+                tvHits        = v.findViewById(R.id.tvWindHits);
+                tvApplyPeriod = v.findViewById(R.id.tvWindApplyPeriod);
+                tvPeriod      = v.findViewById(R.id.tvWindPeriod);
+            }
+        }
+    }
+}

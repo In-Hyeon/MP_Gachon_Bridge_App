@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="ko"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>CampusConnect</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Work+Sans:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "outline-variant": "#424752",
+                      "error-container": "#93000a",
+                      "on-tertiary-fixed-variant": "#413996",
+                      "on-secondary": "#003920",
+                      "secondary-fixed": "#95f7bb",
+                      "error": "#ffb4ab",
+                      "surface-container-high": "#272a30",
+                      "on-tertiary-container": "#2e2482",
+                      "surface-bright": "#363940",
+                      "primary-fixed": "#d6e3ff",
+                      "on-surface-variant": "#c2c6d4",
+                      "on-primary-fixed": "#001b3e",
+                      "surface-variant": "#32353b",
+                      "surface-dim": "#111319",
+                      "surface-container": "#1d2026",
+                      "outline": "#8c919e",
+                      "on-surface": "#e1e2eb",
+                      "on-error-container": "#ffdad6",
+                      "tertiary-fixed-dim": "#c5c0ff",
+                      "tertiary-container": "#9891f3",
+                      "on-primary": "#002f65",
+                      "on-secondary-fixed": "#002110",
+                      "secondary-container": "#007848",
+                      "surface-container-lowest": "#0b0e14",
+                      "primary": "#aac7ff",
+                      "on-primary-fixed-variant": "#00458e",
+                      "primary-container": "#5d9cff",
+                      "inverse-on-surface": "#2e3037",
+                      "on-tertiary-fixed": "#140067",
+                      "surface": "#111319",
+                      "on-primary-container": "#00336b",
+                      "on-secondary-fixed-variant": "#005230",
+                      "on-secondary-container": "#9bfcc1",
+                      "surface-tint": "#aac7ff",
+                      "on-background": "#e1e2eb",
+                      "primary-fixed-dim": "#aac7ff",
+                      "background": "#1F2125",
+                      "inverse-primary": "#005cb9",
+                      "surface-container-highest": "#32353b",
+                      "tertiary": "#c5c0ff",
+                      "surface-container-low": "#191c22",
+                      "on-error": "#690005",
+                      "tertiary-fixed": "#e3dfff",
+                      "secondary-fixed-dim": "#7adaa1",
+                      "on-tertiary": "#2a1f7e",
+                      "inverse-surface": "#e1e2eb",
+                      "secondary": "#7adaa1"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.25rem",
+                      "lg": "0.5rem",
+                      "xl": "0.75rem",
+                      "full": "9999px"
+              },
+              "spacing": {
+                      "stack-gap-md": "16px",
+                      "stack-gap-lg": "24px",
+                      "inline-padding": "12px",
+                      "stack-gap-sm": "8px",
+                      "container-margin": "16px"
+              },
+              "fontFamily": {
+                      "label-md": ["Work Sans"],
+                      "label-sm": ["Work Sans"],
+                      "body-lg": ["Work Sans"],
+                      "headline-xl": ["Work Sans"],
+                      "body-md": ["Work Sans"],
+                      "headline-md": ["Work Sans"],
+                      "headline-lg": ["Work Sans"]
+              },
+              "fontSize": {
+                      "label-md": ["12px", {"lineHeight": "16px", "letterSpacing": "0.02em", "fontWeight": "600"}],
+                      "label-sm": ["11px", {"lineHeight": "14px", "fontWeight": "500"}],
+                      "body-lg": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                      "headline-xl": ["24px", {"lineHeight": "32px", "fontWeight": "700"}],
+                      "body-md": ["14px", {"lineHeight": "20px", "fontWeight": "400"}],
+                      "headline-md": ["18px", {"lineHeight": "24px", "fontWeight": "600"}],
+                      "headline-lg": ["20px", {"lineHeight": "28px", "fontWeight": "700"}]
+              }
+      },
+          },
+        }
+      </script>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+<style>
+    /* Hide scrollbar for Chrome, Safari and Opera */
+    .scrollbar-hide::-webkit-scrollbar {
+      display: none;
+    }
+
+    /* Hide scrollbar for IE, Edge and Firefox */
+    .scrollbar-hide {
+      -ms-overflow-style: none;  /* IE and Edge */
+      scrollbar-width: none;  /* Firefox */
+    }
+  </style></head>
+<body class="bg-background text-on-background antialiased pb-24">
+<!-- TopAppBar -->
+<header class="font-['Work_Sans'] text-base tracking-tight docked full-width top-0 z-50 border-b flat no shadows flex justify-between items-center w-full sticky top-0 border-outline-variant/30 h-20 pl-1 pr-4" style="background-color: #1F2125;">
+<div class="flex items-center gap-4">
+<img alt="CampusConnect Logo" class="object-contain w-20 h-20" src="https://lh3.googleusercontent.com/aida/ADBb0uhq7yIVeYxKgu4OZ93LXfohT7eSiAAxtZ7Pw-1MOX8n16isBk74Hyn8E82ymQ-dW_U4iXaTSzSO2J1TGh_SKMaxIXZkj2qG7ypB6VDlccxzjkN52aysRw38IydqOyhFo-0bZ6X3A7XxSPWYcyJI1cxSHJYAsZOsmw3oe21XKbBK-0eTEerfBoBVICNCZvK4RKTQUoTdXiyQyTxabae5QpaMGrf-HBrqz694rwd6xJyN8uTCskymecioPOka3COQosbb0g3rH5bwPw"/>
+<h1 class="text-xl font-bold text-zinc-100 dark:text-zinc-50">CampusConnect</h1>
+</div>
+<div class="rounded-full overflow-hidden bg-surface-container-high border border-outline-variant flex items-center justify-center w-12 h-12">
+<span class="material-symbols-outlined text-on-surface-variant text-4xl">account_circle</span>
+</div>
+</header>
+<main class="px-container-margin pt-stack-gap-md space-y-stack-gap-lg">
+<!-- Banner Section -->
+<section>
+<div class="rounded-xl overflow-hidden relative bg-gradient-to-r from-surface-container-high to-surface-container flex flex-col justify-end p-4 border border-outline-variant/30 h-28">
+<img alt="Banner Image" class="absolute inset-0 w-full h-full object-cover opacity-50 mix-blend-overlay" data-alt="A wide, horizontal banner image showcasing a modern, high-tech broadcasting or streaming studio. The scene features glowing neon accents in cool blues and purples, professional lighting equipment, and a sleek desk setup. The composition conveys a sense of dynamic energy, creativity, and digital broadcasting capabilities, perfectly aligning with the dark, modern UI aesthetic of the application." src="https://lh3.googleusercontent.com/aida-public/AB6AXuB_SVxzZMnyYhcbWApvnkUXwdwftnAvpReq_qn-QJFBby33LcwJ0sWut0mZYzd7bE-s6MNkZGvd91ZnG6G4hslSyjVYfAIK11ID_w7CQ857xBkHmC5JiC2AM7g9bMvrwWtEs2WvQOSfyFCvKuMrLZeE3mumUHUDQVfBST6UF4QBxWFoKDrxbh2LlUO4s1M4-lidUq5IyJtEHcR9SiNVxV47lleyTFyNKRVgbE2potMBImImdJX82TqIXbu6n3Mj7SaSjdFU_O15JZ5_"/>
+<div class="relative z-10">
+<span class="inline-block px-2 py-1 bg-primary/20 text-primary-container font-label-sm rounded mb-2 border border-primary/30">PRISM Live Studio</span>
+<h2 class="font-headline-md text-on-surface">모바일로 실시간 방송하기</h2>
+</div>
+</div>
+</section>
+<!-- Stats Section -->
+<div class="flex justify-between items-center mb-stack-gap-sm"><h3 class="font-headline-md text-on-surface flex items-center gap-2"><span class="material-symbols-outlined text-primary-container">calendar_month</span>학사 일정</h3></div><section class="grid grid-cols-3 gap-3">
+<div class="bg-[#7CADFF] rounded-lg p-3 border border-[#7CADFF]/50 flex flex-col h-28 relative">
+<span class="text-3xl font-black text-white">4.15</span>
+<span class="text-[10px] text-white font-bold mt-2">중간고사 기간</span>
+<span class="text-sm font-bold text-white absolute bottom-2 right-2">월</span>
+</div>
+<div class="bg-surface-container rounded-lg p-3 border border-outline-variant/50 flex flex-col h-28 relative">
+<span class="text-3xl font-black text-white">4.16</span>
+<span class="text-[10px] text-white mt-2">채용 박람회</span>
+<span class="text-sm font-bold text-white absolute bottom-2 right-2">화</span>
+</div>
+<div class="bg-surface-container rounded-lg p-3 border border-outline-variant/50 flex flex-col h-28 relative">
+<span class="text-3xl font-black text-white">4.17</span>
+<span class="text-[10px] text-white mt-2">동아리 축제</span>
+<span class="text-sm font-bold text-white absolute bottom-2 right-2">수</span>
+</div>
+</section>
+<!-- Gachon MAP Section -->
+<section>
+<div class="flex justify-between items-center mb-stack-gap-sm">
+<h3 class="font-headline-md text-on-surface flex items-center gap-2">
+<span class="material-symbols-outlined text-primary-container" data-icon="map">map</span>
+                    가천 MAP
+                </h3>
+<span class="material-symbols-outlined text-on-surface-variant text-sm" data-icon="chevron_right">chevron_right</span>
+</div>
+<div class="bg-surface-container rounded-xl overflow-hidden border border-outline-variant/50 relative h-64">
+<img alt="Map Preview" class="w-full h-full object-cover opacity-80" data-alt="A highly detailed, stylized digital map interface showing a complex campus layout. The map features distinct building blocks, pathways, and green areas rendered in a dark theme palette. Glowing blue lines indicate primary routes, and small location pin icons highlight key facilities. The overall aesthetic is futuristic, sleek, and highly functional, perfectly suited for navigation within a dark-mode mobile application." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCtdlNM41UtwmSCavo-S1YQd3JP0UF6Bkzxlkzh__b9WTssyqKBoIGktbn0IcFPK9FFl3Wgwv5HzlDw0YswAU-uzAId11eHIxzW-HsBlnPF5Uo-yQe5XOXNlfpBxHjibyJknzXKMAvk3Tp5jikwjWZrIv6sSbQY0OjxOvNuuVXWeT47u891KsGmvRFU-zTLDALSCV34Tw31FlZMGx5S3WL5IUX3RQlb_VQwAKIkTSFGVXfC0pv1O8boDpNwXxGgRp4WmdcjqGZCAETy"/>
+</div>
+</section>
+<!-- Academic Notice Section -->
+<section>
+<div class="flex justify-between items-center mb-stack-gap-sm">
+<h3 class="font-headline-md text-on-surface flex items-center gap-2">
+<span class="material-symbols-outlined text-primary-container" data-icon="campaign">campaign</span>
+                    학사공지
+                </h3>
+</div>
+<div class="bg-surface-container rounded-xl border border-outline-variant/50 overflow-hidden">
+<div class="flex border-b border-outline-variant/50">
+<button class="flex-1 py-2 font-label-md text-primary-container border-b-2 border-primary-container">전체</button>
+<button class="flex-1 py-2 font-label-md text-on-surface-variant hover:bg-surface-container-high transition-colors">학사</button>
+<button class="flex-1 py-2 font-label-md text-on-surface-variant hover:bg-surface-container-high transition-colors">장학</button>
+</div>
+<ul class="divide-y divide-outline-variant/30">
+<li class="p-inline-padding flex justify-between items-center hover:bg-surface-container-high transition-colors">
+<p class="font-body-md text-on-surface truncate pr-4">[일반] 2024학년도 1학기 수강신청 안내</p>
+<span class="font-label-sm text-on-surface-variant whitespace-nowrap">02.15</span>
+</li>
+<li class="p-inline-padding flex justify-between items-center hover:bg-surface-container-high transition-colors">
+<p class="font-body-md text-on-surface truncate pr-4">[장학] 2024학년도 1학기 국가장학금 2차 신청 안내</p>
+<span class="font-label-sm text-on-surface-variant whitespace-nowrap">02.10</span>
+</li>
+<li class="p-inline-padding flex justify-between items-center hover:bg-surface-container-high transition-colors">
+<p class="font-body-md text-on-surface truncate pr-4">[학사] 2023학년도 전기 학위수여식 안내</p>
+<span class="font-label-sm text-on-surface-variant whitespace-nowrap">02.05</span>
+</li>
+</ul>
+</div>
+</section>
+<!-- WIND Section -->
+<section><div class="flex justify-between items-center mb-stack-gap-sm">
+<h3 class="font-headline-md text-on-surface flex items-center gap-2">
+<span class="material-symbols-outlined text-primary-container" data-icon="air">air</span>
+                    WIND
+                </h3>
+</div>
+<div class="flex overflow-x-auto gap-4 snap-x snap-mandatory scrollbar-hide pb-2 -mx-container-margin px-container-margin">
+<!-- Card 1 -->
+<div class="flex-none w-[85%] snap-center bg-surface-container rounded-xl border border-outline-variant/50 overflow-hidden flex flex-col shadow-lg">
+<div class="relative h-48"><div class="absolute top-0 left-4 bg-primary text-on-primary w-14 flex flex-col items-center py-2 rounded-b-md shadow-md z-10"><span class="font-bold text-sm">진행중</span><span class="text-sm mt-1 font-bold">D-19</span></div>
+<img alt="2026 전자정보박람회" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida/ADBb0uj_QA-GwnYiM0xOrq-psithso2heBywCu-ThyO1fHhub2j3NjK1Iwvln4e9cm_G1lo8ppaFFBRPFIVloCriSQrl4qVLvmLDQzbuM1zILHuX2mmnp0XEUg7oWftWIIpqqTA7YShg7GFmFkD-NWT1DyhtJYKZV-pLSzWm1SV9NSaRvyOWzPpk9CMzuvOfaqJsh5dC9rWdTtyZcWL3uI15E9wrgnuaPxf9Bv7efqJFkE1cBU61H1JSLUtnAew1ByJglWC53LZ5NbUQ4iQ"/>
+</div>
+<div class="p-4 relative bg-surface-container">
+<div class="absolute top-4 right-4 border border-outline-variant/50 px-2 py-1 text-on-surface-variant font-label-sm rounded bg-surface-container/80 backdrop-blur-sm">
+                1420 HITS
+            </div>
+<div class="flex justify-between items-start mb-2">
+<span class="text-primary-container font-label-md">학술정보지원팀</span>
+<span class="material-symbols-outlined text-outline-variant text-xl">star</span>
+</div>
+<h4 class="font-headline-md text-on-surface mb-3 line-clamp-2">2026 전자정보박람회 : 전자자료 이용법 알아보고 선물도 받자!</h4>
+<div class="space-y-2 mb-4">
+<div class="flex items-start gap-2">
+<span class="material-symbols-outlined text-on-surface-variant text-base" data-icon="calendar_today">calendar_today</span>
+<p class="font-body-sm text-on-surface-variant">신청: 04.10(금) ~ 04.29(수)</p>
+</div>
+<div class="flex items-start gap-2">
+<span class="material-symbols-outlined text-on-surface-variant text-base" data-icon="calendar_today">calendar_today</span>
+<p class="font-body-sm text-on-surface-variant">운영: 04.30(목) 10:30 ~ 17:00</p>
+</div>
+</div>
+<div class="pt-3 border-t border-outline-variant/30 flex items-center gap-3">
+<div class="h-1.5 flex-1 bg-surface-container-highest rounded-full overflow-hidden">
+<div class="h-full bg-primary-container w-[70%]"></div>
+</div>
+<span class="font-label-md text-on-surface"><span class="text-primary-container">324</span>/무제한</span>
+</div>
+</div>
+</div>
+<!-- Card 2 (Placeholder for scroll demonstration) -->
+<div class="flex-none w-[85%] snap-center bg-surface-container rounded-xl border border-outline-variant/50 overflow-hidden flex flex-col shadow-lg opacity-90">
+<div class="relative h-48 bg-surface-container-high flex items-center justify-center">
+<span class="material-symbols-outlined text-6xl text-outline-variant">image</span>
+<div class="absolute top-0 left-4 bg-primary text-on-primary w-14 flex flex-col items-center py-2 rounded-b-md shadow-md z-10"><span class="font-bold text-sm">진행중</span><span class="text-sm mt-1 font-bold">D-10</span></div>
+</div>
+<div class="p-4 relative bg-surface-container">
+<div class="flex justify-between items-start mb-2">
+<span class="text-primary-container font-label-md">취업지원팀</span>
+<span class="material-symbols-outlined text-outline-variant text-xl">star</span>
+</div>
+<h4 class="font-headline-md text-on-surface mb-3">2024 상반기 채용 박람회</h4>
+<div class="space-y-2 mb-4">
+<div class="flex items-start gap-2">
+<span class="material-symbols-outlined text-on-surface-variant text-base">calendar_today</span>
+<p class="font-body-sm text-on-surface-variant">일시: 05.15(수) 10:00 ~ 16:00</p>
+</div>
+</div>
+<div class="pt-3 border-t border-outline-variant/30 flex items-center gap-3">
+<div class="h-1.5 flex-1 bg-surface-container-highest rounded-full overflow-hidden">
+<div class="h-full bg-primary-container w-[40%]"></div>
+</div>
+<span class="font-label-md text-on-surface"><span class="text-primary-container">120</span>/300</span>
+</div>
+</div>
+</div>
+</div></section>
+<!-- Clubs Section -->
+<section>
+<div class="flex justify-between items-center mb-stack-gap-sm">
+<h3 class="font-headline-md text-on-surface flex items-center gap-2">
+<span class="material-symbols-outlined text-primary-container" data-icon="groups">groups</span>
+                    동아리
+                </h3>
+</div>
+<div class="flex gap-2 mb-3 overflow-x-auto pb-1 scrollbar-hide">
+<button class="px-4 py-1.5 rounded-full bg-primary-container text-on-primary-container font-label-md whitespace-nowrap">글로벌</button>
+<button class="px-4 py-1.5 rounded-full bg-surface-container-high text-on-surface-variant border border-outline-variant/50 font-label-md whitespace-nowrap hover:bg-surface-variant transition-colors">메디컬</button>
+</div>
+<div class="flex flex-col gap-4">
+<div class="flex overflow-x-auto gap-3 snap-x snap-mandatory scrollbar-hide pb-2 -mx-container-margin px-container-margin">
+<div class="flex-none w-28 snap-center bg-surface-container rounded-xl p-3 border border-outline-variant/50 flex flex-col items-center justify-center gap-2">
+<div class="w-10 h-10 rounded-full bg-surface-variant flex items-center justify-center">
+<span class="material-symbols-outlined text-primary-container" data-icon="music_note">music_note</span>
+</div>
+<span class="font-label-sm text-on-surface">음악</span>
+</div>
+<div class="flex-none w-28 snap-center bg-surface-container rounded-xl p-3 border border-outline-variant/50 flex flex-col items-center justify-center gap-2">
+<div class="w-10 h-10 rounded-full bg-surface-variant flex items-center justify-center">
+<span class="material-symbols-outlined text-tertiary-container" data-icon="theater_comedy">theater_comedy</span>
+</div>
+<span class="font-label-sm text-on-surface">공연</span>
+</div>
+<div class="flex-none w-28 snap-center bg-surface-container rounded-xl p-3 border border-outline-variant/50 flex flex-col items-center justify-center gap-2">
+<div class="w-10 h-10 rounded-full bg-surface-variant flex items-center justify-center">
+<span class="material-symbols-outlined text-secondary-fixed" data-icon="school">school</span>
+</div>
+<span class="font-label-sm text-on-surface">학술</span>
+</div>
+<div class="flex-none w-28 snap-center bg-surface-container rounded-xl p-3 border border-outline-variant/50 flex flex-col items-center justify-center gap-2">
+<div class="w-10 h-10 rounded-full bg-surface-variant flex items-center justify-center">
+<span class="material-symbols-outlined text-primary" data-icon="sports_soccer">sports_soccer</span>
+</div>
+<span class="font-label-sm text-on-surface">체육</span>
+</div>
+<div class="flex-none w-28 snap-center bg-surface-container rounded-xl p-3 border border-outline-variant/50 flex flex-col items-center justify-center gap-2">
+<div class="w-10 h-10 rounded-full bg-surface-variant flex items-center justify-center">
+<span class="material-symbols-outlined text-secondary" data-icon="volunteer_activism">volunteer_activism</span>
+</div>
+<span class="font-label-sm text-on-surface">봉사</span>
+</div>
+<div class="flex-none w-28 snap-center bg-surface-container rounded-xl p-3 border border-outline-variant/50 flex flex-col items-center justify-center gap-2">
+<div class="w-10 h-10 rounded-full bg-surface-variant flex items-center justify-center">
+<span class="material-symbols-outlined text-tertiary" data-icon="church">church</span>
+</div>
+<span class="font-label-sm text-on-surface">종교</span>
+</div>
+</div>
+<div class="flex justify-center">
+<div class="h-1 w-16 bg-surface-container-highest rounded-full overflow-hidden">
+<div class="h-full bg-primary-container w-[40%]"></div>
+</div>
+</div>
+</div>
+</section>
+<!-- Today's Meal Section -->
+<section class="mb-8">
+<div class="flex justify-between items-center mb-stack-gap-sm">
+<h3 class="font-headline-md text-on-surface flex items-center gap-2">
+<span class="material-symbols-outlined text-primary-container" data-icon="restaurant">restaurant</span>
+                    오늘의 학식
+                </h3>
+</div>
+<div class="bg-surface-container rounded-xl border border-outline-variant/50 overflow-hidden">
+<div class="flex border-b border-outline-variant/50 bg-surface-container-low"><button class="flex-1 py-2 font-label-md text-primary-container border-b-2 border-primary-container bg-surface-container">교육대학원</button>
+<button class="flex-1 py-2 font-label-md text-on-surface-variant hover:bg-surface-container-high transition-colors">비전타워</button>
+<button class="flex-1 py-2 font-label-md text-on-surface-variant hover:bg-surface-container-high transition-colors">학생생활관</button>
+<button class="flex-1 py-2 font-label-md text-on-surface-variant hover:bg-surface-container-high transition-colors">체육관(M)</button></div>
+<div class="p-4">
+<p class="font-label-md text-on-surface-variant mb-3">4월 15일 (월)</p>
+<div class="space-y-4">
+<div class="flex items-start gap-3">
+<span class="material-symbols-outlined text-on-surface-variant mt-0.5" data-icon="bakery_dining">bakery_dining</span>
+<div>
+<p class="font-label-md text-on-surface">조식 (08:00 - 09:30)</p>
+<p class="font-body-sm text-on-surface-variant mt-1">소고기 미역국, 쌀밥, 배추김치</p>
+</div>
+</div>
+<div class="flex items-start gap-3">
+<span class="material-symbols-outlined text-primary-container mt-0.5" data-icon="lunch_dining">lunch_dining</span>
+<div>
+<p class="font-label-md text-primary-container">중식 (11:30 - 13:30)</p>
+<p class="font-body-sm text-on-surface mt-1">제육볶음, 된장찌개, 쌈채소, 쌀밥</p>
+</div>
+</div>
+<div class="flex items-start gap-3">
+<span class="material-symbols-outlined text-on-surface-variant mt-0.5" data-icon="dinner_dining">dinner_dining</span>
+<div>
+<p class="font-label-md text-on-surface">석식 (17:30 - 19:00)</p>
+<p class="font-body-sm text-on-surface-variant mt-1">오므라이스, 크림스프, 피클</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+</main>
+<!-- BottomNavBar -->
+<nav class="font-['Work_Sans'] text-[10px] font-medium docked full-width bottom-0 z-50 rounded-t-xl border-t shadow-[0_-4px_10px_rgba(0,0,0,0.3)] fixed bottom-0 left-0 w-full flex justify-around items-center px-2 py-3 border-outline-variant/30" style="background-color: #1F2125;">
+<button class="flex flex-col items-center justify-center text-blue-400 dark:text-[#5D9CFF] scale-110 font-bold hover:bg-zinc-800/30 transition-all Active: scale-90 transition-transform duration-200 w-16">
+<span class="material-symbols-outlined mb-1 text-xl" data-icon="home" style="font-variation-settings: 'FILL' 1;">home</span>
+<span>Home</span>
+</button>
+<button class="flex flex-col items-center justify-center text-zinc-500 dark:text-zinc-400 hover:bg-zinc-800/30 transition-all w-16">
+<span class="material-symbols-outlined mb-1 text-xl" data-icon="air">air</span>
+<span>WIND</span>
+</button>
+<button class="flex flex-col items-center justify-center text-zinc-500 dark:text-zinc-400 hover:bg-zinc-800/30 transition-all w-16">
+<span class="material-symbols-outlined mb-1 text-xl" data-icon="groups">groups</span>
+<span>Clubs</span>
+</button>
+<button class="flex flex-col items-center justify-center text-zinc-500 dark:text-zinc-400 hover:bg-zinc-800/30 transition-all w-16">
+<span class="material-symbols-outlined mb-1 text-xl" data-icon="notifications">notifications</span>
+<span>Notices</span>
+</button>
+<button class="flex flex-col items-center justify-center text-zinc-500 dark:text-zinc-400 hover:bg-zinc-800/30 transition-all w-16">
+<span class="material-symbols-outlined mb-1 text-xl" data-icon="science">science</span>
+<span>LAB</span>
+</button>
+</nav>
+</body></html>
