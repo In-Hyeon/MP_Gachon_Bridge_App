@@ -3,10 +3,20 @@ package com.example.gachonbridge;
 import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.view.View;
 import android.widget.TextView;
 
 import androidx.core.content.ContextCompat;
+
+import java.text.NumberFormat;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.List;
+import java.util.Locale;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 public class MainActivity extends BaseActivity {
 
@@ -14,6 +24,24 @@ public class MainActivity extends BaseActivity {
     private TextView[] noticeItems;
     private TextView[] mealTabs;
     private TextView[] mealItems;
+    private TextView[] scheduleDates;
+    private TextView[] scheduleTitles;
+    private TextView[] scheduleDdays;
+    private TextView[] windHomeRanks;
+    private TextView[] windHomeHits;
+    private TextView[] windHomeInstitutions;
+    private TextView[] windHomeTitles;
+    private TextView[] windHomePeriods;
+    private int selectedMealIndex;
+    private final ExecutorService contentExecutor = Executors.newSingleThreadExecutor();
+    private final Handler mainHandler = new Handler(Looper.getMainLooper());
+    private final Runnable mealHighlightUpdater = new Runnable() {
+        @Override
+        public void run() {
+            applyMealTimeHighlight();
+            mainHandler.postDelayed(this, getMealHighlightRefreshDelayMillis());
+        }
+    };
 
     private final String[][] noticePreviewData = {
             {
@@ -33,21 +61,21 @@ public class MainActivity extends BaseActivity {
             }
     };
 
-    private final String[][] mealPreviewData = {
+    private String[][] mealPreviewData = {
             {
-                    "\uC870\uC2DD 08:00 - 09:30\n\uC18C\uACE0\uAE30\uBBF8\uC5ED\uAD6D, \uACC4\uB780\uB9D0\uC774, \uBC30\uCD94\uAE40\uCE58",
-                    "\uC911\uC2DD 11:30 - 13:30\n\uC81C\uC721\uBCF6\uC74C, \uB41C\uC7A5\uCC0C\uAC1C, \uC0D0\uB7EC\uB4DC, \uC300\uBC25",
-                    "\uC11D\uC2DD 17:30 - 19:00\n\uC624\uBBC0\uB77C\uC774\uC2A4, \uD06C\uB9BC\uC2A4\uD504, \uD53C\uD074"
+                    "\uC544\uCE68(\uCC9C\uC6D0\uC758\uC544\uCE68\uBC25)\n\uBD88\uB7EC\uC624\uB294 \uC911...",
+                    "\uC810\uC2EC\n\uBD88\uB7EC\uC624\uB294 \uC911...",
+                    "\uC800\uB141\n\uBD88\uB7EC\uC624\uB294 \uC911..."
             },
             {
-                    "\uC870\uC2DD 08:10 - 09:20\n\uC2DC\uB798\uAE30\uAD6D, \uBCA0\uC774\uCEE8\uAC10\uC790\uBCF6\uC74C, \uAE40\uAD6C\uC774",
-                    "\uC911\uC2DD 11:20 - 13:40\n\uB3C8\uAE4C\uC2A4\uCEE4\uB9AC, \uC6B0\uB3D9\uAD6D\uBB3C, \uCF54\uC6B8\uC2AC\uB85C",
-                    "\uC11D\uC2DD 17:20 - 18:50\n\uB2ED\uAC08\uBE44\uB36E\uBC25, \uBBF8\uC18C\uC7A5\uAD6D, \uBB34\uC0DD\uCC44"
+                    "\uC544\uCE68(\uCC9C\uC6D0\uC758\uC544\uCE68\uBC25)\n\uBD88\uB7EC\uC624\uB294 \uC911...",
+                    "\uC810\uC2EC\n\uBD88\uB7EC\uC624\uB294 \uC911...",
+                    "\uC800\uB141\n\uBD88\uB7EC\uC624\uB294 \uC911..."
             },
             {
-                    "\uC870\uC2DD 08:00 - 09:30\n\uD1A0\uC2A4\uD2B8, \uC2A4\uD06C\uB7A8\uBE14\uC5D0\uADF8, \uC2DC\uB9AC\uC5BC",
-                    "\uC911\uC2DD 11:30 - 13:30\n\uBD88\uACE0\uAE30\uBE44\uBE54\uBC25, \uCF69\uB098\uBB3C\uAD6D, \uC5F0\uB450\uBD80",
-                    "\uC11D\uC2DD 17:30 - 19:00\n\uAE40\uCE58\uBCF6\uC74C\uBC25, \uACC4\uB780\uD6C4\uB77C\uC774, \uC5B4\uBB35\uAD6D"
+                    "\uC544\uCE68(\uCC9C\uC6D0\uC758\uC544\uCE68\uBC25)\n\uBD88\uB7EC\uC624\uB294 \uC911...",
+                    "\uC810\uC2EC\n\uBD88\uB7EC\uC624\uB294 \uC911...",
+                    "\uC800\uB141\n\uBD88\uB7EC\uC624\uB294 \uC911..."
             }
     };
 
@@ -57,10 +85,39 @@ public class MainActivity extends BaseActivity {
         setContentView(R.layout.activity_main);
         // TODO: Replace XML dummy sections with API-backed views or RecyclerViews.
         bindBottomNavigation(R.id.navHome);
+        bindSchedulePreviewCards();
         bindHomePreviewTabs();
+        startMealHighlightUpdates();
         bindNoticeLinks();
         bindHomeWindLinks();
+        bindHomeWindCards();
+        bindMapLink();
         bindClubCategoryLinks();
+        loadAcademicSchedules();
+        loadTodayMeals();
+        loadHomeWindTopPrograms();
+    }
+
+    private void bindSchedulePreviewCards() {
+        scheduleDates = new TextView[]{
+                findViewById(R.id.scheduleDate1),
+                findViewById(R.id.scheduleDate2),
+                findViewById(R.id.scheduleDate3)
+        };
+        scheduleTitles = new TextView[]{
+                findViewById(R.id.scheduleTitle1),
+                findViewById(R.id.scheduleTitle2),
+                findViewById(R.id.scheduleTitle3)
+        };
+        scheduleDdays = new TextView[]{
+                findViewById(R.id.scheduleDday1),
+                findViewById(R.id.scheduleDday2),
+                findViewById(R.id.scheduleDday3)
+        };
+
+        List<GachonAcademicScheduleCrawler.DailySchedule> loadingSchedules =
+                new GachonAcademicScheduleCrawler().buildLoadingSchedules(new Date(), 3);
+        updateScheduleCards(loadingSchedules);
     }
 
     private void bindHomePreviewTabs() {
@@ -86,9 +143,19 @@ public class MainActivity extends BaseActivity {
         };
 
         bindTabGroup(noticeTabs, noticeItems, noticePreviewData);
-        bindTabGroup(mealTabs, mealItems, mealPreviewData);
+        bindMealTabs();
         updatePreviewGroup(noticeTabs, noticeItems, noticePreviewData, 0);
-        updatePreviewGroup(mealTabs, mealItems, mealPreviewData, 0);
+        updateMealPreviewGroup(0);
+    }
+
+    private void bindMealTabs() {
+        for (int i = 0; i < mealTabs.length; i++) {
+            final int selectedIndex = i;
+            mealTabs[i].setOnClickListener(v -> {
+                selectedMealIndex = selectedIndex;
+                updateMealPreviewGroup(selectedMealIndex);
+            });
+        }
     }
 
     private void bindTabGroup(TextView[] tabs, TextView[] items, String[][] data) {
@@ -111,6 +178,144 @@ public class MainActivity extends BaseActivity {
         for (int i = 0; i < items.length; i++) {
             items[i].setText(data[selectedIndex][i]);
         }
+    }
+
+    private void updateMealPreviewGroup(int selectedIndex) {
+        updatePreviewGroup(mealTabs, mealItems, mealPreviewData, selectedIndex);
+        applyMealTimeHighlight();
+    }
+
+    private void startMealHighlightUpdates() {
+        mainHandler.removeCallbacks(mealHighlightUpdater);
+        mainHandler.post(mealHighlightUpdater);
+    }
+
+    private void applyMealTimeHighlight() {
+        if (mealItems == null) {
+            return;
+        }
+
+        int highlightedIndex = getCurrentMealIndex();
+        for (int i = 0; i < mealItems.length; i++) {
+            boolean highlighted = i == highlightedIndex;
+            mealItems[i].setTextColor(ContextCompat.getColor(
+                    this,
+                    highlighted ? R.color.gb_on_surface : R.color.gb_on_surface_variant
+            ));
+            mealItems[i].setTypeface(null, highlighted ? Typeface.BOLD : Typeface.NORMAL);
+        }
+    }
+
+    private int getCurrentMealIndex() {
+        int hour = Calendar.getInstance().get(Calendar.HOUR_OF_DAY);
+        if (hour < 10) {
+            return 0;
+        }
+        if (hour < 14) {
+            return 1;
+        }
+        return 2;
+    }
+
+    private long getMealHighlightRefreshDelayMillis() {
+        Calendar now = Calendar.getInstance();
+        Calendar nextBoundary = (Calendar) now.clone();
+        int hour = now.get(Calendar.HOUR_OF_DAY);
+
+        if (hour < 10) {
+            nextBoundary.set(Calendar.HOUR_OF_DAY, 10);
+        } else if (hour < 14) {
+            nextBoundary.set(Calendar.HOUR_OF_DAY, 14);
+        } else {
+            nextBoundary.add(Calendar.DAY_OF_MONTH, 1);
+            nextBoundary.set(Calendar.HOUR_OF_DAY, 0);
+        }
+
+        nextBoundary.set(Calendar.MINUTE, 0);
+        nextBoundary.set(Calendar.SECOND, 0);
+        nextBoundary.set(Calendar.MILLISECOND, 0);
+        return Math.max(1000L, nextBoundary.getTimeInMillis() - now.getTimeInMillis() + 1000L);
+    }
+
+    private void loadTodayMeals() {
+        contentExecutor.execute(() -> {
+            String[][] nextMealData;
+            try {
+                List<GachonMealCrawler.RestaurantMenu> menus =
+                        new GachonMealCrawler().fetchTodayMenus(new Date());
+                nextMealData = buildMealPreviewData(menus);
+            } catch (Exception e) {
+                nextMealData = buildEmptyMealPreviewData();
+            }
+
+            String[][] finalNextMealData = nextMealData;
+            mainHandler.post(() -> {
+                mealPreviewData = finalNextMealData;
+                updateMealPreviewGroup(selectedMealIndex);
+            });
+        });
+    }
+
+    private void loadAcademicSchedules() {
+        contentExecutor.execute(() -> {
+            List<GachonAcademicScheduleCrawler.DailySchedule> nextSchedules;
+            try {
+                nextSchedules = new GachonAcademicScheduleCrawler().fetchSchedulesFrom(new Date(), 3);
+            } catch (Exception e) {
+                nextSchedules = new GachonAcademicScheduleCrawler().buildEmptySchedules(new Date(), 3);
+            }
+
+            List<GachonAcademicScheduleCrawler.DailySchedule> finalNextSchedules = nextSchedules;
+            mainHandler.post(() -> updateScheduleCards(finalNextSchedules));
+        });
+    }
+
+    private void updateScheduleCards(List<GachonAcademicScheduleCrawler.DailySchedule> schedules) {
+        int count = Math.min(scheduleDates.length, schedules.size());
+        for (int i = 0; i < count; i++) {
+            GachonAcademicScheduleCrawler.DailySchedule schedule = schedules.get(i);
+            scheduleDates[i].setText(schedule.dateLabel);
+            scheduleTitles[i].setText(schedule.title);
+            scheduleDdays[i].setText(schedule.ddayLabel);
+        }
+    }
+
+    private String[][] buildMealPreviewData(List<GachonMealCrawler.RestaurantMenu> menus) {
+        String[][] data = buildEmptyMealPreviewData();
+        int count = Math.min(data.length, menus.size());
+
+        for (int i = 0; i < count; i++) {
+            GachonMealCrawler.RestaurantMenu menu = menus.get(i);
+            data[i][0] = formatMealItem("\uC544\uCE68(\uCC9C\uC6D0\uC758\uC544\uCE68\uBC25)", menu.breakfast);
+            data[i][1] = formatMealItem("\uC810\uC2EC", menu.lunch);
+            data[i][2] = formatMealItem("\uC800\uB141", menu.dinner);
+        }
+
+        return data;
+    }
+
+    private String[][] buildEmptyMealPreviewData() {
+        return new String[][]{
+                {
+                        formatMealItem("\uC544\uCE68(\uCC9C\uC6D0\uC758\uC544\uCE68\uBC25)", "-"),
+                        formatMealItem("\uC810\uC2EC", "-"),
+                        formatMealItem("\uC800\uB141", "-")
+                },
+                {
+                        formatMealItem("\uC544\uCE68(\uCC9C\uC6D0\uC758\uC544\uCE68\uBC25)", "-"),
+                        formatMealItem("\uC810\uC2EC", "-"),
+                        formatMealItem("\uC800\uB141", "-")
+                },
+                {
+                        formatMealItem("\uC544\uCE68(\uCC9C\uC6D0\uC758\uC544\uCE68\uBC25)", "-"),
+                        formatMealItem("\uC810\uC2EC", "-"),
+                        formatMealItem("\uC800\uB141", "-")
+                }
+        };
+    }
+
+    private String formatMealItem(String label, String menu) {
+        return label + "\n" + menu;
     }
 
     private void bindClubCategoryLinks() {
@@ -140,6 +345,97 @@ public class MainActivity extends BaseActivity {
         bindHomeWindLink(R.id.cardWindDummyProgram3);
     }
 
+    private void bindHomeWindCards() {
+        windHomeRanks = new TextView[]{
+                findViewById(R.id.windHomeRank1),
+                findViewById(R.id.windHomeRank2),
+                findViewById(R.id.windHomeRank3)
+        };
+        windHomeHits = new TextView[]{
+                findViewById(R.id.windHomeHits1),
+                findViewById(R.id.windHomeHits2),
+                findViewById(R.id.windHomeHits3)
+        };
+        windHomeInstitutions = new TextView[]{
+                findViewById(R.id.windHomeInstitution1),
+                findViewById(R.id.windHomeInstitution2),
+                findViewById(R.id.windHomeInstitution3)
+        };
+        windHomeTitles = new TextView[]{
+                findViewById(R.id.windHomeTitle1),
+                findViewById(R.id.windHomeTitle2),
+                findViewById(R.id.windHomeTitle3)
+        };
+        windHomePeriods = new TextView[]{
+                findViewById(R.id.windHomePeriod1),
+                findViewById(R.id.windHomePeriod2),
+                findViewById(R.id.windHomePeriod3)
+        };
+
+        for (int i = 0; i < windHomeRanks.length; i++) {
+            windHomeRanks[i].setText("TOP\n" + (i + 1));
+            windHomeHits[i].setText("불러오는 중...");
+            windHomeInstitutions[i].setText("WIND");
+            windHomeTitles[i].setText("프로그램 불러오는 중...");
+            windHomePeriods[i].setText("-");
+        }
+    }
+
+    private void loadHomeWindTopPrograms() {
+        contentExecutor.execute(() -> {
+            try {
+                List<GachonWindCrawler.WindProgram> topPrograms =
+                        new GachonWindCrawler().fetchTopPrograms(3);
+                mainHandler.post(() -> updateHomeWindCards(topPrograms));
+            } catch (Exception e) {
+                mainHandler.post(this::showEmptyHomeWindCards);
+            }
+        });
+    }
+
+    private void updateHomeWindCards(List<GachonWindCrawler.WindProgram> programs) {
+        int count = Math.min(windHomeTitles.length, programs.size());
+        for (int i = 0; i < count; i++) {
+            GachonWindCrawler.WindProgram program = programs.get(i);
+            windHomeRanks[i].setText("TOP\n" + (i + 1));
+            windHomeHits[i].setText(NumberFormat.getNumberInstance(Locale.KOREA).format(program.hits) + " HITS");
+            windHomeInstitutions[i].setText(orDash(program.institution));
+            windHomeTitles[i].setText(orDash(program.title));
+            windHomePeriods[i].setText(formatWindHomePeriod(program));
+        }
+
+        for (int i = count; i < windHomeTitles.length; i++) {
+            setEmptyHomeWindCard(i);
+        }
+    }
+
+    private void showEmptyHomeWindCards() {
+        for (int i = 0; i < windHomeTitles.length; i++) {
+            setEmptyHomeWindCard(i);
+        }
+    }
+
+    private void setEmptyHomeWindCard(int index) {
+        windHomeRanks[index].setText("TOP\n" + (index + 1));
+        windHomeHits[index].setText("-");
+        windHomeInstitutions[index].setText("-");
+        windHomeTitles[index].setText("-");
+        windHomePeriods[index].setText("-");
+    }
+
+    private String formatWindHomePeriod(GachonWindCrawler.WindProgram program) {
+        return "신청  " + orDash(program.applyPeriod) + "\n운영  " + orDash(program.period);
+    }
+
+    private String orDash(String text) {
+        return text == null || text.trim().isEmpty() ? "-" : text.trim();
+    }
+
+    private void bindMapLink() {
+        View mapSection = findViewById(R.id.sectionMap);
+        mapSection.setOnClickListener(v -> startActivity(new Intent(this, MapActivity.class)));
+    }
+
     private void bindHomeWindLink(int viewId) {
         View view = findViewById(viewId);
         view.setOnClickListener(v -> openWindPage());
@@ -164,5 +460,12 @@ public class MainActivity extends BaseActivity {
 
     private void openNoticePage() {
         startActivity(new Intent(this, NoticeActivity.class));
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        mainHandler.removeCallbacks(mealHighlightUpdater);
+        contentExecutor.shutdownNow();
     }
 }
