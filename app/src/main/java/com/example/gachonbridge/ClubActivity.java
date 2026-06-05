@@ -10,6 +10,15 @@ import android.widget.TextView;
 
 import androidx.core.content.ContextCompat;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+
+import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
+
 public class ClubActivity extends BaseActivity {
 
     public static final String EXTRA_SELECTED_CAMPUS = "selected_campus";
@@ -17,42 +26,30 @@ public class ClubActivity extends BaseActivity {
     public static final int CAMPUS_GLOBAL = 0;
     public static final int CAMPUS_MEDICAL = 1;
 
-    private static final String[] CATEGORIES = {
-            "\uC804\uCCB4",
-            "\uC74C\uC545",
-            "\uACF5\uC5F0",
-            "\uC0AC\uD68C\u00B7\uD559\uC220",
-            "\uC885\uAD50",
-            "\uCCB4\uC721",
-            "\uBD09\uC0AC",
-            "\uC804\uC2DC\u00B7\uCDE8\uBBF8"
+    private static final String[] CATEGORIES_GLOBAL = {
+            "전체",
+            "음악",
+            "공연",
+            "사회·학술",
+            "종교",
+            "체육",
+            "전시·취미"
     };
 
-    private final Club[] globalClubs = {
-            new Club("\uD558\uB2AC\uBC14\uB78C", "\uC74C\uC545", "1985\uB144\uBD80\uD130 \uD604\uC7AC\uAE4C\uC9C0 \uD3ED \uB113\uC740 \uC7A5\uB974\uC758 \uC74C\uC545\uC744 \uD568\uAED8 \uC5F0\uC8FC\uD569\uB2C8\uB2E4.", "\uC74C\uC545", "\uBAA8\uC9D1 \uC911", "\u266A", true),
-            new Club("\uD30C\uB791\uC0C8", "\uC74C\uC545", "\uB2E4\uC591\uD55C \uC7A5\uB974\uC758 \uC74C\uC545\uC73C\uB85C \uAD00\uAC1D\uACFC \uC18C\uD1B5\uD558\uB294 \uBC34\uB4DC \uB3D9\uC544\uB9AC\uC785\uB2C8\uB2E4.", "\uC74C\uC545", "\uBAA8\uC9D1 \uC911", "\u266B", false),
-            new Club("\uD604\uC74C", "\uC74C\uC545", "\uD604\uC74C\uC740 \uB2E4\uC591\uD55C \uC7A5\uB974\uC758 \uC74C\uC545\uC744 \uC5F0\uC8FC\uD558\uBA70 \uD569\uC8FC\uD558\uB294 \uB3D9\uC544\uB9AC\uC785\uB2C8\uB2E4.", "\uC74C\uC545", "\uB9C8\uAC10", "\u25A3", false),
-            new Club("\uACE0\uC6B4\uC18C\uB9AC", "\uC74C\uC545", "\uC5B4\uCFE0\uC2A4\uD2F1 \uBD84\uC704\uAE30\uB97C \uAE30\uBC18\uC73C\uB85C \uD654\uC74C\uC744 \uB9CC\uB4E4\uACE0 \uACF5\uC5F0\uD569\uB2C8\uB2E4.", "\uC74C\uC545", "\uBAA8\uC9D1 \uC911", "\u266B", false),
-            new Club("\uCC9C\uD558\uB300\uC7A5\uAD70", "\uC74C\uC545", "1985\uB144\uBD80\uD130 \uC774\uC5B4\uC838 \uC628 \uC911\uC559 \uB77D\uBC34\uB4DC \uB3D9\uC544\uB9AC\uB85C \uD569\uC8FC\uC640 \uACF5\uC5F0\uC744 \uD569\uB2C8\uB2E4.", "\uC74C\uC545", "\uBAA8\uC9D1 \uC911", "\u266A", false),
-            new Club("\uCF54\uB4DC\uD06C\uB798\uD504\uD2B8 \uAC1C\uBC1C", "\uC0AC\uD68C\u00B7\uD559\uC220", "\uC18C\uD504\uD2B8\uC6E8\uC5B4 \uC5D4\uC9C0\uB2C8\uC5B4\uB9C1 \uC6CC\uD06C\uC0F5\uACFC \uD504\uB85C\uC81D\uD2B8\uB97C \uD568\uAED8 \uC9C4\uD589\uD569\uB2C8\uB2E4.", "\uD559\uC220", "\uBAA8\uC9D1 \uC911", "</>", false),
-            new Club("\uAC00\uCC9C \uC774\uC2A4\uD3EC\uCE20", "\uCCB4\uC721", "\uACBD\uC7C1\uC801\uC778 \uAC8C\uC784 \uB9AC\uADF8\uC640 \uCE90\uC8FC\uC5BC \uD1A0\uB108\uBA3C\uD2B8\uB97C \uC6B4\uC601\uD569\uB2C8\uB2E4.", "\uC0AC\uD68C", "\uB9C8\uAC10", "\u25B6", false),
-            new Club("\uAC00\uCC9C \uB18D\uAD6C\uBD80", "\uCCB4\uC721", "\uB9E4\uC8FC \uC815\uAE30 \uC6B4\uB3D9\uACFC \uD0C0 \uB300\uD559 \uAD50\uB958\uC804\uC744 \uC900\uBE44\uD569\uB2C8\uB2E4.", "\uCCB4\uC721", "\uBAA8\uC9D1 \uC911", "\u25CE", false),
-            new Club("\uC2A4\uD29C\uB514\uC624 G", "\uC804\uC2DC\u00B7\uCDE8\uBBF8", "\uB2E4\uC591\uD55C \uBBF8\uC220 \uB9E4\uCCB4\uB85C \uCC3D\uC791 \uD65C\uB3D9\uACFC \uC804\uC2DC\uB97C \uAE30\uD68D\uD569\uB2C8\uB2E4.", "\uC804\uC2DC\u00B7\uCDE8\uBBF8", "\uB9C8\uAC10", "\u25CC", false),
-            new Club("\uADF8\uB8E8\uBE0C \uC564 \uB304\uC2A4", "\uACF5\uC5F0", "\uC2A4\uD2B8\uB9BF \uB304\uC2A4\uC640 \uCF54\uB808\uC624\uADF8\uB798\uD53C \uC6CC\uD06C\uC0F5\uC744 \uC9C4\uD589\uD569\uB2C8\uB2E4.", "\uACF5\uC5F0", "\uBAA8\uC9D1 \uC911", "\u25E2", false),
-            new Club("\uAC00\uCC9C \uB098\uB214\uD68C", "\uBD09\uC0AC", "\uC9C0\uC5ED \uC544\uB3D9 \uBA58\uD1A0\uB9C1\uACFC \uCEA0\uD37C\uC2A4 \uD658\uACBD \uCEA0\uD398\uC778\uC744 \uD568\uAED8 \uC900\uBE44\uD569\uB2C8\uB2E4.", "\uBD09\uC0AC", "\uBAA8\uC9D1 \uC911", "\u2665", false),
-            new Club("\uBBFF\uC74C\uC758 \uAE38", "\uC885\uAD50", "\uC608\uBC30, \uBD09\uC0AC, \uC18C\uADF8\uB8F9 \uBAA8\uC784\uC73C\uB85C \uCEA0\uD37C\uC2A4 \uCEE4\uBBA4\uB2C8\uD2F0\uB97C \uB9CC\uB4ED\uB2C8\uB2E4.", "\uC885\uAD50", "\uBAA8\uC9D1 \uC911", "+", false)
+    private static final String[] CATEGORIES_MEDICAL = {
+            "전체",
+            "공연",
+            "봉사",
+            "운동·레저",
+            "종교"
     };
 
-    private final Club[] medicalClubs = {
-            new Club("\uBA54\uB514\uCEEC \uCF54\uB7EC\uC2A4", "\uC74C\uC545", "\uD559\uC5C5 \uC774\uD6C4 \uD569\uCC3D\uACFC \uC18C\uADDC\uBAA8 \uACF5\uC5F0\uC73C\uB85C \uC7AC\uCDA9\uC804\uD558\uB294 \uB3D9\uC544\uB9AC\uC785\uB2C8\uB2E4.", "\uCD94\uCC9C", "\uBAA8\uC9D1 \uC911", "\u266B", true),
-            new Club("\uD5EC\uC2A4\uCF00\uC5B4 \uB9AC\uC11C\uCE58", "\uC0AC\uD68C\u00B7\uD559\uC220", "\uC758\uB8CC \uB370\uC774\uD130\uC640 \uACF5\uACF5\uBCF4\uAC74 \uC8FC\uC81C\uB97C \uD568\uAED8 \uC5F0\uAD6C\uD569\uB2C8\uB2E4.", "\uD559\uC220", "\uBAA8\uC9D1 \uC911", "H", false),
-            new Club("\uC751\uAE09\uAD6C\uC870 \uC2A4\uD130\uB514", "\uC0AC\uD68C\u00B7\uD559\uC220", "\uC751\uAE09\uCC98\uCE58 \uC2E4\uC2B5\uACFC \uC9C0\uC5ED \uC548\uC804 \uCEA0\uD398\uC778\uC744 \uC900\uBE44\uD569\uB2C8\uB2E4.", "\uD559\uC220", "\uB9C8\uAC10", "ER", false),
-            new Club("\uBA54\uB514 \uB7EC\uB2DD \uB7F0", "\uCCB4\uC721", "\uB7EC\uB2DD\uACFC \uD53C\uD2B8\uB2C8\uC2A4 \uD65C\uB3D9\uC73C\uB85C \uCCB4\uB825\uC744 \uAD00\uB9AC\uD569\uB2C8\uB2E4.", "\uCCB4\uC721", "\uBAA8\uC9D1 \uC911", "RUN", false),
-            new Club("\uC544\uD2B8 \uD14C\uB77C\uD53C \uD074\uB7FD", "\uC804\uC2DC\u00B7\uCDE8\uBBF8", "\uBBF8\uC220 \uD65C\uB3D9\uACFC \uD790\uB9C1 \uD504\uB85C\uADF8\uB7A8\uC744 \uC9C0\uC5ED\uACFC \uC5F0\uACB0\uD569\uB2C8\uB2E4.", "\uC804\uC2DC\u00B7\uCDE8\uBBF8", "\uBAA8\uC9D1 \uC911", "\u25CC", false),
-            new Club("\uBA54\uB514\uCEEC \uD50C\uB808\uC774", "\uACF5\uC5F0", "\uC758\uD559 \uCEA0\uD37C\uC2A4 \uCD95\uC81C\uC640 \uC18C\uADDC\uBAA8 \uBB34\uB300\uB97C \uD568\uAED8 \uB9CC\uB4ED\uB2C8\uB2E4.", "\uACF5\uC5F0", "\uB9C8\uAC10", "\u25B2", false),
-            new Club("\uB9C8\uC74C \uC5F0\uACB0", "\uBD09\uC0AC", "\uBCD1\uC6D0 \uC548\uB0B4 \uBD09\uC0AC\uC640 \uC9C0\uC5ED \uAC74\uAC15 \uCEA0\uD398\uC778\uC744 \uD568\uAED8 \uC9C4\uD589\uD569\uB2C8\uB2E4.", "\uBD09\uC0AC", "\uBAA8\uC9D1 \uC911", "\u2665", false),
-            new Club("\uB098\uB214 \uAE30\uB3C4\uD68C", "\uC885\uAD50", "\uC815\uAE30 \uBAA8\uC784\uACFC \uC9C0\uC5ED \uBD09\uC0AC\uB97C \uC911\uC2EC\uC73C\uB85C \uD65C\uB3D9\uD569\uB2C8\uB2E4.", "\uC885\uAD50", "\uBAA8\uC9D1 \uC911", "+", false)
-    };
+    private String[] getCurrentCategories() {
+        return selectedCampus == CAMPUS_GLOBAL ? CATEGORIES_GLOBAL : CATEGORIES_MEDICAL;
+    }
+
+    private final List<Club> globalClubs = new ArrayList<>();
+    private final List<Club> medicalClubs = new ArrayList<>();
 
     private TextView campusGlobal;
     private TextView campusMedical;
@@ -67,16 +64,53 @@ public class ClubActivity extends BaseActivity {
     private int selectedCampus = CAMPUS_GLOBAL;
     private int selectedCategory = 0;
 
+    private android.os.Handler carouselHandler = new android.os.Handler(android.os.Looper.getMainLooper());
+    private int currentFeaturedIndex = 0;
+    private Runnable carouselRunnable;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_club);
         bindBottomNavigation(R.id.navClub);
+        loadClubsFromJson();
         readInitialSelection();
         bindViews();
         bindCampusTabs();
         createCategoryTabs();
         renderClubScreen();
+    }
+
+    private void loadClubsFromJson() {
+        try {
+            loadCampusClubs("clubs_global.json", globalClubs);
+            loadCampusClubs("clubs_medical.json", medicalClubs);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void loadCampusClubs(String filename, List<Club> targetList) throws Exception {
+        InputStream is = getAssets().open(filename);
+        int size = is.available();
+        byte[] buffer = new byte[size];
+        is.read(buffer);
+        is.close();
+        String json = new String(buffer, StandardCharsets.UTF_8);
+
+        JSONArray jsonArray = new JSONArray(json);
+        for (int i = 0; i < jsonArray.length(); i++) {
+            JSONObject obj = jsonArray.getJSONObject(i);
+            String name = obj.optString("name", "");
+            String division = obj.optString("division", "");
+            String shortDesc = obj.optString("short_description", "");
+            String longDesc = obj.optString("long_description", "");
+            String activity = obj.optString("activity", "");
+            String location = obj.optString("location", "");
+            String imageUrl = obj.optString("image_url", "");
+
+            targetList.add(new Club(name, division, shortDesc, longDesc, activity, location, imageUrl, i == 0));
+        }
     }
 
     private void readInitialSelection() {
@@ -89,8 +123,9 @@ public class ClubActivity extends BaseActivity {
         if (category == null) {
             return 0;
         }
-        for (int i = 0; i < CATEGORIES.length; i++) {
-            if (CATEGORIES[i].equals(category)) {
+        String[] currentCategories = getCurrentCategories();
+        for (int i = 0; i < currentCategories.length; i++) {
+            if (currentCategories[i].equals(category)) {
                 return i;
             }
         }
@@ -113,27 +148,30 @@ public class ClubActivity extends BaseActivity {
         campusGlobal.setOnClickListener(v -> {
             selectedCampus = CAMPUS_GLOBAL;
             selectedCategory = 0;
+            createCategoryTabs();
             renderClubScreen();
         });
         campusMedical.setOnClickListener(v -> {
             selectedCampus = CAMPUS_MEDICAL;
             selectedCategory = 0;
+            createCategoryTabs();
             renderClubScreen();
         });
     }
 
     private void createCategoryTabs() {
-        categoryTabs = new TextView[CATEGORIES.length];
+        String[] currentCategories = getCurrentCategories();
+        categoryTabs = new TextView[currentCategories.length];
         categoryContainer.removeAllViews();
-        for (int i = 0; i < CATEGORIES.length; i++) {
+        for (int i = 0; i < currentCategories.length; i++) {
             final int categoryIndex = i;
             TextView tab = new TextView(this);
-            tab.setText(CATEGORIES[i]);
+            tab.setText(currentCategories[i]);
             tab.setGravity(Gravity.CENTER);
             tab.setTextSize(15);
             tab.setTypeface(null, Typeface.BOLD);
             tab.setSingleLine(true);
-            tab.setPadding(dp(18), 0, dp(18), 0);
+            tab.setPadding(dp(24), 0, dp(24), 0);
             tab.setOnClickListener(v -> {
                 selectedCategory = categoryIndex;
                 renderClubScreen();
@@ -143,17 +181,55 @@ public class ClubActivity extends BaseActivity {
                     LinearLayout.LayoutParams.WRAP_CONTENT,
                     dp(54)
             );
-            params.setMarginEnd(dp(12));
+            params.setMarginEnd(dp(14));
             categoryContainer.addView(tab, params);
             categoryTabs[i] = tab;
         }
     }
 
     private void renderClubScreen() {
-        Club[] clubs = selectedCampus == CAMPUS_GLOBAL ? globalClubs : medicalClubs;
+        List<Club> clubListRef = selectedCampus == CAMPUS_GLOBAL ? globalClubs : medicalClubs;
+        Club[] clubs = clubListRef.toArray(new Club[0]);
         updateCampusTabs();
         updateCategoryTabs();
-        updateFeaturedClub(clubs);
+        
+        // Setup Carousel
+        if (carouselRunnable != null) {
+            carouselHandler.removeCallbacks(carouselRunnable);
+        }
+        
+        List<Club> visibleClubs = new ArrayList<>();
+        for (Club c : clubs) {
+            if (isVisible(c)) visibleClubs.add(c);
+        }
+        
+        if (selectedCategory == 0 && !visibleClubs.isEmpty()) {
+            featuredClubCard.setVisibility(View.VISIBLE);
+            
+            // Initial random selection
+            Random random = new Random();
+            currentFeaturedIndex = random.nextInt(visibleClubs.size());
+            updateFeaturedClubUI(visibleClubs.get(currentFeaturedIndex));
+            
+            carouselRunnable = new Runnable() {
+                @Override
+                public void run() {
+                    if (visibleClubs.size() > 1) {
+                        int nextIndex;
+                        do {
+                            nextIndex = random.nextInt(visibleClubs.size());
+                        } while (nextIndex == currentFeaturedIndex); // Prevent showing the same club twice in a row
+                        currentFeaturedIndex = nextIndex;
+                    }
+                    updateFeaturedClubUI(visibleClubs.get(currentFeaturedIndex));
+                    carouselHandler.postDelayed(this, 6000); // 6 seconds per rotation
+                }
+            };
+            carouselHandler.postDelayed(carouselRunnable, 6000);
+        } else {
+            featuredClubCard.setVisibility(View.GONE);
+        }
+        
         updateClubList(clubs);
     }
 
@@ -182,19 +258,24 @@ public class ClubActivity extends BaseActivity {
         }
     }
 
-    private void updateFeaturedClub(Club[] clubs) {
-        if (selectedCategory != 0) {
-            featuredClubCard.setVisibility(View.GONE);
-            return;
-        }
-
-        featuredClubCard.setVisibility(View.VISIBLE);
-        Club featured = findFirstVisibleClub(clubs);
+    private void updateFeaturedClubUI(Club featured) {
         featuredBadge.setText(featured.badge);
         featuredCategory.setText(featured.category);
         featuredTitle.setText(featured.name);
-        featuredBody.setText(featured.description);
+        featuredBody.setText(featured.shortDescription);
         featuredClubCard.setOnClickListener(v -> openClubDetail(featured));
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (carouselHandler != null && carouselRunnable != null) {
+            carouselHandler.removeCallbacks(carouselRunnable);
+        }
+    }
+
+    private void updateFeaturedClub(Club[] clubs) {
+        // Obsolete, replaced by carousel logic in renderClubScreen
     }
 
     private void updateClubList(Club[] clubs) {
@@ -211,6 +292,7 @@ public class ClubActivity extends BaseActivity {
     }
 
     private Club findFirstVisibleClub(Club[] clubs) {
+        if (clubs.length == 0) return null;
         for (Club club : clubs) {
             if (isVisible(club) && club.featured) {
                 return club;
@@ -225,7 +307,21 @@ public class ClubActivity extends BaseActivity {
     }
 
     private boolean isVisible(Club club) {
-        return selectedCategory == 0 || club.category.equals(CATEGORIES[selectedCategory]);
+        if (selectedCategory == 0) return true; // "전체" 탭
+        
+        String[] currentCategories = getCurrentCategories();
+        if (selectedCategory >= currentCategories.length) return true; // 안전장치
+        
+        String tabName = currentCategories[selectedCategory];
+        String clubDiv = club.category;
+        
+        // UI 탭 이름과 JSON 데이터의 분과명 매칭
+        if (tabName.equals("사회·학술") && clubDiv.equals("사회학술")) return true;
+        if (tabName.equals("전시·취미") && clubDiv.equals("전시취미")) return true;
+        if (tabName.equals("운동·레저") && clubDiv.equals("운동레저")) return true;
+        if (tabName.equals("체육") && clubDiv.equals("운동레저")) return true;
+        
+        return clubDiv.equals(tabName);
     }
 
     private LinearLayout createClubCard(Club club) {
@@ -265,6 +361,7 @@ public class ClubActivity extends BaseActivity {
         category.setText(club.badge);
         category.setGravity(Gravity.CENTER);
         category.setTextSize(13);
+        category.setPadding(dp(12), 0, dp(12), 0);
         category.setTextColor(ContextCompat.getColor(this, R.color.gb_on_surface_variant));
         category.setBackgroundResource(R.drawable.bg_chip_inactive);
         LinearLayout.LayoutParams categoryParams = new LinearLayout.LayoutParams(
@@ -287,7 +384,7 @@ public class ClubActivity extends BaseActivity {
         body.addView(title, titleParams);
 
         TextView description = new TextView(this);
-        description.setText(club.description);
+        description.setText(club.shortDescription);
         description.setTextColor(ContextCompat.getColor(this, R.color.gb_on_surface_variant));
         description.setTextSize(15);
         description.setSingleLine(true);
@@ -304,7 +401,7 @@ public class ClubActivity extends BaseActivity {
             status.setTextSize(14);
             status.setTextColor(ContextCompat.getColor(
                     this,
-                    "\uBAA8\uC9D1 \uC911".equals(club.status) ? R.color.gb_primary : R.color.gb_on_surface_variant
+                    "모집 중".equals(club.status) ? R.color.gb_primary : R.color.gb_on_surface_variant
             ));
             LinearLayout.LayoutParams statusParams = new LinearLayout.LayoutParams(
                     LinearLayout.LayoutParams.WRAP_CONTENT,
@@ -321,9 +418,11 @@ public class ClubActivity extends BaseActivity {
         Intent intent = new Intent(this, ClubDetailActivity.class);
         intent.putExtra(ClubDetailActivity.EXTRA_NAME, club.name);
         intent.putExtra(ClubDetailActivity.EXTRA_CATEGORY, club.category);
-        intent.putExtra(ClubDetailActivity.EXTRA_DESCRIPTION, club.description);
+        intent.putExtra(ClubDetailActivity.EXTRA_DESCRIPTION, club.longDescription);
         intent.putExtra(ClubDetailActivity.EXTRA_BADGE, club.badge);
         intent.putExtra(ClubDetailActivity.EXTRA_ICON, club.icon);
+        intent.putExtra("club_activity", club.activity);
+        intent.putExtra("club_location", club.location);
         startActivity(intent);
     }
 
@@ -331,22 +430,30 @@ public class ClubActivity extends BaseActivity {
         return (int) (value * getResources().getDisplayMetrics().density + 0.5f);
     }
 
-    private static class Club {
-        final String name;
-        final String category;
-        final String description;
-        final String badge;
-        final String status;
-        final String icon;
-        final boolean featured;
+    public static class Club {
+        public final String name;
+        public final String category;
+        public final String shortDescription;
+        public final String longDescription;
+        public final String activity;
+        public final String location;
+        public final String imageUrl;
+        public final String badge;
+        public final String status;
+        public final String icon;
+        public final boolean featured;
 
-        Club(String name, String category, String description, String badge, String status, String icon, boolean featured) {
+        public Club(String name, String category, String shortDescription, String longDescription, String activity, String location, String imageUrl, boolean featured) {
             this.name = name;
             this.category = category;
-            this.description = description;
-            this.badge = badge;
-            this.status = status;
-            this.icon = icon;
+            this.shortDescription = shortDescription;
+            this.longDescription = longDescription;
+            this.activity = activity;
+            this.location = location;
+            this.imageUrl = imageUrl;
+            this.badge = category;
+            this.status = "모집 중";
+            this.icon = category.isEmpty() ? "G" : category.substring(0, 1);
             this.featured = featured;
         }
     }
