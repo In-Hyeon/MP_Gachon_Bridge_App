@@ -1,12 +1,13 @@
 <resources>
     <string name="app_name">Gachon Bridge</string>
+    <string name="google_maps_key">AIzaSyAP57vwAQfGuZXKaDhDDYDVAZ6b8qnzoTk</string>
     <string name="home_logo">GB</string>
     <string name="home_my">MY</string>
     <string name="home_subtitle">&#xC624;&#xB298;&#xC758; &#xCEA0;&#xD37C;&#xC2A4; &#xC18C;&#xC2DD;&#xC744; &#xBE60;&#xB974;&#xAC8C; &#xD655;&#xC778;&#xD558;&#xC138;&#xC694;</string>
     <string name="home_banner_chip">CAMPUS LIVE</string>
     <string name="home_banner_title">&#xAC00;&#xCC9C; &#xC18C;&#xC2DD;&#xACFC; &#xC11C;&#xBE44;&#xC2A4;&#xB97C; &#xD55C; &#xD654;&#xBA74;&#xC5D0;&#xC11C;</string>
-    <string name="dummy_data_badge">DUMMY DATA</string>
-    <string name="dummy_data_notice">&#xD604;&#xC7AC; &#xD45C;&#xC2DC;&#xB41C; &#xB0B4;&#xC6A9;&#xC740; &#xBC31;&#xC5D4;&#xB4DC; &#xC5F0;&#xACB0; &#xC804;&#xC6A9; &#xB354;&#xBBF8; &#xB370;&#xC774;&#xD130;&#xC785;&#xB2C8;&#xB2E4;.</string>
+    <string name="dummy_data_badge">PARTIAL DATA</string>
+    <string name="dummy_data_notice">&#xD559;&#xC2DD;&#xC740; &#xD559;&#xAD50; &#xC0AC;&#xC774;&#xD2B8;&#xC5D0;&#xC11C; &#xBD88;&#xB7EC;&#xC624;&#xACE0;, &#xC77C;&#xBD80; &#xC139;&#xC158;&#xC740; &#xB354;&#xBBF8; &#xB370;&#xC774;&#xD130;&#xC785;&#xB2C8;&#xB2E4;.</string>
     <string name="section_schedule">&#xD559;&#xC0AC;&#xC77C;&#xC815;</string>
     <string name="section_map">&#xAC00;&#xCC9C; MAP</string>
     <string name="section_notice">&#xD559;&#xC0AC;&#xACF5;&#xC9C0;</string>
@@ -57,7 +58,7 @@
     <string name="club_religion">&#xC885;&#xAD50;</string>
     <string name="cafeteria_1">교육대학원</string>
     <string name="cafeteria_2">비전타워</string>
-    <string name="cafeteria_3">기숙사식당</string>
+    <string name="cafeteria_3">학생생활관</string>
     <string name="meal_breakfast">&#xC870;&#xC2DD; 08:00 - 09:30\n&#xC18C;&#xACE0;&#xAE30;&#xBBF8;&#xC5ED;&#xAD6D;, &#xACC4;&#xB780;&#xB9D0;&#xC774;, &#xBC30;&#xCD94;&#xAE40;&#xCE58;</string>
     <string name="meal_lunch">&#xC911;&#xC2DD; 11:30 - 13:30\n&#xC81C;&#xC721;&#xBCF6;&#xC74C;, &#xB41C;&#xC7A5;&#xCC0C;&#xAC1C;, &#xC0D0;&#xB7EC;&#xB4DC;, &#xC300;&#xBC25;</string>
     <string name="meal_dinner">&#xC11D;&#xC2DD; 17:30 - 19:00\n&#xC624;&#xBBC0;&#xB77C;&#xC774;&#xC2A4;, &#xD06C;&#xB9BC;&#xC2A4;&#xD504;, &#xD53C;&#xD074;</string>
