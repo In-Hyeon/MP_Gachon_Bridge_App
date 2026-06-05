@@ -143,7 +143,6 @@
                     style="@style/SectionTitle"
                     android:text="@string/section_schedule" />
 
-                <!-- DUMMY DATA: Replace this fixed schedule row with backend schedule data later. -->
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="112dp"
@@ -159,17 +158,20 @@
                         android:padding="12dp">
 
                         <TextView
+                            android:id="@+id/scheduleDate1"
                             style="@style/CardDate"
                             android:text="@string/schedule_date_1"
                             android:textColor="@color/white" />
 
                         <TextView
+                            android:id="@+id/scheduleTitle1"
                             style="@style/CardBody"
                             android:text="@string/schedule_title_1"
                             android:textColor="@color/white"
                             android:textStyle="bold" />
 
                         <TextView
+                            android:id="@+id/scheduleDday1"
                             style="@style/CardDday"
                             android:text="@string/schedule_dday_1"
                             android:textColor="@color/white" />
@@ -185,15 +187,18 @@
                         android:padding="12dp">
 
                         <TextView
+                            android:id="@+id/scheduleDate2"
                             style="@style/CardDate"
                             android:text="@string/schedule_date_2"
                             android:textColor="@color/gb_on_surface" />
 
                         <TextView
+                            android:id="@+id/scheduleTitle2"
                             style="@style/CardBody"
                             android:text="@string/schedule_title_2" />
 
                         <TextView
+                            android:id="@+id/scheduleDday2"
                             style="@style/CardDday"
                             android:text="@string/schedule_dday_2" />
                     </LinearLayout>
@@ -207,15 +212,18 @@
                         android:padding="12dp">
 
                         <TextView
+                            android:id="@+id/scheduleDate3"
                             style="@style/CardDate"
                             android:text="@string/schedule_date_3"
                             android:textColor="@color/gb_on_surface" />
 
                         <TextView
+                            android:id="@+id/scheduleTitle3"
                             style="@style/CardBody"
                             android:text="@string/schedule_title_3" />
 
                         <TextView
+                            android:id="@+id/scheduleDday3"
                             style="@style/CardDday"
                             android:text="@string/schedule_dday_3" />
                     </LinearLayout>
@@ -243,12 +251,26 @@
                         android:layout_width="match_parent"
                         android:layout_height="220dp"
                         android:background="@drawable/bg_map_preview"
-                        android:padding="16dp">
+                        android:clipToOutline="true">
+
+                        <ImageView
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:contentDescription="@null"
+                            android:scaleType="centerCrop"
+                            android:src="@drawable/map_preview" />
+
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:background="#22000000" />
 
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="top|start"
+                            android:layout_marginStart="16dp"
+                            android:layout_marginTop="16dp"
                             android:background="@drawable/bg_chip_inactive"
                             android:paddingStart="12dp"
                             android:paddingTop="6dp"
@@ -260,21 +282,13 @@
                             android:textStyle="bold" />
 
                         <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:gravity="center"
-                            android:text="@string/map_places"
-                            android:textColor="@color/gb_on_surface"
-                            android:textSize="16sp"
-                            android:textStyle="bold" />
-
-                        <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="bottom|end"
+                            android:layout_marginEnd="16dp"
+                            android:layout_marginBottom="16dp"
                             android:text="@string/map_action"
-                            android:textColor="@color/gb_primary"
+                            android:textColor="@color/white"
                             android:textSize="13sp"
                             android:textStyle="bold" />
                     </FrameLayout>
@@ -372,7 +386,7 @@
                         <LinearLayout
                             android:id="@+id/cardWindDummyProgram1"
                             android:layout_width="300dp"
-                            android:layout_height="wrap_content"
+                            android:layout_height="300dp"
                             android:layout_marginEnd="12dp"
                             android:background="@drawable/bg_card"
                             android:clickable="true"
@@ -386,6 +400,7 @@
                                 android:padding="16dp">
 
                                 <TextView
+                                    android:id="@+id/windHomeRank1"
                                     android:layout_width="58dp"
                                     android:layout_height="52dp"
                                     android:background="@drawable/bg_primary_card"
@@ -396,9 +411,13 @@
                                     android:textStyle="bold" />
 
                                 <TextView
-                                    android:layout_width="wrap_content"
+                                    android:id="@+id/windHomeHits1"
+                                    android:layout_width="160dp"
                                     android:layout_height="wrap_content"
                                     android:layout_gravity="bottom|end"
+                                    android:ellipsize="end"
+                                    android:gravity="end"
+                                    android:singleLine="true"
                                     android:text="@string/wind_hits"
                                     android:textColor="@color/gb_on_surface"
                                     android:textSize="12sp"
@@ -407,31 +426,41 @@
 
                             <LinearLayout
                                 android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
+                                android:layout_height="0dp"
+                                android:layout_weight="1"
                                 android:orientation="vertical"
                                 android:padding="16dp">
 
                                 <TextView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
+                                    android:id="@+id/windHomeInstitution1"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="18dp"
+                                    android:ellipsize="end"
+                                    android:singleLine="true"
                                     android:text="@string/wind_category"
                                     android:textColor="@color/gb_primary"
                                     android:textSize="12sp"
                                     android:textStyle="bold" />
 
                                 <TextView
+                                    android:id="@+id/windHomeTitle1"
                                     android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
+                                    android:layout_height="52dp"
                                     android:layout_marginTop="8dp"
+                                    android:ellipsize="end"
+                                    android:maxLines="2"
                                     android:text="@string/wind_title"
                                     android:textColor="@color/gb_on_surface"
                                     android:textSize="18sp"
                                     android:textStyle="bold" />
 
                                 <TextView
+                                    android:id="@+id/windHomePeriod1"
                                     android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
+                                    android:layout_height="36dp"
                                     android:layout_marginTop="8dp"
+                                    android:ellipsize="end"
+                                    android:maxLines="2"
                                     android:text="@string/wind_period"
                                     android:textColor="@color/gb_on_surface_variant"
                                     android:textSize="13sp" />
@@ -454,7 +483,7 @@
                         <LinearLayout
                             android:id="@+id/cardWindDummyProgram2"
                             android:layout_width="300dp"
-                            android:layout_height="wrap_content"
+                            android:layout_height="300dp"
                             android:layout_marginEnd="12dp"
                             android:background="@drawable/bg_card"
                             android:clickable="true"
@@ -468,6 +497,7 @@
                                 android:padding="16dp">
 
                                 <TextView
+                                    android:id="@+id/windHomeRank2"
                                     android:layout_width="58dp"
                                     android:layout_height="52dp"
                                     android:background="@drawable/bg_primary_card"
@@ -478,9 +508,13 @@
                                     android:textStyle="bold" />
 
                                 <TextView
-                                    android:layout_width="wrap_content"
+                                    android:id="@+id/windHomeHits2"
+                                    android:layout_width="160dp"
                                     android:layout_height="wrap_content"
                                     android:layout_gravity="bottom|end"
+                                    android:ellipsize="end"
+                                    android:gravity="end"
+                                    android:singleLine="true"
                                     android:text="@string/wind_hits_2"
                                     android:textColor="@color/gb_on_surface"
                                     android:textSize="12sp"
@@ -489,31 +523,41 @@
 
                             <LinearLayout
                                 android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
+                                android:layout_height="0dp"
+                                android:layout_weight="1"
                                 android:orientation="vertical"
                                 android:padding="16dp">
 
                                 <TextView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
+                                    android:id="@+id/windHomeInstitution2"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="18dp"
+                                    android:ellipsize="end"
+                                    android:singleLine="true"
                                     android:text="@string/wind_category_2"
                                     android:textColor="@color/gb_primary"
                                     android:textSize="12sp"
                                     android:textStyle="bold" />
 
                                 <TextView
+                                    android:id="@+id/windHomeTitle2"
                                     android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
+                                    android:layout_height="52dp"
                                     android:layout_marginTop="8dp"
+                                    android:ellipsize="end"
+                                    android:maxLines="2"
                                     android:text="@string/wind_title_2"
                                     android:textColor="@color/gb_on_surface"
                                     android:textSize="18sp"
                                     android:textStyle="bold" />
 
                                 <TextView
+                                    android:id="@+id/windHomePeriod2"
                                     android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
+                                    android:layout_height="36dp"
                                     android:layout_marginTop="8dp"
+                                    android:ellipsize="end"
+                                    android:maxLines="2"
                                     android:text="@string/wind_period_2"
                                     android:textColor="@color/gb_on_surface_variant"
                                     android:textSize="13sp" />
@@ -536,7 +580,7 @@
                         <LinearLayout
                             android:id="@+id/cardWindDummyProgram3"
                             android:layout_width="300dp"
-                            android:layout_height="wrap_content"
+                            android:layout_height="300dp"
                             android:background="@drawable/bg_card"
                             android:clickable="true"
                             android:focusable="true"
@@ -549,6 +593,7 @@
                                 android:padding="16dp">
 
                                 <TextView
+                                    android:id="@+id/windHomeRank3"
                                     android:layout_width="58dp"
                                     android:layout_height="52dp"
                                     android:background="@drawable/bg_primary_card"
@@ -559,9 +604,13 @@
                                     android:textStyle="bold" />
 
                                 <TextView
-                                    android:layout_width="wrap_content"
+                                    android:id="@+id/windHomeHits3"
+                                    android:layout_width="160dp"
                                     android:layout_height="wrap_content"
                                     android:layout_gravity="bottom|end"
+                                    android:ellipsize="end"
+                                    android:gravity="end"
+                                    android:singleLine="true"
                                     android:text="@string/wind_hits_3"
                                     android:textColor="@color/gb_on_surface"
                                     android:textSize="12sp"
@@ -570,31 +619,41 @@
 
                             <LinearLayout
                                 android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
+                                android:layout_height="0dp"
+                                android:layout_weight="1"
                                 android:orientation="vertical"
                                 android:padding="16dp">
 
                                 <TextView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
+                                    android:id="@+id/windHomeInstitution3"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="18dp"
+                                    android:ellipsize="end"
+                                    android:singleLine="true"
                                     android:text="@string/wind_category_3"
                                     android:textColor="@color/gb_primary"
                                     android:textSize="12sp"
                                     android:textStyle="bold" />
 
                                 <TextView
+                                    android:id="@+id/windHomeTitle3"
                                     android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
+                                    android:layout_height="52dp"
                                     android:layout_marginTop="8dp"
+                                    android:ellipsize="end"
+                                    android:maxLines="2"
                                     android:text="@string/wind_title_3"
                                     android:textColor="@color/gb_on_surface"
                                     android:textSize="18sp"
                                     android:textStyle="bold" />
 
                                 <TextView
+                                    android:id="@+id/windHomePeriod3"
                                     android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
+                                    android:layout_height="36dp"
                                     android:layout_marginTop="8dp"
+                                    android:ellipsize="end"
+                                    android:maxLines="2"
                                     android:text="@string/wind_period_3"
                                     android:textColor="@color/gb_on_surface_variant"
                                     android:textSize="13sp" />
