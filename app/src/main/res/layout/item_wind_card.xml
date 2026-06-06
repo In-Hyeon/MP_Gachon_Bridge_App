@@ -8,11 +8,25 @@
     android:paddingBottom="10dp">
 
     <LinearLayout
-        style="@style/ContactCard"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:background="@drawable/bg_card"
+        android:padding="16dp"
         android:clickable="true"
         android:focusable="true"
         android:foreground="?attr/selectableItemBackground"
         android:orientation="vertical">
+
+        <!-- 커버 이미지 (위에 표시) -->
+        <ImageView
+            android:id="@+id/ivWindCover"
+            android:layout_width="match_parent"
+            android:layout_height="160dp"
+            android:scaleType="centerCrop"
+            android:adjustViewBounds="true"
+            android:layout_marginBottom="12dp"
+            android:visibility="gone" />
 
         <!-- 센터명 + HITS -->
         <LinearLayout
