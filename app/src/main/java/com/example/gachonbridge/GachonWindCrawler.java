@@ -95,7 +95,24 @@ public class GachonWindCrawler {
         Element linkEl = item.selectFirst("a[href]");
         String detailUrl = linkEl != null ? WIND_BASE_URL + linkEl.attr("href") : WIND_LIST_URL;
 
-        return new WindProgram(title, institution, applyPeriod, period, hits, startTimestamp, detailUrl);
+        // 커버 이미지 URL 파싱
+        String coverUrl = "";
+        Element coverEl = item.selectFirst("div.cover");
+        if (coverEl != null) {
+            String bgStyle = coverEl.attr("style");
+            int urlStart = bgStyle.indexOf("url(");
+            if (urlStart >= 0) {
+                String after = bgStyle.substring(urlStart + 4);
+                after = after.replace("&quot;", "").replace("\"", "").replace("'", "");
+                int urlEnd = after.indexOf(")");
+                if (urlEnd > 0) {
+                    String path = after.substring(0, urlEnd).trim();
+                    coverUrl = path.startsWith("http") ? path : WIND_BASE_URL + path;
+                }
+            }
+        }
+
+        return new WindProgram(title, institution, applyPeriod, period, hits, startTimestamp, detailUrl, coverUrl);
     }
 
     private boolean containsTitle(List<WindProgram> programs, String title) {
@@ -115,6 +132,7 @@ public class GachonWindCrawler {
         public final int hits;
         public final long startTimestamp;
         public final String detailUrl;
+        public final String coverUrl;
 
         private WindProgram(
                 String title,
@@ -123,7 +141,8 @@ public class GachonWindCrawler {
                 String period,
                 int hits,
                 long startTimestamp,
-                String detailUrl
+                String detailUrl,
+                String coverUrl
         ) {
             this.title = title;
             this.institution = institution;
@@ -132,6 +151,7 @@ public class GachonWindCrawler {
             this.hits = hits;
             this.startTimestamp = startTimestamp;
             this.detailUrl = detailUrl;
+            this.coverUrl = coverUrl;
         }
     }
 }
