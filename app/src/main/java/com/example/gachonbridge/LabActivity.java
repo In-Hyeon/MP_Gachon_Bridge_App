@@ -175,6 +175,7 @@ public class LabActivity extends BaseActivity {
         button.setAllCaps(false); button.setMinWidth(0); button.setMinHeight(0);
         if (selected) { button.setTextColor(Color.parseColor("#111318")); button.setBackground(makeRoundRect("#8EA8FF", 16)); }
         else          { button.setTextColor(Color.WHITE); button.setBackground(makeRoundRectWithStroke("#24262E","#3B3F50",16,1)); }
+        normalizeButtonText(button);
     }
 
     private void setSelectedTab(Button sel) {
@@ -186,12 +187,20 @@ public class LabActivity extends BaseActivity {
         button.setAllCaps(false); button.setMinWidth(0); button.setMinHeight(0);
         if (selected) { button.setTextColor(Color.parseColor("#111318")); button.setBackground(makeRoundRect("#8EA8FF", 18)); }
         else          { button.setTextColor(Color.WHITE); button.setBackground(makeRoundRectWithStroke("#24262E","#3B3F50",18,1)); }
+        normalizeButtonText(button);
     }
 
     private void setActionButtonStyle(Button button) {
         button.setAllCaps(false); button.setMinWidth(0); button.setMinHeight(0);
         button.setTextColor(Color.parseColor("#111318"));
         button.setBackground(makeRoundRect("#8EA8FF", 4));
+        normalizeButtonText(button);
+    }
+
+    private void normalizeButtonText(Button button) {
+        button.setGravity(Gravity.CENTER);
+        button.setIncludeFontPadding(false);
+        button.setPadding(button.getPaddingLeft(), 0, button.getPaddingRight(), 0);
     }
 
     private void renderLabs(List<Lab> labs) {
@@ -266,6 +275,8 @@ public class LabActivity extends BaseActivity {
         detailBtn.setTextColor(Color.parseColor("#111318")); detailBtn.setAllCaps(false);
         detailBtn.setMinWidth(0); detailBtn.setMinHeight(0);
         detailBtn.setBackground(makeRoundRect("#8EA8FF", 6));
+        detailBtn.setPadding(dp(12), 0, dp(12), 0);
+        normalizeButtonText(detailBtn);
         detailBtn.setOnClickListener(v -> openHomepage(lab.homepage));
         btnRow.addView(detailBtn, new LinearLayout.LayoutParams(dp(100), dp(38)));
         card.addView(btnRow, brp);
