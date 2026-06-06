@@ -80,11 +80,14 @@
     </style>
 
     <style name="MealItem">
-        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_width">0dp</item>
         <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:ellipsize">end</item>
+        <item name="android:focusable">true</item>
+        <item name="android:foreground">?attr/selectableItemBackground</item>
         <item name="android:lineSpacingExtra">4dp</item>
-        <item name="android:paddingTop">12dp</item>
-        <item name="android:paddingBottom">12dp</item>
+        <item name="android:maxLines">2</item>
         <item name="android:textColor">@color/gb_on_surface_variant</item>
         <item name="android:textSize">14sp</item>
     </style>
@@ -92,6 +95,23 @@
     <style name="MealItemHighlight" parent="MealItem">
         <item name="android:textColor">@color/gb_on_surface</item>
         <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="MealRow">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:orientation">horizontal</item>
+        <item name="android:paddingTop">12dp</item>
+        <item name="android:paddingBottom">12dp</item>
+    </style>
+
+    <style name="MealIconSlot">
+        <item name="android:layout_width">34dp</item>
+        <item name="android:layout_height">34dp</item>
+        <item name="android:layout_marginEnd">12dp</item>
+        <item name="android:scaleType">centerInside</item>
+        <item name="android:tint">@color/gb_on_surface</item>
     </style>
 
     <style name="ClubItem">
@@ -110,9 +130,9 @@
         <item name="android:layout_height">match_parent</item>
         <item name="android:layout_weight">1</item>
         <item name="android:gravity">center</item>
-        <item name="android:textColor">@color/gb_primary_container</item>
-        <item name="android:textSize">12sp</item>
-        <item name="android:textStyle">bold</item>
+        <item name="android:orientation">vertical</item>
+        <item name="android:paddingTop">7dp</item>
+        <item name="android:paddingBottom">6dp</item>
     </style>
 
     <style name="BottomNavItem">
@@ -120,6 +140,24 @@
         <item name="android:layout_height">match_parent</item>
         <item name="android:layout_weight">1</item>
         <item name="android:gravity">center</item>
+        <item name="android:orientation">vertical</item>
+        <item name="android:paddingTop">7dp</item>
+        <item name="android:paddingBottom">6dp</item>
+    </style>
+
+    <style name="BottomNavIcon">
+        <item name="android:layout_width">26dp</item>
+        <item name="android:layout_height">26dp</item>
+        <item name="android:scaleType">centerInside</item>
+        <item name="android:tint">@color/gb_on_surface_variant</item>
+    </style>
+
+    <style name="BottomNavLabel">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginTop">3dp</item>
+        <item name="android:gravity">center</item>
+        <item name="android:singleLine">true</item>
         <item name="android:textColor">@color/gb_on_surface_variant</item>
         <item name="android:textSize">11sp</item>
         <item name="android:textStyle">bold</item>

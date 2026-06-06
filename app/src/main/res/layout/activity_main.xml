@@ -23,15 +23,16 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-        <TextView
+        <ImageView
+            android:id="@+id/homeTopLeftIcon"
             android:layout_width="48dp"
             android:layout_height="48dp"
             android:background="@drawable/bg_icon_circle"
-            android:gravity="center"
-            android:text="@string/home_logo"
-            android:textColor="@color/gb_primary"
-            android:textSize="16sp"
-            android:textStyle="bold" />
+            android:contentDescription="@null"
+            android:padding="11dp"
+            android:scaleType="centerInside"
+            android:src="@drawable/ic_home"
+            android:tint="@color/gb_primary" />
 
         <LinearLayout
             android:layout_width="0dp"
@@ -56,15 +57,16 @@
                 android:textSize="12sp" />
         </LinearLayout>
 
-        <TextView
+        <ImageView
+            android:id="@+id/homeTopRightIcon"
             android:layout_width="44dp"
             android:layout_height="44dp"
             android:background="@drawable/bg_icon_circle"
-            android:gravity="center"
-            android:text="@string/home_my"
-            android:textColor="@color/gb_on_surface_variant"
-            android:textSize="13sp"
-            android:textStyle="bold" />
+            android:contentDescription="@null"
+            android:padding="10dp"
+            android:scaleType="centerInside"
+            android:src="@drawable/ic_user"
+            android:tint="@color/gb_on_surface_variant" />
     </LinearLayout>
 
     <!-- 홈 스크롤 영역: 하단 네비게이션을 제외한 메인 콘텐츠 전체 -->
@@ -816,24 +818,51 @@
                             android:text="@string/cafeteria_3" />
                     </LinearLayout>
 
-                    <TextView
-                        android:id="@+id/mealPreview1"
-                        style="@style/MealItem"
-                        android:text="@string/meal_breakfast" />
+                    <LinearLayout style="@style/MealRow">
+
+                        <ImageView
+                            android:id="@+id/mealIconBreakfast"
+                            style="@style/MealIconSlot"
+                            android:contentDescription="@null"
+                            android:src="@drawable/ic_sunset" />
+
+                        <TextView
+                            android:id="@+id/mealPreview1"
+                            style="@style/MealItem"
+                            android:text="@string/meal_breakfast" />
+                    </LinearLayout>
 
                     <View style="@style/Divider" />
 
-                    <TextView
-                        android:id="@+id/mealPreview2"
-                        style="@style/MealItemHighlight"
-                        android:text="@string/meal_lunch" />
+                    <LinearLayout style="@style/MealRow">
+
+                        <ImageView
+                            android:id="@+id/mealIconLunch"
+                            style="@style/MealIconSlot"
+                            android:contentDescription="@null"
+                            android:src="@drawable/ic_sun" />
+
+                        <TextView
+                            android:id="@+id/mealPreview2"
+                            style="@style/MealItemHighlight"
+                            android:text="@string/meal_lunch" />
+                    </LinearLayout>
 
                     <View style="@style/Divider" />
 
-                    <TextView
-                        android:id="@+id/mealPreview3"
-                        style="@style/MealItem"
-                        android:text="@string/meal_dinner" />
+                    <LinearLayout style="@style/MealRow">
+
+                        <ImageView
+                            android:id="@+id/mealIconDinner"
+                            style="@style/MealIconSlot"
+                            android:contentDescription="@null"
+                            android:src="@drawable/ic_moon" />
+
+                        <TextView
+                            android:id="@+id/mealPreview3"
+                            style="@style/MealItem"
+                            android:text="@string/meal_dinner" />
+                    </LinearLayout>
                 </LinearLayout>
             </LinearLayout>
         </LinearLayout>

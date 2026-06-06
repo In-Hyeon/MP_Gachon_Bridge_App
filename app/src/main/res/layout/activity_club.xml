@@ -19,20 +19,22 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-        <TextView
+        <ImageView
             android:layout_width="48dp"
             android:layout_height="48dp"
             android:background="@drawable/bg_icon_circle"
-            android:gravity="center"
-            android:text="@string/home_logo"
-            android:textColor="@color/gb_primary"
-            android:textSize="16sp"
-            android:textStyle="bold" />
+            android:contentDescription="@null"
+            android:padding="11dp"
+            android:scaleType="centerInside"
+            android:src="@drawable/ic_people"
+            android:tint="@color/gb_primary" />
 
         <TextView
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="12dp"
+            android:layout_weight="1"
+            android:gravity="start|center_vertical"
             android:text="@string/page_club_title"
             android:textColor="@color/gb_on_surface"
             android:textSize="22sp"
