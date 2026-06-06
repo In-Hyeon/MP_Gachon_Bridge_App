@@ -192,6 +192,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        applyFirstPhotoSystemBars();
         setContentView(R.layout.activity_map);
 
         mapContainer = findViewById(R.id.mapContainer);
@@ -232,6 +233,17 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         }
     }
 
+    private void applyFirstPhotoSystemBars() {
+        getWindow().setStatusBarColor(Color.rgb(120, 120, 120));
+        getWindow().setNavigationBarColor(Color.WHITE);
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            int flags = getWindow().getDecorView().getSystemUiVisibility();
+            flags |= View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR;
+            getWindow().getDecorView().setSystemUiVisibility(flags);
+        }
+    }
+
     private void preparePlaceChoicePanel() {
         if (placeChoicePanel == null) return;
 
@@ -254,31 +266,31 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         }
 
         GradientDrawable panelBackground = new GradientDrawable();
-        panelBackground.setColor(Color.argb(238, 255, 253, 248));
-        panelBackground.setCornerRadius(dp(18));
-        panelBackground.setStroke(dp(1), Color.argb(120, 44, 53, 64));
+        panelBackground.setColor(Color.argb(245, 255, 253, 248));
+        panelBackground.setCornerRadius(dp(22));
+        panelBackground.setStroke(dp(1), Color.argb(130, 80, 80, 80));
         buildingSearchPanel.setBackground(panelBackground);
 
         GradientDrawable inputBackground = new GradientDrawable();
         inputBackground.setColor(Color.WHITE);
-        inputBackground.setCornerRadius(dp(12));
-        inputBackground.setStroke(dp(1), Color.argb(90, 44, 53, 64));
+        inputBackground.setCornerRadius(dp(16));
+        inputBackground.setStroke(dp(1), Color.argb(120, 120, 120, 120));
         buildingSearchInput.setBackground(inputBackground);
 
-        /*
-         * 여기 때문에 화면에 "건물명 검색" 대신 "검색"으로 뜹니다.
-         * 그래도 "건물명 검색"이 계속 보이면 activity_main.xml의
-         * android:hint="건물명 검색"도 android:hint="검색"으로 바꿔주세요.
-         */
         buildingSearchInput.setHint("검색");
+        buildingSearchInput.setTextColor(Color.rgb(42, 47, 54));
+        buildingSearchInput.setHintTextColor(Color.rgb(136, 136, 136));
+        buildingSearchInput.setTextSize(16f);
         buildingSearchInput.setSingleLine(true);
         buildingSearchInput.setImeOptions(EditorInfo.IME_ACTION_SEARCH);
+        buildingSearchInput.setIncludeFontPadding(true);
+        buildingSearchInput.setPadding(dp(16), 0, dp(16), 0);
 
         buildingSearchButton.setText("검색");
         buildingSearchResetButton.setText("초기화");
 
-        styleSearchButton(buildingSearchButton, STATUS_BLUE);
-        styleSearchButton(buildingSearchResetButton, STATUS_GRAY);
+        styleSearchButton(buildingSearchButton, Color.rgb(76, 132, 214));
+        styleSearchButton(buildingSearchResetButton, Color.rgb(95, 95, 95));
 
         buildingSearchButton.setOnClickListener(v -> performBuildingSearch());
         buildingSearchResetButton.setOnClickListener(v -> clearBuildingSearch());
@@ -292,15 +304,27 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         if (button == null) return;
 
         button.setTextColor(Color.WHITE);
-        button.setTextSize(12.5f);
+        button.setTextSize(17f);
         button.setTypeface(Typeface.DEFAULT_BOLD);
         button.setGravity(Gravity.CENTER);
         button.setSingleLine(true);
+        button.setIncludeFontPadding(true);
         button.setClickable(true);
+        button.setFocusable(true);
+        button.setMinWidth(0);
+        button.setMinimumWidth(0);
+        button.setMinHeight(0);
+        button.setMinimumHeight(0);
+        button.setPadding(0, 0, 0, 0);
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            button.setBackgroundTintList(null);
+            button.setStateListAnimator(null);
+        }
 
         GradientDrawable background = new GradientDrawable();
         background.setColor(color);
-        background.setCornerRadius(dp(12));
+        background.setCornerRadius(dp(16));
         button.setBackground(background);
     }
 
@@ -327,10 +351,6 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         mMap.setBuildingsEnabled(false);
         mMap.setIndoorEnabled(false);
 
-        /*
-         * 지도 범위 제한은 유지합니다.
-         * 이 범위 안에서만 좌우/상하 이동됩니다.
-         */
         mMap.setLatLngBoundsForCameraTarget(FIXED_MAP_BOUNDS);
 
         mMap.moveCamera(
@@ -343,10 +363,6 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         mMap.setMinZoomPreference(15.0f);
         mMap.setMaxZoomPreference(17.0f);
 
-        /*
-         * 기존 false였던 부분을 true로 변경했습니다.
-         * 이제 사용자가 지도를 좌우/상하로 움직일 수 있습니다.
-         */
         mMap.getUiSettings().setScrollGesturesEnabled(true);
         mMap.getUiSettings().setZoomGesturesEnabled(true);
         mMap.getUiSettings().setRotateGesturesEnabled(false);
@@ -489,10 +505,6 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
                 new LatLng(37.451031, 127.129532)
         ));
 
-        /*
-         * 예술대학2는 존재하지 않는다고 해서 넣지 않았습니다.
-         * "예" 검색 시 예음관, 예술대학1이 후보로 뜹니다.
-         */
         addBuildingZone("예술대학1", Arrays.asList(
                 new LatLng(37.452567, 127.128749),
                 new LatLng(37.452262, 127.128834),
@@ -530,10 +542,6 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
                 new LatLng(37.453439, 127.134273)
         ));
 
-        /*
-         * "공" 검색 시 AI 공학관도 후보로 뜹니다.
-         * "AI 공학과"라고 잘못 쳐도 검색되도록 별칭도 아래 검색 함수에 넣어두었습니다.
-         */
         addBuildingZone("AI 공학관", Arrays.asList(
                 new LatLng(37.455038, 127.133333),
                 new LatLng(37.455108, 127.134315),
@@ -982,16 +990,6 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         });
     }
 
-    /*
-     * 통합 검색:
-     * 건물 이름 + 식당/카페/편의시설 이름 + 카테고리를 전부 검색합니다.
-     *
-     * 예:
-     * "예" → 예음관, 예술대학1
-     * "공" → AI 공학관, 공과대학1, 공과대학2
-     * "식당" → 제순식당, 쩡이분식, 차이나스푼, 봉구스 밥버거, 포밥인 뉴욕
-     * "봉구스" → 봉구스 밥버거
-     */
     private void performBuildingSearch() {
         if (mMap == null || buildingSearchInput == null) return;
 
@@ -1983,14 +1981,15 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         }
 
         statusText.setTextColor(SOFT_TEXT_LIGHT);
-        statusText.setTextSize(14.5f);
+        statusText.setTextSize(18f);
+        statusText.setTypeface(Typeface.DEFAULT_BOLD);
         statusText.setGravity(Gravity.CENTER);
         statusText.setSingleLine(false);
         statusText.setMaxLines(Integer.MAX_VALUE);
         statusText.setIncludeFontPadding(true);
-        statusText.setLineSpacing(dp(2), 1.0f);
-        statusText.setMinHeight(dp(88));
-        statusText.setPadding(dp(12), dp(10), dp(12), dp(10));
+        statusText.setLineSpacing(dp(4), 1.0f);
+        statusText.setMinHeight(dp(96));
+        statusText.setPadding(dp(12), dp(14), dp(12), dp(14));
 
         GradientDrawable background = new GradientDrawable();
         background.setColor(backgroundColor);
