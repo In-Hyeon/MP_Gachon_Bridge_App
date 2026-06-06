@@ -84,7 +84,7 @@ public class GachonScraper {
                         }
                     }
 
-                    boolean isPinned = row.hasClass("notice") || row.selectFirst(".notice") != null || row.text().contains("공지");
+                    boolean isPinned = row.hasClass("notice");
                     
                     // Duplicate check by title
                     boolean isDup = false;
