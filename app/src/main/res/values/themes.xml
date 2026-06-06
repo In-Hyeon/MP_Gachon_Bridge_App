@@ -1,11 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:tools="http://schemas.android.com/tools">
-    <!-- Base application theme. -->
     <style name="Base.Theme.GachonBridge" parent="Theme.Material3.DayNight.NoActionBar">
         <item name="android:windowBackground">@color/gb_background</item>
         <item name="android:statusBarColor">@color/gb_surface_low</item>
         <item name="android:navigationBarColor">@color/gb_surface_low</item>
         <item name="android:windowLightStatusBar">false</item>
         <item name="android:windowLightNavigationBar">false</item>
+        <item name="colorPrimary">#8EA8FF</item>
+        <item name="colorPrimaryVariant">#8EA8FF</item>
     </style>
 
     <style name="Theme.GachonBridge" parent="Base.Theme.GachonBridge" />

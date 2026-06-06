@@ -12,7 +12,6 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
-import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -173,8 +172,14 @@ public class LabActivity extends BaseActivity {
 
     private void setFavoriteModeButtonStyle(Button button, boolean selected) {
         button.setAllCaps(false); button.setMinWidth(0); button.setMinHeight(0);
-        if (selected) { button.setTextColor(Color.parseColor("#111318")); button.setBackground(makeRoundRect("#8EA8FF", 16)); }
-        else          { button.setTextColor(Color.WHITE); button.setBackground(makeRoundRectWithStroke("#24262E","#3B3F50",16,1)); }
+        button.setBackgroundTintList(null);
+        if (selected) {
+            button.setTextColor(Color.parseColor("#111318"));
+            button.setBackground(makeRoundRect("#8EA8FF", 16));
+        } else {
+            button.setTextColor(Color.WHITE);
+            button.setBackground(makeRoundRectWithStroke("#00000000", "#FFFFFF", 16, 1));
+        }
     }
 
     private void setSelectedTab(Button sel) {
@@ -184,12 +189,19 @@ public class LabActivity extends BaseActivity {
 
     private void setTabStyle(Button button, boolean selected) {
         button.setAllCaps(false); button.setMinWidth(0); button.setMinHeight(0);
-        if (selected) { button.setTextColor(Color.parseColor("#111318")); button.setBackground(makeRoundRect("#8EA8FF", 18)); }
-        else          { button.setTextColor(Color.WHITE); button.setBackground(makeRoundRectWithStroke("#24262E","#3B3F50",18,1)); }
+        button.setBackgroundTintList(null);
+        if (selected) {
+            button.setTextColor(Color.parseColor("#111318"));
+            button.setBackground(makeRoundRect("#8EA8FF", 18));
+        } else {
+            button.setTextColor(Color.WHITE);
+            button.setBackground(makeRoundRectWithStroke("#00000000", "#FFFFFF", 18, 1));
+        }
     }
 
     private void setActionButtonStyle(Button button) {
         button.setAllCaps(false); button.setMinWidth(0); button.setMinHeight(0);
+        button.setBackgroundTintList(null);
         button.setTextColor(Color.parseColor("#111318"));
         button.setBackground(makeRoundRect("#8EA8FF", 4));
     }
@@ -319,503 +331,62 @@ public class LabActivity extends BaseActivity {
 
     private int dp(int v) { return (int)(v * getResources().getDisplayMetrics().density + 0.5f); }
 
-    // ── 데이터: 첫 번째 업로드 파일의 연구실 설명/연락처/홈페이지 정보 전체 유지 ──
     private List<Lab> getAiLabs() {
         return Arrays.asList(
-                new Lab(
-                        "강",
-                        "강상우 교수 연구실",
-                        "강상우",
-                        "부교수",
-                        "자연어처리, LLM, 대화형 QA 시스템",
-                        "031-750-8669",
-                        "swkang@gachon.ac.kr",
-                        "https://sites.google.com/view/kangsangwoo",
-                        "AI관 419호"
-                ),
-                new Lab(
-                        "구",
-                        "구자경 교수 연구실",
-                        "구자경",
-                        "조교수",
-                        "계산 이미징",
-                        "031-750-6967",
-                        "jakeoung@gachon.ac.kr",
-                        "https://sites.google.com/view/jakeoung",
-                        "AI관 433호"
-                ),
-                new Lab(
-                        "노",
-                        "노웅기 교수 연구실",
-                        "노웅기",
-                        "교수",
-                        "대용량 데이터 마이닝, 유전자 데이터베이스",
-                        "031-750-5349",
-                        "wkloh2@gachon.ac.kr",
-                        "http://professor.gachon.ac.kr/main/main.jsp?Forum_seq=88524",
-                        "AI관 422호"
-                ),
-                new Lab(
-                        "민",
-                        "민홍 교수 연구실",
-                        "민홍",
-                        "교수",
-                        "시스템소프트웨어, 운영체제, 사물인터넷",
-                        "031-750-5828",
-                        "hmin@gachon.ac.kr",
-                        "https://sites.google.com/view/hmin",
-                        "AI관 431호"
-                ),
-                new Lab(
-                        "안",
-                        "안종현 교수 연구실",
-                        "안종현",
-                        "조교수 / 대학원주임교수",
-                        "자율주행, 인공지능, 기계학습, 센서퓨전",
-                        "031-750-5332",
-                        "jhonghyun@gachon.ac.kr",
-                        "https://sites.google.com/view/vip-lab",
-                        "AI관 740호"
-                ),
-                new Lab(
-                        "엄",
-                        "엄광현 교수 연구실",
-                        "엄광현",
-                        "조교수",
-                        "의료 인공지능, 의료 영상 분석, 정밀의료",
-                        "031-750-8850",
-                        "khuhm@gachon.ac.kr",
-                        "https://sites.google.com/view/aimhi-lab",
-                        "AI관 737호"
-                ),
-                new Lab(
-                        "오",
-                        "오현영 교수 연구실",
-                        "오현영",
-                        "조교수",
-                        "시스템 보안, 하드웨어 기반 보안, AI 보안",
-                        "031-750-5504",
-                        "hyoh@gachon.ac.kr",
-                        "https://sites.google.com/view/hyoh",
-                        "AI관 741호"
-                ),
-                new Lab(
-                        "유",
-                        "유준 교수 연구실",
-                        "유준",
-                        "교수",
-                        "자율주행자동차 통신, 클라우드 데이터센터 통신",
-                        "031-750-5832",
-                        "joon.yoo@gachon.ac.kr",
-                        "https://sites.google.com/view/winl",
-                        "AI관 423호"
-                ),
-                new Lab(
-                        "이",
-                        "이상웅 교수 연구실",
-                        "이상웅",
-                        "교수",
-                        "패턴인식, 컴퓨터비전, 뇌과학",
-                        "031-750-6918",
-                        "slee@gachon.ac.kr",
-                        "http://pr.gachon.ac.kr",
-                        "AI관 416호"
-                ),
-                new Lab(
-                        "이",
-                        "이주형 교수 연구실",
-                        "이주형",
-                        "부교수",
-                        "사물인터넷, 엣지/클라우드 컴퓨팅, 머신러닝",
-                        "031-750-6968",
-                        "j17.lee@gachon.ac.kr",
-                        "https://sites.google.com/view/imeslab/main",
-                        "AI관 424호"
-                ),
-                new Lab(
-                        "정",
-                        "정옥란 교수 연구실",
-                        "정옥란",
-                        "교수",
-                        "빅데이터, 소셜미디어마이닝, 머신러닝",
-                        "031-750-5831",
-                        "orjeong@gachon.ac.kr",
-                        "http://ida.gachon.ac.kr",
-                        "AI관 425호"
-                ),
-                new Lab(
-                        "정",
-                        "정용주 교수 연구실",
-                        "정용주",
-                        "부교수",
-                        "컴퓨터비전, 영상처리",
-                        "031-750-8658",
-                        "yjung@gachon.ac.kr",
-                        "https://sites.google.com/site/gachoncvip/",
-                        "AI관 430호"
-                ),
-                new Lab(
-                        "정",
-                        "정윤현 교수 연구실",
-                        "정윤현",
-                        "부교수",
-                        "컴퓨터 그래픽스, 혼합현실, 머신러닝, 의료 영상",
-                        "031-750-4771",
-                        "younhyun.jung@gachon.ac.kr",
-                        "https://gcu-vomlab.github.io/VOM/index.html",
-                        "AI관 421호"
-                ),
-                new Lab(
-                        "조",
-                        "조정찬 교수 연구실",
-                        "조정찬",
-                        "부교수 / 인공지능,소프트웨어전공 학과장",
-                        "컴퓨터 비전, 딥러닝, 머신러닝",
-                        "031-750-5328",
-                        "thinkai@gachon.ac.kr",
-                        "https://sites.google.com/view/visual-ai/",
-                        "AI관 429호"
-                ),
-                new Lab(
-                        "조",
-                        "조풍진 교수 연구실",
-                        "조풍진",
-                        "조교수",
-                        "데이터 사이언스, 금융공학",
-                        "031-750-5353",
-                        "pjcho@gachon.ac.kr",
-                        "https://sites.google.com/view/fdslab",
-                        "AI관 417호"
-                ),
-                new Lab(
-                        "조",
-                        "조해민 교수 연구실",
-                        "조해민",
-                        "조교수",
-                        "로보틱스, 로봇 지능 제어, 자율주행 기술",
-                        "031-750-5320",
-                        "hmcho9@gachon.ac.kr",
-                        "https://hxxmin.github.io/rai-lab/",
-                        "AI관 736호"
-                ),
-                new Lab(
-                        "최",
-                        "최아영 교수 연구실",
-                        "최아영",
-                        "부교수",
-                        "인간 컴퓨터 상호작용, 헬스케어, 감성인식",
-                        "031-750-8656",
-                        "aychoi@gachon.ac.kr",
-                        "https://sites.google.com/site/ahyoungchoi00/home",
-                        "AI관 434호"
-                ),
-                new Lab(
-                        "최",
-                        "최재영 교수 연구실",
-                        "최재영",
-                        "부교수",
-                        "통계적 추론, 데이터마이닝, 강화학습",
-                        "031-750-5829",
-                        "jychoi19@gachon.ac.kr",
-                        "https://sites.google.com/view/jaeyoungchoi/home",
-                        "AI관 420호"
-                ),
-                new Lab(
-                        "최",
-                        "최재용 교수 연구실",
-                        "최재용",
-                        "조교수",
-                        "지능형 로봇, 무인 시스템, 멀티모달 AI",
-                        "031-750-8667",
-                        "andrewjchoi@gachon.ac.kr",
-                        "https://sites.google.com/view/irasc",
-                        "AI관 428호"
-                ),
-                new Lab(
-                        "최",
-                        "최재혁 교수 연구실",
-                        "최재혁",
-                        "교수",
-                        "차세대 통신/네트워크, 지능형시스템, AIoT",
-                        "031-750-8657",
-                        "jchoi@gachon.ac.kr",
-                        "https://sites.google.com/gachon.ac.kr/inclab",
-                        "AI관 435호"
-                )
+                new Lab("강","강상우 교수 연구실","강상우","부교수","자연어처리, LLM, 대화형 QA 시스템","031-750-8669","swkang@gachon.ac.kr","https://sites.google.com/view/kangsangwoo","AI관 419호"),
+                new Lab("구","구자경 교수 연구실","구자경","조교수","계산 이미징","031-750-6967","jakeoung@gachon.ac.kr","https://sites.google.com/view/jakeoung","AI관 433호"),
+                new Lab("노","노웅기 교수 연구실","노웅기","교수","대용량 데이터 마이닝, 유전자 데이터베이스","031-750-5349","wkloh2@gachon.ac.kr","http://professor.gachon.ac.kr/main/main.jsp?Forum_seq=88524","AI관 422호"),
+                new Lab("민","민홍 교수 연구실","민홍","교수","시스템소프트웨어, 운영체제, 사물인터넷","031-750-5828","hmin@gachon.ac.kr","https://sites.google.com/view/hmin","AI관 431호"),
+                new Lab("안","안종현 교수 연구실","안종현","조교수 / 대학원주임교수","자율주행, 인공지능, 기계학습, 센서퓨전","031-750-5332","jhonghyun@gachon.ac.kr","https://sites.google.com/view/vip-lab","AI관 740호"),
+                new Lab("엄","엄광현 교수 연구실","엄광현","조교수","의료 인공지능, 의료 영상 분석, 정밀의료","031-750-8850","khuhm@gachon.ac.kr","https://sites.google.com/view/aimhi-lab","AI관 737호"),
+                new Lab("오","오현영 교수 연구실","오현영","조교수","시스템 보안, 하드웨어 기반 보안, AI 보안","031-750-5504","hyoh@gachon.ac.kr","https://sites.google.com/view/hyoh","AI관 741호"),
+                new Lab("유","유준 교수 연구실","유준","교수","자율주행자동차 통신, 클라우드 데이터센터 통신","031-750-5832","joon.yoo@gachon.ac.kr","https://sites.google.com/view/winl","AI관 423호"),
+                new Lab("이","이상웅 교수 연구실","이상웅","교수","패턴인식, 컴퓨터비전, 뇌과학","031-750-6918","slee@gachon.ac.kr","http://pr.gachon.ac.kr","AI관 416호"),
+                new Lab("이","이주형 교수 연구실","이주형","부교수","사물인터넷, 엣지/클라우드 컴퓨팅, 머신러닝","031-750-6968","j17.lee@gachon.ac.kr","https://sites.google.com/view/imeslab/main","AI관 424호"),
+                new Lab("정","정옥란 교수 연구실","정옥란","교수","빅데이터, 소셜미디어마이닝, 머신러닝","031-750-5831","orjeong@gachon.ac.kr","http://ida.gachon.ac.kr","AI관 425호"),
+                new Lab("정","정용주 교수 연구실","정용주","부교수","컴퓨터비전, 영상처리","031-750-8658","yjung@gachon.ac.kr","https://sites.google.com/site/gachoncvip/","AI관 430호"),
+                new Lab("정","정윤현 교수 연구실","정윤현","부교수","컴퓨터 그래픽스, 혼합현실, 머신러닝, 의료 영상","031-750-4771","younhyun.jung@gachon.ac.kr","https://gcu-vomlab.github.io/VOM/index.html","AI관 421호"),
+                new Lab("조","조정찬 교수 연구실","조정찬","부교수 / 인공지능,소프트웨어전공 학과장","컴퓨터 비전, 딥러닝, 머신러닝","031-750-5328","thinkai@gachon.ac.kr","https://sites.google.com/view/visual-ai/","AI관 429호"),
+                new Lab("조","조풍진 교수 연구실","조풍진","조교수","데이터 사이언스, 금융공학","031-750-5353","pjcho@gachon.ac.kr","https://sites.google.com/view/fdslab","AI관 417호"),
+                new Lab("조","조해민 교수 연구실","조해민","조교수","로보틱스, 로봇 지능 제어, 자율주행 기술","031-750-5320","hmcho9@gachon.ac.kr","https://hxxmin.github.io/rai-lab/","AI관 736호"),
+                new Lab("최","최아영 교수 연구실","최아영","부교수","인간 컴퓨터 상호작용, 헬스케어, 감성인식","031-750-8656","aychoi@gachon.ac.kr","https://sites.google.com/site/ahyoungchoi00/home","AI관 434호"),
+                new Lab("최","최재영 교수 연구실","최재영","부교수","통계적 추론, 데이터마이닝, 강화학습","031-750-5829","jychoi19@gachon.ac.kr","https://sites.google.com/view/jaeyoungchoi/home","AI관 420호"),
+                new Lab("최","최재용 교수 연구실","최재용","조교수","지능형 로봇, 무인 시스템, 멀티모달 AI","031-750-8667","andrewjchoi@gachon.ac.kr","https://sites.google.com/view/irasc","AI관 428호"),
+                new Lab("최","최재혁 교수 연구실","최재혁","교수","차세대 통신/네트워크, 지능형시스템, AIoT","031-750-8657","jchoi@gachon.ac.kr","https://sites.google.com/gachon.ac.kr/inclab","AI관 435호")
         );
     }
 
     private List<Lab> getBusinessLabs() {
         return Arrays.asList(
-                new Lab(
-                        "강",
-                        "강승완 교수 연구실",
-                        "강승완",
-                        "교수",
-                        "인사조직",
-                        "031-750-5219",
-                        "global7@gachon.ac.kr",
-                        "https://www.gachon.ac.kr/biz/4446/subview.do",
-                        "가천관 806호"
-                ),
-                new Lab(
-                        "곽",
-                        "곽찬희 교수 연구실",
-                        "곽찬희",
-                        "부교수",
-                        "경영공학, 데이터 분석, 정보시스템",
-                        "031-750-5538",
-                        "chkwak@gachon.ac.kr",
-                        "https://www.gachon.ac.kr/biz/4446/subview.do",
-                        "가천관 506호"
-                ),
-                new Lab(
-                        "김",
-                        "김동엽 교수 연구실",
-                        "김동엽",
-                        "부교수",
-                        "경영공학",
-                        "031-750-5216",
-                        "학과 페이지 참조",
-                        "https://www.gachon.ac.kr/biz/4446/subview.do",
-                        "가천관 704호"
-                ),
-                new Lab(
-                        "김",
-                        "김산월 교수 연구실",
-                        "김산월",
-                        "교수",
-                        "생성형 AI, 디지털 전환, ESG, 지속가능성, 기업재무",
-                        "031-750-5757",
-                        "jsyrena0923@gachon.ac.kr",
-                        "https://sites.google.com/gachon.ac.kr/jsy",
-                        "가천관 609호"
-                ),
-                new Lab(
-                        "김",
-                        "김수 교수 연구실",
-                        "김수",
-                        "조교수",
-                        "인사조직",
-                        "031-750-5231",
-                        "학과 페이지 참조",
-                        "https://www.gachon.ac.kr/biz/4446/subview.do",
-                        "중앙도서관 407호"
-                ),
-                new Lab(
-                        "김",
-                        "김한얼 교수 연구실",
-                        "김한얼",
-                        "교수",
-                        "경영관리",
-                        "031-750-5221",
-                        "학과 페이지 참조",
-                        "https://www.gachon.ac.kr/biz/4446/subview.do",
-                        "가천관 808호"
-                ),
-                new Lab(
-                        "김",
-                        "김홍범 교수 연구실",
-                        "김홍범",
-                        "조교수",
-                        "기술혁신, 운영관리, IT 전략, 산업정책",
-                        "031-750-5176",
-                        "hkim@gachon.ac.kr",
-                        "https://sites.google.com/view/hongbumkim/home",
-                        "가천관 707호"
-                ),
-                new Lab(
-                        "김",
-                        "김희진 교수 연구실",
-                        "김희진",
-                        "부교수",
-                        "마케팅",
-                        "031-750-5201",
-                        "heejinkim@gachon.ac.kr",
-                        "https://www.gachon.ac.kr/biz/4446/subview.do",
-                        "가천관 932호"
-                ),
-                new Lab(
-                        "서",
-                        "서정대 교수 연구실",
-                        "서정대",
-                        "교수",
-                        "생산운영관리",
-                        "031-750-5369",
-                        "jdsuh@gachon.ac.kr",
-                        "https://www.gachon.ac.kr/biz/4446/subview.do",
-                        "가천관 809호"
-                ),
-                new Lab(
-                        "심",
-                        "심형섭 교수 연구실",
-                        "심형섭",
-                        "부교수",
-                        "경영과학",
-                        "031-750-5530",
-                        "학과 페이지 참조",
-                        "https://www.gachon.ac.kr/biz/4446/subview.do",
-                        "가천관 805호"
-                ),
-                new Lab(
-                        "엄",
-                        "엄금철 교수 연구실",
-                        "엄금철",
-                        "부교수",
-                        "생성형 AI, Human-Machine Interaction, 텍스트마이닝, 추천시스템",
-                        "031-750-5181",
-                        "yanjz@gachon.ac.kr",
-                        "https://sites.google.com/gachon.ac.kr/yanjz/home",
-                        "가천관 711호"
-                ),
-                new Lab(
-                        "왕",
-                        "왕맹맹 교수 연구실",
-                        "왕맹맹",
-                        "조교수",
-                        "빅데이터 분석, 디지털 비즈니스 전환, e-Business 전략",
-                        "031-750-8744",
-                        "bizmwang@gachon.ac.kr",
-                        "https://sites.google.com/view/bizmwang",
-                        "중앙도서관 432호"
-                )
+                new Lab("강","강승완 교수 연구실","강승완","교수","인사조직","031-750-5219","global7@gachon.ac.kr","https://www.gachon.ac.kr/biz/4446/subview.do","가천관 806호"),
+                new Lab("곽","곽찬희 교수 연구실","곽찬희","부교수","경영공학, 데이터 분석, 정보시스템","031-750-5538","chkwak@gachon.ac.kr","https://www.gachon.ac.kr/biz/4446/subview.do","가천관 506호"),
+                new Lab("김","김동엽 교수 연구실","김동엽","부교수","경영공학","031-750-5216","학과 페이지 참조","https://www.gachon.ac.kr/biz/4446/subview.do","가천관 704호"),
+                new Lab("김","김산월 교수 연구실","김산월","교수","생성형 AI, 디지털 전환, ESG, 기업재무","031-750-5757","jsyrena0923@gachon.ac.kr","https://sites.google.com/gachon.ac.kr/jsy","가천관 609호"),
+                new Lab("김","김수 교수 연구실","김수","조교수","인사조직","031-750-5231","학과 페이지 참조","https://www.gachon.ac.kr/biz/4446/subview.do","중앙도서관 407호"),
+                new Lab("김","김한얼 교수 연구실","김한얼","교수","경영관리","031-750-5221","학과 페이지 참조","https://www.gachon.ac.kr/biz/4446/subview.do","가천관 808호"),
+                new Lab("김","김홍범 교수 연구실","김홍범","조교수","기술혁신, 운영관리, IT 전략, 산업정책","031-750-5176","hkim@gachon.ac.kr","https://sites.google.com/view/hongbumkim/home","가천관 707호"),
+                new Lab("김","김희진 교수 연구실","김희진","부교수","마케팅","031-750-5201","heejinkim@gachon.ac.kr","https://www.gachon.ac.kr/biz/4446/subview.do","가천관 932호"),
+                new Lab("서","서정대 교수 연구실","서정대","교수","생산운영관리","031-750-5369","jdsuh@gachon.ac.kr","https://www.gachon.ac.kr/biz/4446/subview.do","가천관 809호"),
+                new Lab("심","심형섭 교수 연구실","심형섭","부교수","경영과학","031-750-5530","학과 페이지 참조","https://www.gachon.ac.kr/biz/4446/subview.do","가천관 805호"),
+                new Lab("엄","엄금철 교수 연구실","엄금철","부교수","생성형 AI, Human-Machine Interaction, 추천시스템","031-750-5181","yanjz@gachon.ac.kr","https://sites.google.com/gachon.ac.kr/yanjz/home","가천관 711호"),
+                new Lab("왕","왕맹맹 교수 연구실","왕맹맹","조교수","빅데이터 분석, 디지털 비즈니스 전환","031-750-8744","bizmwang@gachon.ac.kr","https://sites.google.com/view/bizmwang","중앙도서관 432호")
         );
     }
 
     private List<Lab> getChemLabs() {
         return Arrays.asList(
-                new Lab(
-                        "강",
-                        "강종백 교수 연구실",
-                        "강종백",
-                        "교수",
-                        "생화학",
-                        "031-750-5409",
-                        "학과 페이지 참조",
-                        "https://www.gachon.ac.kr/chemistry/6378/subview.do",
-                        "반도체대학 6-7호"
-                ),
-                new Lab(
-                        "김",
-                        "김명종 교수 연구실",
-                        "김명종",
-                        "교수",
-                        "나노사이언스, BNNT, 에너지 저장/촉매 소재",
-                        "031-750-8721",
-                        "myungjongkim@gachon.ac.kr",
-                        "https://snclweb.github.io/gachon/index.html",
-                        "바이오나노연구원 514호"
-                ),
-                new Lab(
-                        "김",
-                        "김연호 교수 연구실",
-                        "김연호",
-                        "부교수",
-                        "광촉매, CO2 전환, 차세대 이차전지 전극 소재",
-                        "031-750-8558",
-                        "yeonho@gachon.ac.kr",
-                        "https://sites.google.com/view/acemlab",
-                        "예술체육대학1 4-10"
-                ),
-                new Lab(
-                        "김",
-                        "김효나 교수 연구실",
-                        "김효나",
-                        "조교수",
-                        "화학",
-                        "031-750-8553",
-                        "학과 페이지 참조",
-                        "https://www.gachon.ac.kr/chemistry/6378/subview.do",
-                        "반도체대학 5-23호"
-                ),
-                new Lab(
-                        "손",
-                        "손상준 교수 연구실",
-                        "손상준",
-                        "교수",
-                        "생물유기",
-                        "031-750-8756",
-                        "학과 페이지 참조",
-                        "https://www.gachon.ac.kr/chemistry/6378/subview.do",
-                        "미래1관 210호"
-                ),
-                new Lab(
-                        "송",
-                        "송하영 교수 연구실",
-                        "송하영",
-                        "조교수",
-                        "합성 무기화학, 유기금속, 초분자, 생무기화학",
-                        "031-750-5410",
-                        "학과 페이지 참조",
-                        "https://sites.google.com/view/hayoungsong/",
-                        "바이오나노연구원 211호"
-                ),
-                new Lab(
-                        "안",
-                        "안태양 교수 연구실",
-                        "안태양",
-                        "조교수",
-                        "화학생물학, 바이오소재",
-                        "031-750-8559",
-                        "suns2000@gachon.ac.kr",
-                        "https://sites.google.com/view/anlab/",
-                        "예술체육대학1 3-9"
-                ),
-                new Lab(
-                        "이",
-                        "이상훈 교수 연구실",
-                        "이상훈",
-                        "교수",
-                        "고분자화학, 에너지 재료화학",
-                        "031-750-8836",
-                        "학과 페이지 참조",
-                        "https://www.gachon.ac.kr/chemistry/6378/subview.do",
-                        "바이오나노연구원 미래1관 306호"
-                ),
-                new Lab(
-                        "이",
-                        "이충환 교수 연구실",
-                        "이충환",
-                        "조교수",
-                        "유기합성, 유기광촉매, 유기전자소재",
-                        "031-750-8826",
-                        "clee@gachon.ac.kr",
-                        "https://sites.google.com/view/cwleegroup/",
-                        "반도체대학 5-9"
-                ),
-                new Lab(
-                        "장",
-                        "장창현 교수 연구실",
-                        "장창현",
-                        "교수",
-                        "나노화학, 액정 기반 바이오센서, 표면화학",
-                        "031-750-8555",
-                        "학과 페이지 참조",
-                        "https://www.gachon.ac.kr/chemistry/6378/subview.do",
-                        "바이오나노연구원 511호"
-                ),
-                new Lab(
-                        "한",
-                        "한상윤 교수 연구실",
-                        "한상윤",
-                        "교수",
-                        "질량분석 및 이온화학",
-                        "031-750-8720",
-                        "학과 페이지 참조",
-                        "https://www.gachon.ac.kr/chemistry/6378/subview.do",
-                        "바이오나노연구원 213호"
-                ),
-                new Lab(
-                        "홍",
-                        "홍완표 교수 연구실",
-                        "홍완표",
-                        "부교수",
-                        "유기합성",
-                        "031-750-8529",
-                        "wphongw@gachon.ac.kr",
-                        "https://www.gachon.ac.kr/chemistry/6378/subview.do",
-                        "반도체대학 5-10"
-                )
+                new Lab("강","강종백 교수 연구실","강종백","교수","생화학","031-750-5409","학과 페이지 참조","https://www.gachon.ac.kr/chemistry/6378/subview.do","반도체대학 6-7호"),
+                new Lab("김","김명종 교수 연구실","김명종","교수","나노사이언스, BNNT, 에너지 저장/촉매 소재","031-750-8721","myungjongkim@gachon.ac.kr","https://snclweb.github.io/gachon/index.html","바이오나노연구원 514호"),
+                new Lab("김","김연호 교수 연구실","김연호","부교수","광촉매, CO2 전환, 차세대 이차전지 전극 소재","031-750-8558","yeonho@gachon.ac.kr","https://sites.google.com/view/acemlab","예술체육대학1 4-10"),
+                new Lab("김","김효나 교수 연구실","김효나","조교수","화학","031-750-8553","학과 페이지 참조","https://www.gachon.ac.kr/chemistry/6378/subview.do","반도체대학 5-23호"),
+                new Lab("손","손상준 교수 연구실","손상준","교수","생물유기","031-750-8756","학과 페이지 참조","https://www.gachon.ac.kr/chemistry/6378/subview.do","미래1관 210호"),
+                new Lab("송","송하영 교수 연구실","송하영","조교수","합성 무기화학, 유기금속, 초분자","031-750-5410","학과 페이지 참조","https://sites.google.com/view/hayoungsong/","바이오나노연구원 211호"),
+                new Lab("안","안태양 교수 연구실","안태양","조교수","화학생물학, 바이오소재","031-750-8559","suns2000@gachon.ac.kr","https://sites.google.com/view/anlab/","예술체육대학1 3-9"),
+                new Lab("이","이상훈 교수 연구실","이상훈","교수","고분자화학, 에너지 재료화학","031-750-8836","학과 페이지 참조","https://www.gachon.ac.kr/chemistry/6378/subview.do","바이오나노연구원 미래1관 306호"),
+                new Lab("이","이충환 교수 연구실","이충환","조교수","유기합성, 유기광촉매, 유기전자소재","031-750-8826","clee@gachon.ac.kr","https://sites.google.com/view/cwleegroup/","반도체대학 5-9"),
+                new Lab("장","장창현 교수 연구실","장창현","교수","나노화학, 액정 기반 바이오센서, 표면화학","031-750-8555","학과 페이지 참조","https://www.gachon.ac.kr/chemistry/6378/subview.do","바이오나노연구원 511호"),
+                new Lab("한","한상윤 교수 연구실","한상윤","교수","질량분석 및 이온화학","031-750-8720","학과 페이지 참조","https://www.gachon.ac.kr/chemistry/6378/subview.do","바이오나노연구원 213호"),
+                new Lab("홍","홍완표 교수 연구실","홍완표","부교수","유기합성","031-750-8529","wphongw@gachon.ac.kr","https://www.gachon.ac.kr/chemistry/6378/subview.do","반도체대학 5-10")
         );
     }
 

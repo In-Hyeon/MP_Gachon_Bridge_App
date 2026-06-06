@@ -19,22 +19,9 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-        <ImageView
-            android:layout_width="48dp"
-            android:layout_height="48dp"
-            android:background="@drawable/bg_icon_circle"
-            android:contentDescription="@null"
-            android:padding="11dp"
-            android:scaleType="centerInside"
-            android:src="@drawable/ic_padlock"
-            android:tint="@color/gb_primary" />
-
         <TextView
-            android:layout_width="0dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="12dp"
-            android:layout_weight="1"
-            android:gravity="start|center_vertical"
             android:text="@string/page_wind_title"
             android:textColor="@color/gb_on_surface"
             android:textSize="22sp"
@@ -42,11 +29,12 @@
     </LinearLayout>
 
     <!-- 전체 스크롤 -->
-    <ScrollView
+    <androidx.core.widget.NestedScrollView
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:clipToPadding="false"
         android:paddingBottom="8dp"
+        android:fillViewport="true"
         app:layout_constraintBottom_toTopOf="@id/buttonWindMorePrograms"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -108,6 +96,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:nestedScrollingEnabled="false"
+                android:overScrollMode="never"
                 android:visibility="gone" />
 
             <!-- 최신 프로그램 섹션 -->
@@ -132,11 +121,12 @@
                     android:id="@+id/windLatestRecyclerView"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:nestedScrollingEnabled="false" />
+                    android:nestedScrollingEnabled="false"
+                    android:overScrollMode="never" />
             </LinearLayout>
 
         </LinearLayout>
-    </ScrollView>
+    </androidx.core.widget.NestedScrollView>
 
     <!-- 더 많은 프로그램 보기 버튼 -->
     <TextView

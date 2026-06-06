@@ -9,7 +9,6 @@
     android:background="@drawable/bg_app"
     tools:context=".MainActivity">
 
-    <!-- 상단 앱 바: 로고, 앱 이름, 사용자 영역을 표시 -->
     <LinearLayout
         android:id="@+id/topBar"
         android:layout_width="0dp"
@@ -69,7 +68,6 @@
             android:tint="@color/gb_on_surface_variant" />
     </LinearLayout>
 
-    <!-- 홈 스크롤 영역: 하단 네비게이션을 제외한 메인 콘텐츠 전체 -->
     <ScrollView
         android:id="@+id/homeScroll"
         android:layout_width="0dp"
@@ -133,7 +131,6 @@
                 android:textColor="@color/gb_on_surface_variant"
                 android:textSize="12sp" />
 
-            <!-- 학사일정 섹션: 홈 설정에서 학사일정 영역 전체 on/off용 -->
             <LinearLayout
                 android:id="@+id/sectionSchedule"
                 android:layout_width="match_parent"
@@ -232,7 +229,6 @@
                 </LinearLayout>
             </LinearLayout>
 
-            <!-- 가천 MAP 섹션: 홈 설정에서 지도 영역 전체 on/off용 -->
             <FrameLayout
                 android:id="@+id/sectionMap"
                 android:layout_width="match_parent"
@@ -248,7 +244,6 @@
                         style="@style/SectionTitle"
                         android:text="@string/section_map" />
 
-                    <!-- DUMMY DATA: Replace map labels/places with campus map service data later. -->
                     <FrameLayout
                         android:layout_width="match_parent"
                         android:layout_height="220dp"
@@ -297,7 +292,6 @@
                 </LinearLayout>
             </FrameLayout>
 
-            <!-- 학사공지 섹션: 홈 설정에서 공지 미리보기 영역 전체 on/off용 -->
             <LinearLayout
                 android:id="@+id/sectionNotice"
                 android:layout_width="match_parent"
@@ -310,7 +304,6 @@
                     style="@style/SectionTitle"
                     android:text="@string/section_notice" />
 
-                <!-- DUMMY DATA: Replace notice preview rows with latest notice API data later. -->
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -374,7 +367,7 @@
                 </LinearLayout>
             </LinearLayout>
 
-            <!-- WIND 섹션: 홈 설정에서 WIND 프로그램 영역 전체 on/off용 -->
+            <!-- WIND 섹션 -->
             <LinearLayout
                 android:id="@+id/sectionWind"
                 android:layout_width="match_parent"
@@ -386,7 +379,6 @@
                     style="@style/SectionTitle"
                     android:text="@string/section_wind" />
 
-                <!-- DUMMY DATA: Replace WIND cards with backend program list later. -->
                 <HorizontalScrollView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -398,7 +390,7 @@
                         android:layout_height="wrap_content"
                         android:orientation="horizontal">
 
-                        <!-- WIND 더미 카드 1: 팀원이 cardWindDummyProgram1에 사이트 이동 클릭 리스너 연결 -->
+                        <!-- WIND 카드 1 -->
                         <LinearLayout
                             android:id="@+id/cardWindDummyProgram1"
                             android:layout_width="300dp"
@@ -414,6 +406,15 @@
                                 android:layout_height="148dp"
                                 android:background="@drawable/bg_wind_image"
                                 android:padding="16dp">
+
+                                <ImageView
+                                    android:id="@+id/windHomeImage1"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    android:layout_margin="-16dp"
+                                    android:contentDescription="@null"
+                                    android:scaleType="centerCrop"
+                                    android:visibility="gone" />
 
                                 <TextView
                                     android:id="@+id/windHomeRank1"
@@ -495,7 +496,7 @@
                             </LinearLayout>
                         </LinearLayout>
 
-                        <!-- WIND 더미 카드 2: 팀원이 cardWindDummyProgram2에 사이트 이동 클릭 리스너 연결 -->
+                        <!-- WIND 카드 2 -->
                         <LinearLayout
                             android:id="@+id/cardWindDummyProgram2"
                             android:layout_width="300dp"
@@ -511,6 +512,15 @@
                                 android:layout_height="148dp"
                                 android:background="@drawable/bg_wind_image"
                                 android:padding="16dp">
+
+                                <ImageView
+                                    android:id="@+id/windHomeImage2"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    android:layout_margin="-16dp"
+                                    android:contentDescription="@null"
+                                    android:scaleType="centerCrop"
+                                    android:visibility="gone" />
 
                                 <TextView
                                     android:id="@+id/windHomeRank2"
@@ -592,7 +602,7 @@
                             </LinearLayout>
                         </LinearLayout>
 
-                        <!-- WIND 더미 카드 3: 팀원이 cardWindDummyProgram3에 사이트 이동 클릭 리스너 연결 -->
+                        <!-- WIND 카드 3 -->
                         <LinearLayout
                             android:id="@+id/cardWindDummyProgram3"
                             android:layout_width="300dp"
@@ -607,6 +617,15 @@
                                 android:layout_height="148dp"
                                 android:background="@drawable/bg_wind_image"
                                 android:padding="16dp">
+
+                                <ImageView
+                                    android:id="@+id/windHomeImage3"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    android:layout_margin="-16dp"
+                                    android:contentDescription="@null"
+                                    android:scaleType="centerCrop"
+                                    android:visibility="gone" />
 
                                 <TextView
                                     android:id="@+id/windHomeRank3"
@@ -691,7 +710,7 @@
                 </HorizontalScrollView>
             </LinearLayout>
 
-            <!-- 동아리 섹션: 홈 설정에서 동아리 목록 영역 전체 on/off용 -->
+            <!-- 동아리 섹션 -->
             <LinearLayout
                 android:id="@+id/sectionClub"
                 android:layout_width="match_parent"
@@ -703,7 +722,6 @@
                     style="@style/SectionTitle"
                     android:text="@string/section_club" />
 
-                <!-- DUMMY DATA: Replace club chips with club category/list API data later. -->
                 <HorizontalScrollView
                     android:layout_width="match_parent"
                     android:layout_height="92dp"
@@ -748,7 +766,7 @@
                 </HorizontalScrollView>
             </LinearLayout>
 
-            <!-- 오늘의 학식 섹션: 홈 설정에서 학식 영역 전체 on/off용 -->
+            <!-- 오늘의 학식 섹션 -->
             <LinearLayout
                 android:id="@+id/sectionMeal"
                 android:layout_width="match_parent"
@@ -761,7 +779,6 @@
                     style="@style/SectionTitle"
                     android:text="@string/section_meal" />
 
-                <!-- DUMMY DATA: Replace meal tabs and menu text with cafeteria API data later. -->
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -791,13 +808,11 @@
                     </LinearLayout>
 
                     <LinearLayout style="@style/MealRow">
-
                         <ImageView
                             android:id="@+id/mealIconBreakfast"
                             style="@style/MealIconSlot"
                             android:contentDescription="@null"
                             android:src="@drawable/ic_sunset" />
-
                         <TextView
                             android:id="@+id/mealPreview1"
                             style="@style/MealItem"
@@ -807,13 +822,11 @@
                     <View style="@style/Divider" />
 
                     <LinearLayout style="@style/MealRow">
-
                         <ImageView
                             android:id="@+id/mealIconLunch"
                             style="@style/MealIconSlot"
                             android:contentDescription="@null"
                             android:src="@drawable/ic_sun" />
-
                         <TextView
                             android:id="@+id/mealPreview2"
                             style="@style/MealItemHighlight"
@@ -823,13 +836,11 @@
                     <View style="@style/Divider" />
 
                     <LinearLayout style="@style/MealRow">
-
                         <ImageView
                             android:id="@+id/mealIconDinner"
                             style="@style/MealIconSlot"
                             android:contentDescription="@null"
                             android:src="@drawable/ic_moon" />
-
                         <TextView
                             android:id="@+id/mealPreview3"
                             style="@style/MealItem"
@@ -840,7 +851,6 @@
         </LinearLayout>
     </ScrollView>
 
-    <!-- 하단 네비게이션: 홈, WIND, 학과연락, 동아리, 학사공지, LAB 이동 버튼 영역 -->
     <include
         android:id="@+id/bottomNav"
         layout="@layout/view_bottom_nav"
