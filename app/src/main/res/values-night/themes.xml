@@ -1,10 +1,7 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
-    <style name="Base.Theme.GachonBridge" parent="Theme.Material3.DayNight.NoActionBar">
-        <item name="android:windowBackground">@color/gb_background</item>
-        <item name="android:statusBarColor">@color/gb_surface_low</item>
-        <item name="android:navigationBarColor">@color/gb_surface_low</item>
-        <item name="android:windowLightStatusBar">false</item>
-        <item name="android:windowLightNavigationBar">false</item>
+    <style name="Base.Theme.My_GACHON_MAP" parent="Theme.Material3.DayNight.NoActionBar">
+        <!-- Customize your dark theme here. -->
+        <!-- <item name="colorPrimary">@color/my_dark_primary</item> -->
     </style>
 </resources>

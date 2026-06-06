@@ -22,6 +22,5 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "Gachon Bridge"
+rootProject.name = "My_GACHON_MAP"
 include(":app")
- 

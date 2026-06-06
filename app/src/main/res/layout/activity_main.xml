@@ -1,862 +1,231 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- 메인 화면 루트 레이아웃: 전체 홈 화면의 기준 View -->
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/main"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/rootLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/bg_app"
-    tools:context=".MainActivity">
+    android:orientation="vertical"
+    android:background="#FFFFFF"
+    android:fitsSystemWindows="true">
 
-    <LinearLayout
-        android:id="@+id/topBar"
-        android:layout_width="0dp"
-        android:layout_height="72dp"
-        android:background="@color/gb_surface_low"
-        android:gravity="center_vertical"
-        android:orientation="horizontal"
-        android:paddingStart="16dp"
-        android:paddingEnd="16dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+    <FrameLayout
+        android:id="@+id/mapContainer"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1">
 
-        <ImageView
-            android:id="@+id/homeTopLeftIcon"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
-            android:background="@drawable/bg_icon_circle"
-            android:contentDescription="@null"
-            android:padding="11dp"
-            android:scaleType="centerInside"
-            android:src="@drawable/ic_home"
-            android:tint="@color/gb_primary" />
+        <fragment
+            android:id="@+id/map"
+            android:name="com.google.android.gms.maps.SupportMapFragment"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
 
         <LinearLayout
-            android:layout_width="0dp"
+            android:id="@+id/searchPanel"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_gravity="top"
             android:layout_marginStart="12dp"
-            android:layout_weight="1"
-            android:orientation="vertical">
+            android:layout_marginTop="12dp"
+            android:layout_marginEnd="12dp"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:elevation="12dp"
+            android:background="#FDFBF6"
+            android:paddingStart="10dp"
+            android:paddingTop="8dp"
+            android:paddingEnd="10dp"
+            android:paddingBottom="8dp">
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/app_name"
-                android:textColor="@color/gb_on_surface"
-                android:textSize="21sp"
-                android:textStyle="bold" />
+            <EditText
+                android:id="@+id/buildingSearchEditText"
+                android:layout_width="0dp"
+                android:layout_height="42dp"
+                android:layout_weight="1"
+                android:background="#FFFFFF"
+                android:hint="건물명 검색"
+                android:imeOptions="actionSearch"
+                android:inputType="text"
+                android:paddingStart="10dp"
+                android:paddingEnd="10dp"
+                android:singleLine="true"
+                android:textColor="#2A2F36"
+                android:textColorHint="#888888"
+                android:textSize="13sp" />
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/home_subtitle"
-                android:textColor="@color/gb_on_surface_variant"
+            <Button
+                android:id="@+id/buildingSearchButton"
+                android:layout_width="64dp"
+                android:layout_height="42dp"
+                android:layout_marginStart="8dp"
+                android:text="검색"
                 android:textSize="12sp" />
+
+            <Button
+                android:id="@+id/buildingSearchResetButton"
+                android:layout_width="72dp"
+                android:layout_height="42dp"
+                android:layout_marginStart="8dp"
+                android:text="초기화"
+                android:textSize="12sp" />
+
         </LinearLayout>
 
-        <ImageView
-            android:id="@+id/homeTopRightIcon"
-            android:layout_width="44dp"
-            android:layout_height="44dp"
-            android:background="@drawable/bg_icon_circle"
-            android:contentDescription="@null"
-            android:padding="10dp"
-            android:scaleType="centerInside"
-            android:src="@drawable/ic_user"
-            android:tint="@color/gb_on_surface_variant" />
-    </LinearLayout>
+        <LinearLayout
+            android:id="@+id/placeChoicePanel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="top|start"
+            android:orientation="vertical"
+            android:visibility="gone"
+            android:clickable="true"
+            android:focusable="true"
+            android:elevation="10dp"
+            android:paddingStart="10dp"
+            android:paddingTop="8dp"
+            android:paddingEnd="10dp"
+            android:paddingBottom="8dp"
+            android:background="#FFFFFF">
 
-    <ScrollView
-        android:id="@+id/homeScroll"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:clipToPadding="false"
-        android:paddingBottom="16dp"
-        app:layout_constraintBottom_toTopOf="@id/bottomNav"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/topBar">
+            <TextView
+                android:id="@+id/placeChoiceTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="장소 선택"
+                android:textColor="#2A2F36"
+                android:textSize="13sp"
+                android:textStyle="bold" />
+
+            <LinearLayout
+                android:id="@+id/placeChoiceButtonContainer"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="6dp"
+                android:orientation="vertical" />
+
+        </LinearLayout>
+
+    </FrameLayout>
+
+    <LinearLayout
+        android:id="@+id/bottomInfoPanel"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:background="#FFFFFF"
+        android:paddingStart="14dp"
+        android:paddingTop="8dp"
+        android:paddingEnd="14dp"
+        android:paddingBottom="14dp">
 
         <LinearLayout
+            android:id="@+id/legendBox"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:paddingStart="16dp"
-            android:paddingTop="16dp"
-            android:paddingEnd="16dp"
-            android:paddingBottom="24dp">
+            android:background="#F7F7F2"
+            android:paddingStart="10dp"
+            android:paddingTop="8dp"
+            android:paddingEnd="10dp"
+            android:paddingBottom="8dp">
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="112dp"
-                android:background="@drawable/bg_banner"
-                android:gravity="bottom"
-                android:orientation="vertical"
-                android:padding="16dp">
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_vertical">
+
+                <View
+                    android:layout_width="12dp"
+                    android:layout_height="12dp"
+                    android:background="#DA4C4C" />
 
                 <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="28dp"
-                    android:background="@drawable/bg_chip_inactive"
-                    android:gravity="center"
-                    android:paddingStart="12dp"
-                    android:paddingEnd="12dp"
-                    android:text="@string/home_banner_chip"
-                    android:textColor="@color/gb_primary"
-                    android:textSize="11sp"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:layout_marginStart="6dp"
+                    android:text="빨강: 캠퍼스"
+                    android:textColor="#2A2F36"
+                    android:textSize="12sp"
                     android:textStyle="bold" />
 
+                <View
+                    android:layout_width="12dp"
+                    android:layout_height="12dp"
+                    android:background="#4C84D6" />
+
                 <TextView
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
-                    android:text="@string/home_banner_title"
-                    android:textColor="@color/gb_on_surface"
-                    android:textSize="18sp"
+                    android:layout_weight="1"
+                    android:layout_marginStart="6dp"
+                    android:text="파랑: 건물"
+                    android:textColor="#2A2F36"
+                    android:textSize="12sp"
                     android:textStyle="bold" />
+
             </LinearLayout>
-
-            <TextView
-                style="@style/DummyBadge"
-                android:layout_marginTop="12dp"
-                android:text="@string/dummy_data_badge" />
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:text="@string/dummy_data_notice"
-                android:textColor="@color/gb_on_surface_variant"
-                android:textSize="12sp" />
 
             <LinearLayout
-                android:id="@+id/sectionSchedule"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="24dp"
-                android:orientation="vertical">
+                android:layout_marginTop="5dp"
+                android:orientation="horizontal"
+                android:gravity="center_vertical">
+
+                <View
+                    android:layout_width="12dp"
+                    android:layout_height="12dp"
+                    android:background="#787878" />
 
                 <TextView
-                    style="@style/SectionTitle"
-                    android:text="@string/section_schedule" />
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="112dp"
-                    android:orientation="horizontal">
-
-                    <LinearLayout
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        android:layout_marginEnd="8dp"
-                        android:layout_weight="1"
-                        android:background="@drawable/bg_primary_card"
-                        android:orientation="vertical"
-                        android:padding="12dp">
-
-                        <TextView
-                            android:id="@+id/scheduleDate1"
-                            style="@style/CardDate"
-                            android:text="@string/schedule_date_1"
-                            android:textColor="@color/white" />
-
-                        <TextView
-                            android:id="@+id/scheduleTitle1"
-                            style="@style/CardBody"
-                            android:text="@string/schedule_title_1"
-                            android:textColor="@color/white"
-                            android:textStyle="bold" />
-
-                        <TextView
-                            android:id="@+id/scheduleDday1"
-                            style="@style/CardDday"
-                            android:text="@string/schedule_dday_1"
-                            android:textColor="@color/white" />
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        android:layout_marginEnd="8dp"
-                        android:layout_weight="1"
-                        android:background="@drawable/bg_card"
-                        android:orientation="vertical"
-                        android:padding="12dp">
-
-                        <TextView
-                            android:id="@+id/scheduleDate2"
-                            style="@style/CardDate"
-                            android:text="@string/schedule_date_2"
-                            android:textColor="@color/gb_on_surface" />
-
-                        <TextView
-                            android:id="@+id/scheduleTitle2"
-                            style="@style/CardBody"
-                            android:text="@string/schedule_title_2" />
-
-                        <TextView
-                            android:id="@+id/scheduleDday2"
-                            style="@style/CardDday"
-                            android:text="@string/schedule_dday_2" />
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        android:layout_weight="1"
-                        android:background="@drawable/bg_card"
-                        android:orientation="vertical"
-                        android:padding="12dp">
-
-                        <TextView
-                            android:id="@+id/scheduleDate3"
-                            style="@style/CardDate"
-                            android:text="@string/schedule_date_3"
-                            android:textColor="@color/gb_on_surface" />
-
-                        <TextView
-                            android:id="@+id/scheduleTitle3"
-                            style="@style/CardBody"
-                            android:text="@string/schedule_title_3" />
-
-                        <TextView
-                            android:id="@+id/scheduleDday3"
-                            style="@style/CardDday"
-                            android:text="@string/schedule_dday_3" />
-                    </LinearLayout>
-                </LinearLayout>
-            </LinearLayout>
-
-            <FrameLayout
-                android:id="@+id/sectionMap"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="24dp">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical">
+                    android:layout_weight="1"
+                    android:layout_marginStart="6dp"
+                    android:text="회색: 흡연구역"
+                    android:textColor="#2A2F36"
+                    android:textSize="12sp"
+                    android:textStyle="bold" />
 
-                    <TextView
-                        style="@style/SectionTitle"
-                        android:text="@string/section_map" />
-
-                    <FrameLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="220dp"
-                        android:background="@drawable/bg_map_preview"
-                        android:clipToOutline="true">
-
-                        <ImageView
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:contentDescription="@null"
-                            android:scaleType="centerCrop"
-                            android:src="@drawable/map_preview" />
-
-                        <View
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:background="#22000000" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="top|start"
-                            android:layout_marginStart="16dp"
-                            android:layout_marginTop="16dp"
-                            android:background="@drawable/bg_chip_inactive"
-                            android:paddingStart="12dp"
-                            android:paddingTop="6dp"
-                            android:paddingEnd="12dp"
-                            android:paddingBottom="6dp"
-                            android:text="@string/map_campus"
-                            android:textColor="@color/gb_on_surface"
-                            android:textSize="12sp"
-                            android:textStyle="bold" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="bottom|end"
-                            android:layout_marginEnd="16dp"
-                            android:layout_marginBottom="16dp"
-                            android:text="@string/map_action"
-                            android:textColor="@color/white"
-                            android:textSize="13sp"
-                            android:textStyle="bold" />
-                    </FrameLayout>
-                </LinearLayout>
-            </FrameLayout>
-
-            <LinearLayout
-                android:id="@+id/sectionNotice"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="24dp"
-                android:orientation="vertical"
-                android:padding="0dp">
+                <View
+                    android:layout_width="12dp"
+                    android:layout_height="12dp"
+                    android:background="#E58B30" />
 
                 <TextView
-                    style="@style/SectionTitle"
-                    android:text="@string/section_notice" />
-
-                <LinearLayout
-                    android:layout_width="match_parent"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/bg_card"
-                    android:orientation="vertical"
-                    android:padding="12dp">
+                    android:layout_weight="1"
+                    android:layout_marginStart="6dp"
+                    android:text="주황: 편의시설"
+                    android:textColor="#2A2F36"
+                    android:textSize="12sp"
+                    android:textStyle="bold" />
 
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="36dp"
-                        android:orientation="horizontal">
-
-                        <TextView
-                            android:id="@+id/tabNoticeAll"
-                            style="@style/TabActive"
-                            android:text="@string/tab_all" />
-
-                        <TextView
-                            android:id="@+id/tabNoticeAcademic"
-                            style="@style/TabInactive"
-                            android:text="@string/tab_academic" />
-
-                        <TextView
-                            android:id="@+id/tabNoticeScholarship"
-                            style="@style/TabInactive"
-                            android:text="@string/tab_scholarship" />
-                    </LinearLayout>
-
-                    <TextView
-                        android:id="@+id/noticePreview1"
-                        style="@style/NoticeItem"
-                        android:text="@string/notice_1" />
-
-                    <View style="@style/Divider" />
-
-                    <TextView
-                        android:id="@+id/noticePreview2"
-                        style="@style/NoticeItem"
-                        android:text="@string/notice_2" />
-
-                    <View style="@style/Divider" />
-
-                    <TextView
-                        android:id="@+id/noticePreview3"
-                        style="@style/NoticeItem"
-                        android:text="@string/notice_3" />
-
-                    <View style="@style/Divider" />
-
-                    <TextView
-                        android:id="@+id/noticePreview4"
-                        style="@style/NoticeItem"
-                        android:text="공지사항 항목 4" />
-
-                    <View style="@style/Divider" />
-
-                    <TextView
-                        android:id="@+id/noticePreview5"
-                        style="@style/NoticeItem"
-                        android:text="공지사항 항목 5" />
-                </LinearLayout>
             </LinearLayout>
 
-            <!-- WIND 섹션 -->
-            <LinearLayout
-                android:id="@+id/sectionWind"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="24dp"
-                android:orientation="vertical">
-
-                <TextView
-                    style="@style/SectionTitle"
-                    android:text="@string/section_wind" />
-
-                <HorizontalScrollView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:overScrollMode="never"
-                    android:scrollbars="none">
-
-                    <LinearLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal">
-
-                        <!-- WIND 카드 1 -->
-                        <LinearLayout
-                            android:id="@+id/cardWindDummyProgram1"
-                            android:layout_width="300dp"
-                            android:layout_height="300dp"
-                            android:layout_marginEnd="12dp"
-                            android:background="@drawable/bg_card"
-                            android:clickable="true"
-                            android:focusable="true"
-                            android:orientation="vertical">
-
-                            <FrameLayout
-                                android:layout_width="match_parent"
-                                android:layout_height="148dp"
-                                android:background="@drawable/bg_wind_image"
-                                android:padding="16dp">
-
-                                <ImageView
-                                    android:id="@+id/windHomeImage1"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="match_parent"
-                                    android:layout_margin="-16dp"
-                                    android:contentDescription="@null"
-                                    android:scaleType="centerCrop"
-                                    android:visibility="gone" />
-
-                                <TextView
-                                    android:id="@+id/windHomeRank1"
-                                    android:layout_width="58dp"
-                                    android:layout_height="52dp"
-                                    android:background="@drawable/bg_primary_card"
-                                    android:gravity="center"
-                                    android:text="@string/wind_status"
-                                    android:textColor="@color/white"
-                                    android:textSize="12sp"
-                                    android:textStyle="bold" />
-
-                                <TextView
-                                    android:id="@+id/windHomeHits1"
-                                    android:layout_width="160dp"
-                                    android:layout_height="wrap_content"
-                                    android:layout_gravity="bottom|end"
-                                    android:ellipsize="end"
-                                    android:gravity="end"
-                                    android:singleLine="true"
-                                    android:text="@string/wind_hits"
-                                    android:textColor="@color/gb_on_surface"
-                                    android:textSize="12sp"
-                                    android:textStyle="bold" />
-                            </FrameLayout>
-
-                            <LinearLayout
-                                android:layout_width="match_parent"
-                                android:layout_height="0dp"
-                                android:layout_weight="1"
-                                android:orientation="vertical"
-                                android:padding="16dp">
-
-                                <TextView
-                                    android:id="@+id/windHomeInstitution1"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="18dp"
-                                    android:ellipsize="end"
-                                    android:singleLine="true"
-                                    android:text="@string/wind_category"
-                                    android:textColor="@color/gb_primary"
-                                    android:textSize="12sp"
-                                    android:textStyle="bold" />
-
-                                <TextView
-                                    android:id="@+id/windHomeTitle1"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="52dp"
-                                    android:layout_marginTop="8dp"
-                                    android:ellipsize="end"
-                                    android:maxLines="2"
-                                    android:text="@string/wind_title"
-                                    android:textColor="@color/gb_on_surface"
-                                    android:textSize="18sp"
-                                    android:textStyle="bold" />
-
-                                <TextView
-                                    android:id="@+id/windHomePeriod1"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="36dp"
-                                    android:layout_marginTop="8dp"
-                                    android:ellipsize="end"
-                                    android:maxLines="2"
-                                    android:text="@string/wind_period"
-                                    android:textColor="@color/gb_on_surface_variant"
-                                    android:textSize="13sp" />
-
-                                <FrameLayout
-                                    android:layout_width="match_parent"
-                                    android:layout_height="8dp"
-                                    android:layout_marginTop="14dp"
-                                    android:background="@drawable/bg_progress_track">
-
-                                    <View
-                                        android:layout_width="230dp"
-                                        android:layout_height="match_parent"
-                                        android:background="@drawable/bg_progress_fill" />
-                                </FrameLayout>
-                            </LinearLayout>
-                        </LinearLayout>
-
-                        <!-- WIND 카드 2 -->
-                        <LinearLayout
-                            android:id="@+id/cardWindDummyProgram2"
-                            android:layout_width="300dp"
-                            android:layout_height="300dp"
-                            android:layout_marginEnd="12dp"
-                            android:background="@drawable/bg_card"
-                            android:clickable="true"
-                            android:focusable="true"
-                            android:orientation="vertical">
-
-                            <FrameLayout
-                                android:layout_width="match_parent"
-                                android:layout_height="148dp"
-                                android:background="@drawable/bg_wind_image"
-                                android:padding="16dp">
-
-                                <ImageView
-                                    android:id="@+id/windHomeImage2"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="match_parent"
-                                    android:layout_margin="-16dp"
-                                    android:contentDescription="@null"
-                                    android:scaleType="centerCrop"
-                                    android:visibility="gone" />
-
-                                <TextView
-                                    android:id="@+id/windHomeRank2"
-                                    android:layout_width="58dp"
-                                    android:layout_height="52dp"
-                                    android:background="@drawable/bg_primary_card"
-                                    android:gravity="center"
-                                    android:text="@string/wind_status_2"
-                                    android:textColor="@color/white"
-                                    android:textSize="12sp"
-                                    android:textStyle="bold" />
-
-                                <TextView
-                                    android:id="@+id/windHomeHits2"
-                                    android:layout_width="160dp"
-                                    android:layout_height="wrap_content"
-                                    android:layout_gravity="bottom|end"
-                                    android:ellipsize="end"
-                                    android:gravity="end"
-                                    android:singleLine="true"
-                                    android:text="@string/wind_hits_2"
-                                    android:textColor="@color/gb_on_surface"
-                                    android:textSize="12sp"
-                                    android:textStyle="bold" />
-                            </FrameLayout>
-
-                            <LinearLayout
-                                android:layout_width="match_parent"
-                                android:layout_height="0dp"
-                                android:layout_weight="1"
-                                android:orientation="vertical"
-                                android:padding="16dp">
-
-                                <TextView
-                                    android:id="@+id/windHomeInstitution2"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="18dp"
-                                    android:ellipsize="end"
-                                    android:singleLine="true"
-                                    android:text="@string/wind_category_2"
-                                    android:textColor="@color/gb_primary"
-                                    android:textSize="12sp"
-                                    android:textStyle="bold" />
-
-                                <TextView
-                                    android:id="@+id/windHomeTitle2"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="52dp"
-                                    android:layout_marginTop="8dp"
-                                    android:ellipsize="end"
-                                    android:maxLines="2"
-                                    android:text="@string/wind_title_2"
-                                    android:textColor="@color/gb_on_surface"
-                                    android:textSize="18sp"
-                                    android:textStyle="bold" />
-
-                                <TextView
-                                    android:id="@+id/windHomePeriod2"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="36dp"
-                                    android:layout_marginTop="8dp"
-                                    android:ellipsize="end"
-                                    android:maxLines="2"
-                                    android:text="@string/wind_period_2"
-                                    android:textColor="@color/gb_on_surface_variant"
-                                    android:textSize="13sp" />
-
-                                <FrameLayout
-                                    android:layout_width="match_parent"
-                                    android:layout_height="8dp"
-                                    android:layout_marginTop="14dp"
-                                    android:background="@drawable/bg_progress_track">
-
-                                    <View
-                                        android:layout_width="160dp"
-                                        android:layout_height="match_parent"
-                                        android:background="@drawable/bg_progress_fill" />
-                                </FrameLayout>
-                            </LinearLayout>
-                        </LinearLayout>
-
-                        <!-- WIND 카드 3 -->
-                        <LinearLayout
-                            android:id="@+id/cardWindDummyProgram3"
-                            android:layout_width="300dp"
-                            android:layout_height="300dp"
-                            android:background="@drawable/bg_card"
-                            android:clickable="true"
-                            android:focusable="true"
-                            android:orientation="vertical">
-
-                            <FrameLayout
-                                android:layout_width="match_parent"
-                                android:layout_height="148dp"
-                                android:background="@drawable/bg_wind_image"
-                                android:padding="16dp">
-
-                                <ImageView
-                                    android:id="@+id/windHomeImage3"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="match_parent"
-                                    android:layout_margin="-16dp"
-                                    android:contentDescription="@null"
-                                    android:scaleType="centerCrop"
-                                    android:visibility="gone" />
-
-                                <TextView
-                                    android:id="@+id/windHomeRank3"
-                                    android:layout_width="58dp"
-                                    android:layout_height="52dp"
-                                    android:background="@drawable/bg_primary_card"
-                                    android:gravity="center"
-                                    android:text="@string/wind_status_3"
-                                    android:textColor="@color/white"
-                                    android:textSize="12sp"
-                                    android:textStyle="bold" />
-
-                                <TextView
-                                    android:id="@+id/windHomeHits3"
-                                    android:layout_width="160dp"
-                                    android:layout_height="wrap_content"
-                                    android:layout_gravity="bottom|end"
-                                    android:ellipsize="end"
-                                    android:gravity="end"
-                                    android:singleLine="true"
-                                    android:text="@string/wind_hits_3"
-                                    android:textColor="@color/gb_on_surface"
-                                    android:textSize="12sp"
-                                    android:textStyle="bold" />
-                            </FrameLayout>
-
-                            <LinearLayout
-                                android:layout_width="match_parent"
-                                android:layout_height="0dp"
-                                android:layout_weight="1"
-                                android:orientation="vertical"
-                                android:padding="16dp">
-
-                                <TextView
-                                    android:id="@+id/windHomeInstitution3"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="18dp"
-                                    android:ellipsize="end"
-                                    android:singleLine="true"
-                                    android:text="@string/wind_category_3"
-                                    android:textColor="@color/gb_primary"
-                                    android:textSize="12sp"
-                                    android:textStyle="bold" />
-
-                                <TextView
-                                    android:id="@+id/windHomeTitle3"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="52dp"
-                                    android:layout_marginTop="8dp"
-                                    android:ellipsize="end"
-                                    android:maxLines="2"
-                                    android:text="@string/wind_title_3"
-                                    android:textColor="@color/gb_on_surface"
-                                    android:textSize="18sp"
-                                    android:textStyle="bold" />
-
-                                <TextView
-                                    android:id="@+id/windHomePeriod3"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="36dp"
-                                    android:layout_marginTop="8dp"
-                                    android:ellipsize="end"
-                                    android:maxLines="2"
-                                    android:text="@string/wind_period_3"
-                                    android:textColor="@color/gb_on_surface_variant"
-                                    android:textSize="13sp" />
-
-                                <FrameLayout
-                                    android:layout_width="match_parent"
-                                    android:layout_height="8dp"
-                                    android:layout_marginTop="14dp"
-                                    android:background="@drawable/bg_progress_track">
-
-                                    <View
-                                        android:layout_width="110dp"
-                                        android:layout_height="match_parent"
-                                        android:background="@drawable/bg_progress_fill" />
-                                </FrameLayout>
-                            </LinearLayout>
-                        </LinearLayout>
-                    </LinearLayout>
-                </HorizontalScrollView>
-            </LinearLayout>
-
-            <!-- 동아리 섹션 -->
-            <LinearLayout
-                android:id="@+id/sectionClub"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="24dp"
-                android:orientation="vertical">
-
-                <TextView
-                    style="@style/SectionTitle"
-                    android:text="@string/section_club" />
-
-                <HorizontalScrollView
-                    android:layout_width="match_parent"
-                    android:layout_height="92dp"
-                    android:overScrollMode="never"
-                    android:scrollbars="none">
-
-                    <LinearLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:orientation="horizontal">
-
-                        <TextView
-                            android:id="@+id/clubCategoryMusic"
-                            style="@style/ClubItem"
-                            android:text="@string/club_music" />
-
-                        <TextView
-                            android:id="@+id/clubCategoryShow"
-                            style="@style/ClubItem"
-                            android:text="@string/club_show" />
-
-                        <TextView
-                            android:id="@+id/clubCategoryStudy"
-                            style="@style/ClubItem"
-                            android:text="@string/club_study" />
-
-                        <TextView
-                            android:id="@+id/clubCategorySports"
-                            style="@style/ClubItem"
-                            android:text="@string/club_sports" />
-
-                        <TextView
-                            android:id="@+id/clubCategoryService"
-                            style="@style/ClubItem"
-                            android:text="@string/club_service" />
-
-                        <TextView
-                            android:id="@+id/clubCategoryReligion"
-                            style="@style/ClubItem"
-                            android:text="@string/club_religion" />
-                    </LinearLayout>
-                </HorizontalScrollView>
-            </LinearLayout>
-
-            <!-- 오늘의 학식 섹션 -->
-            <LinearLayout
-                android:id="@+id/sectionMeal"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="24dp"
-                android:orientation="vertical"
-                android:padding="0dp">
-
-                <TextView
-                    style="@style/SectionTitle"
-                    android:text="@string/section_meal" />
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="@drawable/bg_card"
-                    android:orientation="vertical"
-                    android:padding="12dp">
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="36dp"
-                        android:orientation="horizontal">
-
-                        <TextView
-                            android:id="@+id/tabMealGraduate"
-                            style="@style/TabActive"
-                            android:text="@string/cafeteria_1" />
-
-                        <TextView
-                            android:id="@+id/tabMealVision"
-                            style="@style/TabInactive"
-                            android:text="@string/cafeteria_2" />
-
-                        <TextView
-                            android:id="@+id/tabMealStudent"
-                            style="@style/TabInactive"
-                            android:text="@string/cafeteria_3" />
-                    </LinearLayout>
-
-                    <LinearLayout style="@style/MealRow">
-                        <ImageView
-                            android:id="@+id/mealIconBreakfast"
-                            style="@style/MealIconSlot"
-                            android:contentDescription="@null"
-                            android:src="@drawable/ic_sunset" />
-                        <TextView
-                            android:id="@+id/mealPreview1"
-                            style="@style/MealItem"
-                            android:text="@string/meal_breakfast" />
-                    </LinearLayout>
-
-                    <View style="@style/Divider" />
-
-                    <LinearLayout style="@style/MealRow">
-                        <ImageView
-                            android:id="@+id/mealIconLunch"
-                            style="@style/MealIconSlot"
-                            android:contentDescription="@null"
-                            android:src="@drawable/ic_sun" />
-                        <TextView
-                            android:id="@+id/mealPreview2"
-                            style="@style/MealItemHighlight"
-                            android:text="@string/meal_lunch" />
-                    </LinearLayout>
-
-                    <View style="@style/Divider" />
-
-                    <LinearLayout style="@style/MealRow">
-                        <ImageView
-                            android:id="@+id/mealIconDinner"
-                            style="@style/MealIconSlot"
-                            android:contentDescription="@null"
-                            android:src="@drawable/ic_moon" />
-                        <TextView
-                            android:id="@+id/mealPreview3"
-                            style="@style/MealItem"
-                            android:text="@string/meal_dinner" />
-                    </LinearLayout>
-                </LinearLayout>
-            </LinearLayout>
         </LinearLayout>
-    </ScrollView>
 
-    <include
-        android:id="@+id/bottomNav"
-        layout="@layout/view_bottom_nav"
-        android:layout_width="0dp"
-        android:layout_height="72dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
-</androidx.constraintlayout.widget.ConstraintLayout>
+        <TextView
+            android:id="@+id/statusText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:minHeight="88dp"
+            android:layout_marginTop="8dp"
+            android:gravity="center"
+            android:background="#2C3540"
+            android:includeFontPadding="true"
+            android:lineSpacingExtra="2dp"
+            android:paddingStart="12dp"
+            android:paddingTop="10dp"
+            android:paddingEnd="12dp"
+            android:paddingBottom="10dp"
+            android:text="가천대 생활지도&#10;건물을 검색하거나 지도에서 건물을 눌러보세요"
+            android:textColor="#FFFFFF"
+            android:textSize="14.5sp"
+            android:textStyle="bold" />
+
+    </LinearLayout>
+
+</LinearLayout>
