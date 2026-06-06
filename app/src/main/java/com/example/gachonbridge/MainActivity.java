@@ -7,6 +7,7 @@ import android.os.Handler;
 import android.os.Looper;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.core.content.ContextCompat;
 
@@ -43,23 +44,7 @@ public class MainActivity extends BaseActivity {
         }
     };
 
-    private final String[][] noticePreviewData = {
-            {
-                    "[\uC77C\uBC18] 2026\uD559\uB144\uB3C4 1\uD559\uAE30 \uC218\uAC15\uC2E0\uCCAD \uBCC0\uACBD \uC548\uB0B4        05.16",
-                    "[\uC7A5\uD559] \uAD6D\uAC00\uC7A5\uD559\uAE08 2\uCC28 \uC2E0\uCCAD \uBC0F \uC11C\uB958 \uC81C\uCD9C \uC548\uB0B4        05.13",
-                    "[\uD559\uC0AC] \uC878\uC5C5\uC778\uC99D \uC81C\uCD9C \uC77C\uC815 \uBC0F \uC720\uC758\uC0AC\uD56D \uC548\uB0B4        05.10"
-            },
-            {
-                    "[\uD559\uC0AC] 2026\uD559\uB144\uB3C4 \uD558\uACC4 \uACC4\uC808\uD559\uAE30 \uC218\uAC15\uC2E0\uCCAD \uC548\uB0B4        05.21",
-                    "[\uD559\uC0AC] \uAE30\uB9D0\uACE0\uC0AC \uC2DC\uAC04\uD45C \uC5F4\uB78C \uBC0F \uAC15\uC758\uC2E4 \uD655\uC778        05.18",
-                    "[\uD559\uC0AC] \uBCF5\uC218\uC804\uACF5 \uBC0F \uBD80\uC804\uACF5 \uC2E0\uCCAD \uC77C\uC815 \uC548\uB0B4        05.14"
-            },
-            {
-                    "[\uC7A5\uD559] \uAD50\uB0B4 \uADFC\uB85C\uC7A5\uD559 \uCD94\uAC00 \uBAA8\uC9D1 \uC548\uB0B4        05.22",
-                    "[\uC7A5\uD559] \uAC00\uCC9C \uC6B0\uC218\uC7A5\uD559\uAE08 \uC120\uBC1C \uACB0\uACFC \uBC1C\uD45C        05.19",
-                    "[\uC7A5\uD559] \uD559\uC790\uAE08 \uC9C0\uC6D0\uAD6C\uAC04 \uD655\uC778 \uBC0F \uC11C\uB958 \uC81C\uCD9C        05.15"
-            }
-    };
+    private String[][] noticePreviewData = new String[3][9];
 
     private String[][] mealPreviewData = {
             {
@@ -83,6 +68,14 @@ public class MainActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        
+        // Initialize notice data with loading text
+        for (int i = 0; i < 3; i++) {
+            for (int j = 0; j < 9; j++) {
+                noticePreviewData[i][j] = "불러오는 중...";
+            }
+        }
+
         // TODO: Replace XML dummy sections with API-backed views or RecyclerViews.
         bindBottomNavigation(R.id.navHome);
         bindSchedulePreviewCards();
@@ -96,6 +89,7 @@ public class MainActivity extends BaseActivity {
         loadAcademicSchedules();
         loadTodayMeals();
         loadHomeWindTopPrograms();
+        loadHomeNotices();
     }
 
     private void bindSchedulePreviewCards() {
@@ -129,7 +123,13 @@ public class MainActivity extends BaseActivity {
         noticeItems = new TextView[]{
                 findViewById(R.id.noticePreview1),
                 findViewById(R.id.noticePreview2),
-                findViewById(R.id.noticePreview3)
+                findViewById(R.id.noticePreview3),
+                findViewById(R.id.noticePreview4),
+                findViewById(R.id.noticePreview5),
+                findViewById(R.id.noticePreview6),
+                findViewById(R.id.noticePreview7),
+                findViewById(R.id.noticePreview8),
+                findViewById(R.id.noticePreview9)
         };
         mealTabs = new TextView[]{
                 findViewById(R.id.tabMealGraduate),
@@ -448,9 +448,15 @@ public class MainActivity extends BaseActivity {
     }
 
     private void bindNoticeLinks() {
-        bindNoticeLink(R.id.noticePreview1);
-        bindNoticeLink(R.id.noticePreview2);
-        bindNoticeLink(R.id.noticePreview3);
+        int[] ids = {
+                R.id.noticePreview1, R.id.noticePreview2, R.id.noticePreview3,
+                R.id.noticePreview4, R.id.noticePreview5, R.id.noticePreview6,
+                R.id.noticePreview7, R.id.noticePreview8, R.id.noticePreview9
+        };
+        for (int id : ids) {
+            TextView v = findViewById(id);
+            if (v != null) v.setOnClickListener(view -> openNoticePage());
+        }
     }
 
     private void bindNoticeLink(int viewId) {
@@ -460,6 +466,36 @@ public class MainActivity extends BaseActivity {
 
     private void openNoticePage() {
         startActivity(new Intent(this, NoticeActivity.class));
+    }
+
+    private void loadHomeNotices() {
+        contentExecutor.execute(() -> {
+            try {
+                List<Notice> all = GachonScraper.fetchNotices(GachonScraper.Category.ALL, 9);
+                List<Notice> academic = GachonScraper.fetchNotices(GachonScraper.Category.ACADEMIC, 9);
+                List<Notice> scholarship = GachonScraper.fetchNotices(GachonScraper.Category.SCHOLARSHIP, 9);
+
+                mainHandler.post(() -> {
+                    fillNoticeData(0, all);
+                    fillNoticeData(1, academic);
+                    fillNoticeData(2, scholarship);
+                    updatePreviewGroup(noticeTabs, noticeItems, noticePreviewData, 0);
+                });
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        });
+    }
+
+    private void fillNoticeData(int catIndex, List<Notice> notices) {
+        for (int i = 0; i < 9; i++) {
+            if (i < notices.size()) {
+                Notice n = notices.get(i);
+                noticePreviewData[catIndex][i] = n.getTitle();
+            } else {
+                noticePreviewData[catIndex][i] = "-";
+            }
+        }
     }
 
     @Override

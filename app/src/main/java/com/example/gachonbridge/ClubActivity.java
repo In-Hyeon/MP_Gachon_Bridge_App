@@ -418,6 +418,7 @@ public class ClubActivity extends BaseActivity {
         Intent intent = new Intent(this, ClubDetailActivity.class);
         intent.putExtra(ClubDetailActivity.EXTRA_NAME, club.name);
         intent.putExtra(ClubDetailActivity.EXTRA_CATEGORY, club.category);
+        intent.putExtra("club_short_description", club.shortDescription);
         intent.putExtra(ClubDetailActivity.EXTRA_DESCRIPTION, club.longDescription);
         intent.putExtra(ClubDetailActivity.EXTRA_BADGE, club.badge);
         intent.putExtra(ClubDetailActivity.EXTRA_ICON, club.icon);
