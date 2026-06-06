@@ -31,7 +31,7 @@
             android:id="@+id/navWindIcon"
             style="@style/BottomNavIcon"
             android:contentDescription="@null"
-            android:src="@drawable/ic_padlock" />
+            android:src="@drawable/bell" />
 
         <TextView
             style="@style/BottomNavLabel"

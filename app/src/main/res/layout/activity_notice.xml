@@ -137,7 +137,7 @@
         app:layout_constraintTop_toTopOf="@id/noticeRecyclerView" />
 
     <!-- 더보기 버튼 (리스트 아래에 고정) -->
-    <TextView
+    <LinearLayout
         android:id="@+id/buttonNoticeMore"
         android:layout_width="match_parent"
         android:layout_height="58dp"
@@ -146,11 +146,24 @@
         android:clickable="true"
         android:focusable="true"
         android:gravity="center"
-        android:text="@string/more_button"
-        android:textColor="@color/gb_on_primary"
-        android:textSize="20sp"
-        android:textStyle="bold"
-        app:layout_constraintBottom_toTopOf="@id/bottomNav" />
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toTopOf="@id/bottomNav">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/more_button"
+            android:textColor="@color/gb_on_primary"
+            android:textSize="20sp"
+            android:textStyle="bold" />
+
+        <ImageView
+            android:layout_width="18dp"
+            android:layout_height="18dp"
+            android:layout_marginStart="10dp"
+            android:src="@drawable/chevron"
+            app:tint="@color/gb_on_primary" />
+    </LinearLayout>
 
     <!-- 하단 네비게이션 -->
     <include
