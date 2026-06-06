@@ -14,16 +14,28 @@
         android:background="@color/gb_surface_low"
         android:gravity="center_vertical"
         android:orientation="horizontal"
-        android:paddingStart="18dp"
-        android:paddingEnd="18dp"
+        android:paddingStart="20dp"
+        android:paddingEnd="20dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
+        <ImageView
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:background="@drawable/bg_icon_circle"
+            android:contentDescription="@null"
+            android:padding="11dp"
+            android:scaleType="centerInside"
+            android:src="@drawable/ic_megaphone"
+            android:tint="@color/gb_primary" />
+
         <TextView
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:gravity="center"
+            android:layout_marginStart="12dp"
+            android:layout_weight="1"
+            android:gravity="start|center_vertical"
             android:text="@string/page_notice_title"
             android:textColor="@color/gb_on_surface"
             android:textSize="22sp"

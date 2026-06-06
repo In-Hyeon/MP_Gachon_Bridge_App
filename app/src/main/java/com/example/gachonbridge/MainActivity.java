@@ -35,6 +35,7 @@ public class MainActivity extends BaseActivity {
     private TextView[] windHomeTitles;
     private TextView[] windHomePeriods;
     private int selectedMealIndex;
+    private static final int HOME_NOTICE_PREVIEW_COUNT = 5;
     private static final String[] MEAL_RESTAURANT_URLS = {
             "https://www.gachon.ac.kr/kor/7349/subview.do",
             "https://www.gachon.ac.kr/kor/7347/subview.do",
@@ -50,7 +51,7 @@ public class MainActivity extends BaseActivity {
         }
     };
 
-    private String[][] noticePreviewData = new String[3][9];
+    private String[][] noticePreviewData = new String[3][HOME_NOTICE_PREVIEW_COUNT];
 
     private String[][] mealPreviewData = {
             {
@@ -77,7 +78,7 @@ public class MainActivity extends BaseActivity {
         
         // Initialize notice data with loading text
         for (int i = 0; i < 3; i++) {
-            for (int j = 0; j < 9; j++) {
+            for (int j = 0; j < HOME_NOTICE_PREVIEW_COUNT; j++) {
                 noticePreviewData[i][j] = "불러오는 중...";
             }
         }
@@ -131,11 +132,7 @@ public class MainActivity extends BaseActivity {
                 findViewById(R.id.noticePreview2),
                 findViewById(R.id.noticePreview3),
                 findViewById(R.id.noticePreview4),
-                findViewById(R.id.noticePreview5),
-                findViewById(R.id.noticePreview6),
-                findViewById(R.id.noticePreview7),
-                findViewById(R.id.noticePreview8),
-                findViewById(R.id.noticePreview9)
+                findViewById(R.id.noticePreview5)
         };
         mealTabs = new TextView[]{
                 findViewById(R.id.tabMealGraduate),
@@ -478,8 +475,7 @@ public class MainActivity extends BaseActivity {
     private void bindNoticeLinks() {
         int[] ids = {
                 R.id.noticePreview1, R.id.noticePreview2, R.id.noticePreview3,
-                R.id.noticePreview4, R.id.noticePreview5, R.id.noticePreview6,
-                R.id.noticePreview7, R.id.noticePreview8, R.id.noticePreview9
+                R.id.noticePreview4, R.id.noticePreview5
         };
         for (int id : ids) {
             TextView v = findViewById(id);
@@ -499,9 +495,9 @@ public class MainActivity extends BaseActivity {
     private void loadHomeNotices() {
         contentExecutor.execute(() -> {
             try {
-                List<Notice> all = GachonScraper.fetchNotices(GachonScraper.Category.ALL, 9);
-                List<Notice> academic = GachonScraper.fetchNotices(GachonScraper.Category.ACADEMIC, 9);
-                List<Notice> scholarship = GachonScraper.fetchNotices(GachonScraper.Category.SCHOLARSHIP, 9);
+                List<Notice> all = GachonScraper.fetchNotices(GachonScraper.Category.ALL, HOME_NOTICE_PREVIEW_COUNT);
+                List<Notice> academic = GachonScraper.fetchNotices(GachonScraper.Category.ACADEMIC, HOME_NOTICE_PREVIEW_COUNT);
+                List<Notice> scholarship = GachonScraper.fetchNotices(GachonScraper.Category.SCHOLARSHIP, HOME_NOTICE_PREVIEW_COUNT);
 
                 mainHandler.post(() -> {
                     fillNoticeData(0, all);
@@ -516,7 +512,7 @@ public class MainActivity extends BaseActivity {
     }
 
     private void fillNoticeData(int catIndex, List<Notice> notices) {
-        for (int i = 0; i < 9; i++) {
+        for (int i = 0; i < HOME_NOTICE_PREVIEW_COUNT; i++) {
             if (i < notices.size()) {
                 Notice n = notices.get(i);
                 noticePreviewData[catIndex][i] = n.getTitle();
