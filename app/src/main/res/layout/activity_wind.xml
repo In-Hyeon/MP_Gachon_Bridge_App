@@ -29,11 +29,12 @@
     </LinearLayout>
 
     <!-- 전체 스크롤 -->
-    <ScrollView
+    <androidx.core.widget.NestedScrollView
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:clipToPadding="false"
         android:paddingBottom="8dp"
+        android:fillViewport="true"
         app:layout_constraintBottom_toTopOf="@id/buttonWindMorePrograms"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -95,6 +96,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:nestedScrollingEnabled="false"
+                android:overScrollMode="never"
                 android:visibility="gone" />
 
             <!-- 최신 프로그램 섹션 -->
@@ -119,11 +121,12 @@
                     android:id="@+id/windLatestRecyclerView"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:nestedScrollingEnabled="false" />
+                    android:nestedScrollingEnabled="false"
+                    android:overScrollMode="never" />
             </LinearLayout>
 
         </LinearLayout>
-    </ScrollView>
+    </androidx.core.widget.NestedScrollView>
 
     <!-- 더 많은 프로그램 보기 버튼 -->
     <TextView

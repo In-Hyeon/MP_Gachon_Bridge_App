@@ -6,6 +6,9 @@
         <item name="android:navigationBarColor">@color/gb_surface_low</item>
         <item name="android:windowLightStatusBar">false</item>
         <item name="android:windowLightNavigationBar">false</item>
+        <item name="colorPrimary">#8EA8FF</item>
+        <item name="colorPrimaryVariant">#8EA8FF</item>
+        <item name="materialButtonStyle">@style/Widget.MaterialComponents.Button.UnelevatedButton</item>
     </style>
 
     <style name="Theme.GachonBridge" parent="Base.Theme.GachonBridge" />
