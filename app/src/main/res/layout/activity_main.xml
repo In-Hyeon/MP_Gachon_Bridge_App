@@ -30,7 +30,7 @@
             android:contentDescription="@null"
             android:padding="11dp"
             android:scaleType="centerInside"
-            android:src="@drawable/ic_home"
+            android:src="@drawable/ic_gachon_logo"
             android:tint="@color/gb_primary" />
 
         <LinearLayout
@@ -117,19 +117,6 @@
                     android:textSize="18sp"
                     android:textStyle="bold" />
             </LinearLayout>
-
-            <TextView
-                style="@style/DummyBadge"
-                android:layout_marginTop="12dp"
-                android:text="@string/dummy_data_badge" />
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:text="@string/dummy_data_notice"
-                android:textColor="@color/gb_on_surface_variant"
-                android:textSize="12sp" />
 
             <LinearLayout
                 android:id="@+id/sectionSchedule"
@@ -405,13 +392,12 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="148dp"
                                 android:background="@drawable/bg_wind_image"
-                                android:padding="16dp">
+                                android:clipToOutline="true">
 
                                 <ImageView
                                     android:id="@+id/windHomeImage1"
                                     android:layout_width="match_parent"
                                     android:layout_height="match_parent"
-                                    android:layout_margin="-16dp"
                                     android:contentDescription="@null"
                                     android:scaleType="centerCrop"
                                     android:visibility="gone" />
@@ -420,6 +406,8 @@
                                     android:id="@+id/windHomeRank1"
                                     android:layout_width="58dp"
                                     android:layout_height="52dp"
+                                    android:layout_marginStart="16dp"
+                                    android:layout_marginTop="16dp"
                                     android:background="@drawable/bg_primary_card"
                                     android:gravity="center"
                                     android:text="@string/wind_status"
@@ -429,14 +417,22 @@
 
                                 <TextView
                                     android:id="@+id/windHomeHits1"
-                                    android:layout_width="160dp"
+                                    android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:layout_gravity="bottom|end"
+                                    android:layout_marginEnd="16dp"
+                                    android:layout_marginBottom="16dp"
+                                    android:background="@drawable/bg_wind_hits_badge"
                                     android:ellipsize="end"
-                                    android:gravity="end"
+                                    android:gravity="center"
+                                    android:maxWidth="160dp"
+                                    android:paddingStart="8dp"
+                                    android:paddingTop="4dp"
+                                    android:paddingEnd="8dp"
+                                    android:paddingBottom="4dp"
                                     android:singleLine="true"
                                     android:text="@string/wind_hits"
-                                    android:textColor="@color/gb_on_surface"
+                                    android:textColor="@color/white"
                                     android:textSize="12sp"
                                     android:textStyle="bold" />
                             </FrameLayout>
@@ -511,13 +507,12 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="148dp"
                                 android:background="@drawable/bg_wind_image"
-                                android:padding="16dp">
+                                android:clipToOutline="true">
 
                                 <ImageView
                                     android:id="@+id/windHomeImage2"
                                     android:layout_width="match_parent"
                                     android:layout_height="match_parent"
-                                    android:layout_margin="-16dp"
                                     android:contentDescription="@null"
                                     android:scaleType="centerCrop"
                                     android:visibility="gone" />
@@ -526,6 +521,8 @@
                                     android:id="@+id/windHomeRank2"
                                     android:layout_width="58dp"
                                     android:layout_height="52dp"
+                                    android:layout_marginStart="16dp"
+                                    android:layout_marginTop="16dp"
                                     android:background="@drawable/bg_primary_card"
                                     android:gravity="center"
                                     android:text="@string/wind_status_2"
@@ -535,14 +532,22 @@
 
                                 <TextView
                                     android:id="@+id/windHomeHits2"
-                                    android:layout_width="160dp"
+                                    android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:layout_gravity="bottom|end"
+                                    android:layout_marginEnd="16dp"
+                                    android:layout_marginBottom="16dp"
+                                    android:background="@drawable/bg_wind_hits_badge"
                                     android:ellipsize="end"
-                                    android:gravity="end"
+                                    android:gravity="center"
+                                    android:maxWidth="160dp"
+                                    android:paddingStart="8dp"
+                                    android:paddingTop="4dp"
+                                    android:paddingEnd="8dp"
+                                    android:paddingBottom="4dp"
                                     android:singleLine="true"
                                     android:text="@string/wind_hits_2"
-                                    android:textColor="@color/gb_on_surface"
+                                    android:textColor="@color/white"
                                     android:textSize="12sp"
                                     android:textStyle="bold" />
                             </FrameLayout>
@@ -616,13 +621,12 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="148dp"
                                 android:background="@drawable/bg_wind_image"
-                                android:padding="16dp">
+                                android:clipToOutline="true">
 
                                 <ImageView
                                     android:id="@+id/windHomeImage3"
                                     android:layout_width="match_parent"
                                     android:layout_height="match_parent"
-                                    android:layout_margin="-16dp"
                                     android:contentDescription="@null"
                                     android:scaleType="centerCrop"
                                     android:visibility="gone" />
@@ -631,6 +635,8 @@
                                     android:id="@+id/windHomeRank3"
                                     android:layout_width="58dp"
                                     android:layout_height="52dp"
+                                    android:layout_marginStart="16dp"
+                                    android:layout_marginTop="16dp"
                                     android:background="@drawable/bg_primary_card"
                                     android:gravity="center"
                                     android:text="@string/wind_status_3"
@@ -640,14 +646,22 @@
 
                                 <TextView
                                     android:id="@+id/windHomeHits3"
-                                    android:layout_width="160dp"
+                                    android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:layout_gravity="bottom|end"
+                                    android:layout_marginEnd="16dp"
+                                    android:layout_marginBottom="16dp"
+                                    android:background="@drawable/bg_wind_hits_badge"
                                     android:ellipsize="end"
-                                    android:gravity="end"
+                                    android:gravity="center"
+                                    android:maxWidth="160dp"
+                                    android:paddingStart="8dp"
+                                    android:paddingTop="4dp"
+                                    android:paddingEnd="8dp"
+                                    android:paddingBottom="4dp"
                                     android:singleLine="true"
                                     android:text="@string/wind_hits_3"
-                                    android:textColor="@color/gb_on_surface"
+                                    android:textColor="@color/white"
                                     android:textSize="12sp"
                                     android:textStyle="bold" />
                             </FrameLayout>
