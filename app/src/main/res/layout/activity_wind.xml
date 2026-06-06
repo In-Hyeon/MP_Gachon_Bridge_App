@@ -19,9 +19,20 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
+        <ImageView
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:background="@drawable/bg_icon_circle"
+            android:contentDescription="@null"
+            android:padding="11dp"
+            android:scaleType="centerInside"
+            android:src="@drawable/gachon_logo_black"
+            android:tint="@color/gb_primary" />
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginStart="12dp"
             android:text="@string/page_wind_title"
             android:textColor="@color/gb_on_surface"
             android:textSize="22sp"
@@ -129,7 +140,7 @@
     </androidx.core.widget.NestedScrollView>
 
     <!-- 더 많은 프로그램 보기 버튼 -->
-    <TextView
+    <LinearLayout
         android:id="@+id/buttonWindMorePrograms"
         android:layout_width="0dp"
         android:layout_height="56dp"
@@ -141,13 +152,26 @@
         android:focusable="true"
         android:foreground="?attr/selectableItemBackground"
         android:gravity="center"
-        android:text="@string/wind_more_programs"
-        android:textColor="@color/gb_on_primary"
-        android:textSize="16sp"
-        android:textStyle="bold"
+        android:orientation="horizontal"
         app:layout_constraintBottom_toTopOf="@id/bottomNav"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/wind_more_programs"
+            android:textColor="@color/gb_on_primary"
+            android:textSize="16sp"
+            android:textStyle="bold" />
+
+        <ImageView
+            android:layout_width="16dp"
+            android:layout_height="16dp"
+            android:layout_marginStart="8dp"
+            android:src="@drawable/chevron"
+            app:tint="@color/gb_on_primary" />
+    </LinearLayout>
 
     <!-- 하단 네비게이션 -->
     <include
