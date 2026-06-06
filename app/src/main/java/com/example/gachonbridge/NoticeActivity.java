@@ -1,80 +1,90 @@
 package com.example.gachonbridge;
 
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class NoticeActivity extends BaseActivity {
 
     private TextView filterAll;
     private TextView filterAcademic;
     private TextView filterScholarship;
-    private View generalNotice1;
-    private View academicNotice1;
-    private View scholarshipNotice1;
-    private View generalNotice2;
+    private TextView tvLoading;
+    private RecyclerView recyclerView;
+    private NoticeAdapter adapter;
+    private final List<Notice> noticeList = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_notice);
-        // TODO: Replace dummy notice cards with backend notice list data.
         bindBottomNavigation(R.id.navNotice);
 
         filterAll = findViewById(R.id.buttonNoticeFilterAll);
         filterAcademic = findViewById(R.id.buttonNoticeFilterAcademic);
         filterScholarship = findViewById(R.id.buttonNoticeFilterScholarship);
-        generalNotice1 = findViewById(R.id.cardNoticeDummyGeneral1);
-        academicNotice1 = findViewById(R.id.cardNoticeDummyAcademic1);
-        scholarshipNotice1 = findViewById(R.id.cardNoticeDummyScholarship1);
-        generalNotice2 = findViewById(R.id.cardNoticeDummyGeneral2);
+        tvLoading = findViewById(R.id.tvNoticeLoading);
+        recyclerView = findViewById(R.id.noticeRecyclerView);
 
-        filterAll.setOnClickListener(v -> showAllNotices());
-        filterAcademic.setOnClickListener(v -> showAcademicNotices());
-        filterScholarship.setOnClickListener(v -> showScholarshipNotices());
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        adapter = new NoticeAdapter(noticeList);
+        recyclerView.setAdapter(adapter);
 
-        // TODO: Connect these dummy notice cards to the notice detail website or API-linked page.
-        generalNotice1.setOnClickListener(v -> { });
-        academicNotice1.setOnClickListener(v -> { });
-        scholarshipNotice1.setOnClickListener(v -> { });
-        generalNotice2.setOnClickListener(v -> { });
+        filterAll.setOnClickListener(v -> loadNotices(GachonScraper.Category.ALL));
+        filterAcademic.setOnClickListener(v -> loadNotices(GachonScraper.Category.ACADEMIC));
+        filterScholarship.setOnClickListener(v -> loadNotices(GachonScraper.Category.SCHOLARSHIP));
+
         findViewById(R.id.buttonNoticeMore).setOnClickListener(v -> {
-            // TODO: Connect to full academic notice website.
+            startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://www.gachon.ac.kr/kor/7986/subview.do")));
         });
 
-        showAllNotices();
+        loadNotices(GachonScraper.Category.ALL);
     }
 
-    private void showAllNotices() {
-        generalNotice1.setVisibility(View.VISIBLE);
-        academicNotice1.setVisibility(View.VISIBLE);
-        scholarshipNotice1.setVisibility(View.VISIBLE);
-        generalNotice2.setVisibility(View.VISIBLE);
-        setActiveFilter(filterAll);
+    private void loadNotices(GachonScraper.Category category) {
+        setActiveFilter(category);
+        noticeList.clear();
+        adapter.notifyDataSetChanged();
+        tvLoading.setVisibility(View.VISIBLE);
+
+        new Thread(() -> {
+            try {
+                // Fetch up to 12 notices as requested
+                List<Notice> fetched = GachonScraper.fetchNotices(category, 12);
+                runOnUiThread(() -> {
+                    if (fetched.size() > 12) {
+                        noticeList.addAll(fetched.subList(0, 12));
+                    } else {
+                        noticeList.addAll(fetched);
+                    }
+                    adapter.notifyDataSetChanged();
+                    tvLoading.setVisibility(View.GONE);
+                });
+            } catch (Exception e) {
+                e.printStackTrace();
+                runOnUiThread(() -> {
+                    tvLoading.setVisibility(View.GONE);
+                });
+            }
+        }).start();
     }
 
-    private void showAcademicNotices() {
-        generalNotice1.setVisibility(View.GONE);
-        academicNotice1.setVisibility(View.VISIBLE);
-        scholarshipNotice1.setVisibility(View.GONE);
-        generalNotice2.setVisibility(View.GONE);
-        setActiveFilter(filterAcademic);
-    }
-
-    private void showScholarshipNotices() {
-        generalNotice1.setVisibility(View.GONE);
-        academicNotice1.setVisibility(View.GONE);
-        scholarshipNotice1.setVisibility(View.VISIBLE);
-        generalNotice2.setVisibility(View.GONE);
-        setActiveFilter(filterScholarship);
-    }
-
-    private void setActiveFilter(TextView activeFilter) {
-        setFilterState(filterAll, activeFilter == filterAll);
-        setFilterState(filterAcademic, activeFilter == filterAcademic);
-        setFilterState(filterScholarship, activeFilter == filterScholarship);
+    private void setActiveFilter(GachonScraper.Category category) {
+        setFilterState(filterAll, category == GachonScraper.Category.ALL);
+        setFilterState(filterAcademic, category == GachonScraper.Category.ACADEMIC);
+        setFilterState(filterScholarship, category == GachonScraper.Category.SCHOLARSHIP);
     }
 
     private void setFilterState(TextView filter, boolean active) {
@@ -83,5 +93,69 @@ public class NoticeActivity extends BaseActivity {
                 this,
                 active ? R.color.gb_on_primary : R.color.gb_on_surface
         ));
+    }
+
+    class NoticeAdapter extends RecyclerView.Adapter<NoticeAdapter.VH> {
+        private final List<Notice> items;
+
+        NoticeAdapter(List<Notice> items) {
+            this.items = items;
+        }
+
+        @NonNull
+        @Override
+        public VH onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+            View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_notice_card, parent, false);
+            return new VH(v);
+        }
+
+        @Override
+        public void onBindViewHolder(@NonNull VH holder, int position) {
+            Notice notice = items.get(position);
+            holder.tvTitle.setText(notice.getTitle());
+            holder.tvDate.setText(notice.getDate());
+            holder.tvBadge.setText(notice.getCategory().equals("ACADEMIC") ? "학사" : 
+                                 notice.getCategory().equals("SCHOLARSHIP") ? "장학" : "전체");
+
+            if (notice.isPinned()) {
+                setBackgroundPreservingPadding(holder.container, R.drawable.bg_notice_featured);
+                holder.tvScrap.setVisibility(View.VISIBLE);
+            } else {
+                setBackgroundPreservingPadding(holder.container, R.drawable.bg_card);
+                holder.tvScrap.setVisibility(View.GONE);
+            }
+
+            holder.itemView.setOnClickListener(v -> {
+                startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(notice.getUrl())));
+            });
+        }
+
+        private void setBackgroundPreservingPadding(View view, int resId) {
+            int pL = view.getPaddingLeft();
+            int pT = view.getPaddingTop();
+            int pR = view.getPaddingRight();
+            int pB = view.getPaddingBottom();
+            view.setBackgroundResource(resId);
+            view.setPadding(pL, pT, pR, pB);
+        }
+
+        @Override
+        public int getItemCount() {
+            return items.size();
+        }
+
+        class VH extends RecyclerView.ViewHolder {
+            View container;
+            TextView tvBadge, tvTitle, tvDate, tvScrap;
+
+            VH(View v) {
+                super(v);
+                container = v.findViewById(R.id.noticeItemContainer);
+                tvBadge = v.findViewById(R.id.tvNoticeBadge);
+                tvTitle = v.findViewById(R.id.tvNoticeTitle);
+                tvDate = v.findViewById(R.id.tvNoticeDate);
+                tvScrap = v.findViewById(R.id.tvNoticeScrap);
+            }
+        }
     }
 }

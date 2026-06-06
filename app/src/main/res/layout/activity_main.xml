@@ -357,6 +357,48 @@
                         android:id="@+id/noticePreview3"
                         style="@style/NoticeItem"
                         android:text="@string/notice_3" />
+
+                    <View style="@style/Divider" />
+
+                    <TextView
+                        android:id="@+id/noticePreview4"
+                        style="@style/NoticeItem"
+                        android:text="공지사항 항목 4" />
+
+                    <View style="@style/Divider" />
+
+                    <TextView
+                        android:id="@+id/noticePreview5"
+                        style="@style/NoticeItem"
+                        android:text="공지사항 항목 5" />
+
+                    <View style="@style/Divider" />
+
+                    <TextView
+                        android:id="@+id/noticePreview6"
+                        style="@style/NoticeItem"
+                        android:text="공지사항 항목 6" />
+
+                    <View style="@style/Divider" />
+
+                    <TextView
+                        android:id="@+id/noticePreview7"
+                        style="@style/NoticeItem"
+                        android:text="공지사항 항목 7" />
+
+                    <View style="@style/Divider" />
+
+                    <TextView
+                        android:id="@+id/noticePreview8"
+                        style="@style/NoticeItem"
+                        android:text="공지사항 항목 8" />
+
+                    <View style="@style/Divider" />
+
+                    <TextView
+                        android:id="@+id/noticePreview9"
+                        style="@style/NoticeItem"
+                        android:text="공지사항 항목 9" />
                 </LinearLayout>
             </LinearLayout>
 

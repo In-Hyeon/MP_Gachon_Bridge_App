@@ -190,7 +190,10 @@
         <item name="android:layout_marginTop">16dp</item>
         <item name="android:background">@drawable/bg_card</item>
         <item name="android:orientation">vertical</item>
-        <item name="android:padding">18dp</item>
+        <item name="android:paddingTop">24dp</item>
+        <item name="android:paddingBottom">24dp</item>
+        <item name="android:paddingStart">18dp</item>
+        <item name="android:paddingEnd">18dp</item>
     </style>
 
     <style name="NoticeCardFeatured" parent="NoticeCard">
@@ -199,13 +202,13 @@
 
     <style name="NoticeBadge">
         <item name="android:layout_width">wrap_content</item>
-        <item name="android:layout_height">28dp</item>
+        <item name="android:layout_height">26dp</item>
         <item name="android:background">@drawable/bg_chip_inactive</item>
         <item name="android:gravity">center</item>
         <item name="android:paddingStart">12dp</item>
         <item name="android:paddingEnd">12dp</item>
         <item name="android:textColor">@color/gb_on_surface_variant</item>
-        <item name="android:textSize">12sp</item>
+        <item name="android:textSize">11sp</item>
         <item name="android:textStyle">bold</item>
     </style>
 
@@ -218,28 +221,28 @@
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:textColor">@color/gb_on_surface_variant</item>
-        <item name="android:textSize">13sp</item>
+        <item name="android:textSize">12sp</item>
         <item name="android:textStyle">bold</item>
     </style>
 
     <style name="NoticeTitleLarge">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
-        <item name="android:layout_marginTop">16dp</item>
+        <item name="android:layout_marginTop">14dp</item>
         <item name="android:textColor">@color/gb_on_surface</item>
-        <item name="android:textSize">21sp</item>
+        <item name="android:textSize">18sp</item>
         <item name="android:textStyle">bold</item>
     </style>
 
     <style name="NoticeSummary">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
-        <item name="android:layout_marginTop">14dp</item>
+        <item name="android:layout_marginTop">10dp</item>
         <item name="android:ellipsize">end</item>
         <item name="android:lineSpacingExtra">4dp</item>
         <item name="android:maxLines">2</item>
         <item name="android:textColor">@color/gb_on_surface_variant</item>
-        <item name="android:textSize">16sp</item>
+        <item name="android:textSize">14sp</item>
     </style>
 
     <style name="ContactFilterButton">
