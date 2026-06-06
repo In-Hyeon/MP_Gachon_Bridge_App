@@ -13,6 +13,9 @@ import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.Manifest;
+import android.content.pm.PackageManager;
+import android.os.Build;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -42,6 +45,12 @@ public class NoticeActivity extends BaseActivity {
         adapter = new NoticeAdapter(noticeList);
         recyclerView.setAdapter(adapter);
 
+        findViewById(R.id.buttonKeywordSettings).setOnClickListener(v -> {
+            startActivity(new Intent(this, KeywordActivity.class));
+        });
+
+        checkNotificationPermission();
+
         filterAll.setOnClickListener(v -> loadNotices(GachonScraper.Category.ALL));
         filterAcademic.setOnClickListener(v -> loadNotices(GachonScraper.Category.ACADEMIC));
         filterScholarship.setOnClickListener(v -> loadNotices(GachonScraper.Category.SCHOLARSHIP));
@@ -53,6 +62,14 @@ public class NoticeActivity extends BaseActivity {
         loadNotices(GachonScraper.Category.ALL);
     }
 
+    private void checkNotificationPermission() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            if (checkSelfPermission(Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED) {
+                requestPermissions(new String[]{Manifest.permission.POST_NOTIFICATIONS}, 101);
+            }
+        }
+    }
+
     private void loadNotices(GachonScraper.Category category) {
         setActiveFilter(category);
         noticeList.clear();
@@ -61,14 +78,27 @@ public class NoticeActivity extends BaseActivity {
 
         new Thread(() -> {
             try {
-                // Fetch up to 12 notices as requested
-                List<Notice> fetched = GachonScraper.fetchNotices(category, 12);
+                // Fetch a sufficient amount to ensure we get enough regular notices
+                List<Notice> fetched = GachonScraper.fetchNotices(category, 25);
                 runOnUiThread(() -> {
-                    if (fetched.size() > 12) {
-                        noticeList.addAll(fetched.subList(0, 12));
-                    } else {
-                        noticeList.addAll(fetched);
+                    List<Notice> pinned = new ArrayList<>();
+                    List<Notice> regular = new ArrayList<>();
+                    
+                    for (Notice n : fetched) {
+                        if (n.isPinned()) pinned.add(n);
+                        else regular.add(n);
                     }
+
+                    // Add all pinned notices
+                    noticeList.addAll(pinned);
+                    
+                    // Add up to 12 regular notices
+                    if (regular.size() > 12) {
+                        noticeList.addAll(regular.subList(0, 12));
+                    } else {
+                        noticeList.addAll(regular);
+                    }
+                    
                     adapter.notifyDataSetChanged();
                     tvLoading.setVisibility(View.GONE);
                 });
@@ -118,11 +148,11 @@ public class NoticeActivity extends BaseActivity {
                                  notice.getCategory().equals("SCHOLARSHIP") ? "장학" : "전체");
 
             if (notice.isPinned()) {
-                setBackgroundPreservingPadding(holder.container, R.drawable.bg_notice_featured);
-                holder.tvScrap.setVisibility(View.VISIBLE);
+                setBackgroundPreservingPadding(holder.container, R.drawable.bg_notice_featured_accent);
+                holder.ivPick.setVisibility(View.VISIBLE);
             } else {
                 setBackgroundPreservingPadding(holder.container, R.drawable.bg_card);
-                holder.tvScrap.setVisibility(View.GONE);
+                holder.ivPick.setVisibility(View.GONE);
             }
 
             holder.itemView.setOnClickListener(v -> {
@@ -146,7 +176,8 @@ public class NoticeActivity extends BaseActivity {
 
         class VH extends RecyclerView.ViewHolder {
             View container;
-            TextView tvBadge, tvTitle, tvDate, tvScrap;
+            TextView tvBadge, tvTitle, tvDate;
+            android.widget.ImageView ivPick;
 
             VH(View v) {
                 super(v);
@@ -154,7 +185,7 @@ public class NoticeActivity extends BaseActivity {
                 tvBadge = v.findViewById(R.id.tvNoticeBadge);
                 tvTitle = v.findViewById(R.id.tvNoticeTitle);
                 tvDate = v.findViewById(R.id.tvNoticeDate);
-                tvScrap = v.findViewById(R.id.tvNoticeScrap);
+                ivPick = v.findViewById(R.id.ivNoticePick);
             }
         }
     }

@@ -42,6 +42,7 @@ dependencies {
     implementation(libs.constraintlayout)
     implementation("org.jsoup:jsoup:1.17.2")
     implementation("androidx.recyclerview:recyclerview:1.4.0")
+    implementation("androidx.work:work-runtime:2.9.0")
     implementation("com.google.android.gms:play-services-maps:20.0.0")
     implementation("com.google.android.gms:play-services-location:21.3.0")
     testImplementation(libs.junit)

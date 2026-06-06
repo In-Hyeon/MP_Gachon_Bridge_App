@@ -40,6 +40,18 @@
             android:textColor="@color/gb_on_surface"
             android:textSize="22sp"
             android:textStyle="bold" />
+
+        <ImageView
+            android:id="@+id/buttonKeywordSettings"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:background="@drawable/bg_icon_circle"
+            android:clickable="true"
+            android:focusable="true"
+            android:padding="12dp"
+            android:scaleType="centerInside"
+            android:src="@drawable/bell"
+            android:tint="@color/gb_on_surface_variant" />
     </LinearLayout>
 
     <!-- 고정 헤더 영역 -->

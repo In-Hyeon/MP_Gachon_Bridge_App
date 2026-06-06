@@ -18,16 +18,12 @@
             android:id="@+id/tvNoticeBadge"
             style="@style/NoticeBadge" />
 
-        <TextView
-            android:id="@+id/tvNoticeScrap"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="10dp"
-            android:layout_weight="1"
-            android:text="@string/notice_scrap"
-            android:textColor="@color/gb_primary"
-            android:textSize="18sp"
-            android:textStyle="bold"
+        <ImageView
+            android:id="@+id/ivNoticePick"
+            android:layout_width="18dp"
+            android:layout_height="18dp"
+            android:layout_marginStart="8dp"
+            android:src="@drawable/pin"
             android:visibility="gone" />
 
         <Space
