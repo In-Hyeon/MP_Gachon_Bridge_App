@@ -1,6 +1,7 @@
 package com.example.gachonbridge;
 
 import android.os.Bundle;
+import android.view.View;
 import android.widget.TextView;
 
 public class ClubDetailActivity extends BaseActivity {
@@ -26,7 +27,7 @@ public class ClubDetailActivity extends BaseActivity {
     }
 
     private void bindBackButton() {
-        TextView backButton = findViewById(R.id.buttonClubDetailBack);
+        View backButton = findViewById(R.id.buttonClubDetailBack);
         backButton.setOnClickListener(v -> finish());
     }
 

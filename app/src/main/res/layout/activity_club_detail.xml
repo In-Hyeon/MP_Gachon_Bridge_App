@@ -19,17 +19,18 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-        <TextView
+        <ImageView
             android:id="@+id/buttonClubDetailBack"
             android:layout_width="44dp"
             android:layout_height="44dp"
             android:clickable="true"
+            android:contentDescription="@string/back_symbol"
             android:focusable="true"
-            android:gravity="center"
-            android:text="@string/back_symbol"
-            android:textColor="@color/gb_on_surface"
-            android:textSize="28sp"
-            android:textStyle="bold" />
+            android:padding="10dp"
+            android:scaleType="centerInside"
+            android:scaleX="-1"
+            android:src="@drawable/ic_next"
+            android:tint="@color/gb_primary" />
 
         <TextView
             android:layout_width="48dp"
