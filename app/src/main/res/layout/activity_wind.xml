@@ -26,7 +26,7 @@
             android:contentDescription="@null"
             android:padding="11dp"
             android:scaleType="centerInside"
-            android:src="@drawable/ic_padlock"
+            android:src="@drawable/bell"
             android:tint="@color/gb_primary" />
 
         <TextView
