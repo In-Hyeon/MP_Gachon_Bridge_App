@@ -2,6 +2,7 @@ package com.example.gachonbridge;
 
 import android.content.Intent;
 import android.graphics.Typeface;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -33,6 +34,11 @@ public class MainActivity extends BaseActivity {
     private TextView[] windHomeTitles;
     private TextView[] windHomePeriods;
     private int selectedMealIndex;
+    private static final String[] MEAL_RESTAURANT_URLS = {
+            "https://www.gachon.ac.kr/kor/7349/subview.do",
+            "https://www.gachon.ac.kr/kor/7347/subview.do",
+            "https://www.gachon.ac.kr/kor/7350/subview.do"
+    };
     private final ExecutorService contentExecutor = Executors.newSingleThreadExecutor();
     private final Handler mainHandler = new Handler(Looper.getMainLooper());
     private final Runnable mealHighlightUpdater = new Runnable() {
@@ -144,6 +150,7 @@ public class MainActivity extends BaseActivity {
 
         bindTabGroup(noticeTabs, noticeItems, noticePreviewData);
         bindMealTabs();
+        bindMealLinks();
         updatePreviewGroup(noticeTabs, noticeItems, noticePreviewData, 0);
         updateMealPreviewGroup(0);
     }
@@ -155,6 +162,12 @@ public class MainActivity extends BaseActivity {
                 selectedMealIndex = selectedIndex;
                 updateMealPreviewGroup(selectedMealIndex);
             });
+        }
+    }
+
+    private void bindMealLinks() {
+        for (TextView mealItem : mealItems) {
+            mealItem.setOnClickListener(v -> openSelectedMealRestaurant());
         }
     }
 
@@ -315,7 +328,22 @@ public class MainActivity extends BaseActivity {
     }
 
     private String formatMealItem(String label, String menu) {
-        return label + "\n" + menu;
+        return label + "\n " + formatMealPreviewMenu(menu);
+    }
+
+    private String formatMealPreviewMenu(String menu) {
+        if (menu == null || menu.trim().isEmpty()) {
+            return "-";
+        }
+
+        String normalized = menu
+                .replace('\u00A0', ' ')
+                .replace("\r", "\n")
+                .replaceAll("\\s*\\n+\\s*", ", ")
+                .replaceAll("\\s*,\\s*", ", ")
+                .replaceAll("\\s+", " ")
+                .trim();
+        return normalized.isEmpty() ? "-" : normalized;
     }
 
     private void bindClubCategoryLinks() {
@@ -460,6 +488,15 @@ public class MainActivity extends BaseActivity {
 
     private void openNoticePage() {
         startActivity(new Intent(this, NoticeActivity.class));
+    }
+
+    private void openSelectedMealRestaurant() {
+        if (selectedMealIndex < 0 || selectedMealIndex >= MEAL_RESTAURANT_URLS.length) {
+            return;
+        }
+
+        Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(MEAL_RESTAURANT_URLS[selectedMealIndex]));
+        startActivity(intent);
     }
 
     @Override

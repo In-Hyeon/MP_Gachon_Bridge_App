@@ -2,10 +2,12 @@ package com.example.gachonbridge;
 
 import android.app.ActivityOptions;
 import android.content.Intent;
+import android.content.res.ColorStateList;
 import android.os.Bundle;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.Nullable;
@@ -100,16 +102,17 @@ public abstract class BaseActivity extends AppCompatActivity {
     }
 
     private void bindNav(int navId, Class<?> target, int activeNavId) {
-        TextView item = findViewById(navId);
+        View item = findViewById(navId);
         if (item == null) {
             return;
         }
 
         boolean active = navId == activeNavId;
-        item.setTextColor(ContextCompat.getColor(
+        int color = ContextCompat.getColor(
                 this,
                 active ? R.color.gb_primary_container : R.color.gb_on_surface_variant
-        ));
+        );
+        applyBottomNavColor(item, color);
         item.setBackgroundResource(active ? R.drawable.bg_nav_active : 0);
         item.setOnClickListener(v -> {
             if (active) {
@@ -120,5 +123,24 @@ public abstract class BaseActivity extends AppCompatActivity {
             startActivity(intent, ActivityOptions.makeCustomAnimation(this, 0, 0).toBundle());
             overridePendingTransition(0, 0);
         });
+    }
+
+    private void applyBottomNavColor(View view, int color) {
+        if (view instanceof TextView) {
+            ((TextView) view).setTextColor(color);
+            return;
+        }
+        if (view instanceof ImageView) {
+            ((ImageView) view).setImageTintList(ColorStateList.valueOf(color));
+            return;
+        }
+        if (!(view instanceof ViewGroup)) {
+            return;
+        }
+
+        ViewGroup group = (ViewGroup) view;
+        for (int i = 0; i < group.getChildCount(); i++) {
+            applyBottomNavColor(group.getChildAt(i), color);
+        }
     }
 }
