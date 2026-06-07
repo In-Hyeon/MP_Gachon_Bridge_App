@@ -28,6 +28,19 @@ public class LabActivity extends BaseActivity {
     private static final String PREF_NAME = "lab_favorite_pref";
     private static final String PREF_FAVORITES = "favorite_professors";
 
+    // LAB 화면 기준 색상
+    // 선택된 버튼, 검색 버튼, 상세보기 버튼은 아래 연파랑으로 고정합니다.
+    private static final String LAB_ACTIVE_BLUE = "#8AA8F8";
+    private static final String LAB_TEXT_DARK = "#111318";
+    private static final String LAB_TEXT_WHITE = "#FFFFFF";
+    private static final String LAB_INACTIVE_FILL = "#00000000";
+    private static final String LAB_INACTIVE_STROKE = "#E1E2EB";
+    private static final String LAB_CARD_DARK = "#1E2029";
+    private static final String LAB_AVATAR_DARK = "#20242B";
+    private static final String LAB_DIVIDER = "#2E3040";
+    private static final String LAB_LABEL = "#6E7A9A";
+    private static final String LAB_VALUE = "#A0A8C0";
+
     private Button btnTabAi, btnTabBusiness, btnTabChem;
     private Button btnSearchProfessor, btnMoreLabs, btnViewAll, btnViewFavorites;
     private EditText editSearchProfessor;
@@ -171,27 +184,55 @@ public class LabActivity extends BaseActivity {
         setFavoriteModeButtonStyle(btnViewFavorites, favoritesOnly);
     }
 
+    private void clearButtonDefaultTint(Button button) {
+        if (button == null) return;
+
+        // Material3 기본 버튼 색이 보라색으로 덮이는 것을 막습니다.
+        button.setBackgroundTintList(null);
+        button.setStateListAnimator(null);
+        button.setAllCaps(false);
+        button.setMinWidth(0);
+        button.setMinHeight(0);
+        button.setIncludeFontPadding(false);
+        button.setGravity(Gravity.CENTER);
+        button.setPadding(0, 0, 0, 0);
+    }
+
     private void setFavoriteModeButtonStyle(Button button, boolean selected) {
-        button.setAllCaps(false); button.setMinWidth(0); button.setMinHeight(0);
-        if (selected) { button.setTextColor(Color.parseColor("#111318")); button.setBackground(makeRoundRect("#8EA8FF", 16)); }
-        else          { button.setTextColor(Color.WHITE); button.setBackground(makeRoundRectWithStroke("#24262E","#3B3F50",16,1)); }
+        clearButtonDefaultTint(button);
+
+        if (selected) {
+            button.setTextColor(Color.parseColor(LAB_TEXT_DARK));
+            button.setBackground(makeRoundRect(LAB_ACTIVE_BLUE, 16));
+        } else {
+            button.setTextColor(Color.parseColor(LAB_TEXT_WHITE));
+            button.setBackground(makeRoundRectWithStroke(LAB_INACTIVE_FILL, LAB_INACTIVE_STROKE, 16, 1));
+        }
     }
 
     private void setSelectedTab(Button sel) {
-        setTabStyle(btnTabAi, false); setTabStyle(btnTabBusiness, false); setTabStyle(btnTabChem, false);
+        setTabStyle(btnTabAi, false);
+        setTabStyle(btnTabBusiness, false);
+        setTabStyle(btnTabChem, false);
         setTabStyle(sel, true);
     }
 
     private void setTabStyle(Button button, boolean selected) {
-        button.setAllCaps(false); button.setMinWidth(0); button.setMinHeight(0);
-        if (selected) { button.setTextColor(Color.parseColor("#111318")); button.setBackground(makeRoundRect("#8EA8FF", 18)); }
-        else          { button.setTextColor(Color.WHITE); button.setBackground(makeRoundRectWithStroke("#24262E","#3B3F50",18,1)); }
+        clearButtonDefaultTint(button);
+
+        if (selected) {
+            button.setTextColor(Color.parseColor(LAB_TEXT_DARK));
+            button.setBackground(makeRoundRect(LAB_ACTIVE_BLUE, 18));
+        } else {
+            button.setTextColor(Color.parseColor(LAB_TEXT_WHITE));
+            button.setBackground(makeRoundRectWithStroke(LAB_INACTIVE_FILL, LAB_INACTIVE_STROKE, 18, 1));
+        }
     }
 
     private void setActionButtonStyle(Button button) {
-        button.setAllCaps(false); button.setMinWidth(0); button.setMinHeight(0);
-        button.setTextColor(Color.parseColor("#111318"));
-        button.setBackground(makeRoundRect("#8EA8FF", 4));
+        clearButtonDefaultTint(button);
+        button.setTextColor(Color.parseColor(LAB_TEXT_DARK));
+        button.setBackground(makeRoundRect(LAB_ACTIVE_BLUE, 4));
     }
 
     private void renderLabs(List<Lab> labs) {
@@ -213,7 +254,7 @@ public class LabActivity extends BaseActivity {
         LinearLayout card = new LinearLayout(this);
         card.setOrientation(LinearLayout.VERTICAL);
         card.setPadding(dp(16), dp(16), dp(16), dp(16));
-        card.setBackground(makeRoundRect("#1E2029", 12));
+        card.setBackground(makeRoundRect(LAB_CARD_DARK, 12));
         LinearLayout.LayoutParams cp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
         cp.setMargins(0,0,0,dp(14)); card.setLayoutParams(cp);
 
@@ -222,18 +263,18 @@ public class LabActivity extends BaseActivity {
 
         TextView avatar = new TextView(this);
         avatar.setText(lab.badge); avatar.setGravity(Gravity.CENTER);
-        avatar.setTextColor(Color.parseColor("#8EA8FF")); avatar.setTextSize(15);
+        avatar.setTextColor(Color.parseColor(LAB_ACTIVE_BLUE)); avatar.setTextSize(15);
         avatar.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
-        avatar.setBackground(makeRoundRect("#24262E", 32));
+        avatar.setBackground(makeRoundRect(LAB_AVATAR_DARK, 32));
         LinearLayout.LayoutParams ap = new LinearLayout.LayoutParams(dp(48),dp(48));
         ap.setMargins(0,0,dp(14),0); topRow.addView(avatar, ap);
 
         LinearLayout infoBox = new LinearLayout(this);
         infoBox.setOrientation(LinearLayout.VERTICAL);
         infoBox.addView(makeText(lab.labName, "#FFFFFF", 16, true));
-        TextView prof = makeText(lab.professor + " / " + lab.position, "#A0A8C0", 13, false);
+        TextView prof = makeText(lab.professor + " / " + lab.position, LAB_VALUE, 13, false);
         prof.setPadding(0,dp(4),0,0); infoBox.addView(prof);
-        TextView res = makeText(lab.research, "#6E7A9A", 12, false);
+        TextView res = makeText(lab.research, LAB_LABEL, 12, false);
         res.setPadding(0,dp(4),0,0); infoBox.addView(res);
         topRow.addView(infoBox, new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.WRAP_CONTENT, 1f));
 
@@ -248,7 +289,7 @@ public class LabActivity extends BaseActivity {
         card.addView(topRow);
 
         View divider = new View(this);
-        divider.setBackgroundColor(Color.parseColor("#2E3040"));
+        divider.setBackgroundColor(Color.parseColor(LAB_DIVIDER));
         LinearLayout.LayoutParams dp2 = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, dp(1));
         dp2.setMargins(0,dp(12),0,dp(10)); card.addView(divider, dp2);
 
@@ -264,9 +305,9 @@ public class LabActivity extends BaseActivity {
 
         Button detailBtn = new Button(this);
         detailBtn.setText("상세보기"); detailBtn.setTextSize(12);
-        detailBtn.setTextColor(Color.parseColor("#111318")); detailBtn.setAllCaps(false);
-        detailBtn.setMinWidth(0); detailBtn.setMinHeight(0);
-        detailBtn.setBackground(makeRoundRect("#8EA8FF", 6));
+        detailBtn.setTextColor(Color.parseColor(LAB_TEXT_DARK));
+        clearButtonDefaultTint(detailBtn);
+        detailBtn.setBackground(makeRoundRect(LAB_ACTIVE_BLUE, 6));
         detailBtn.setOnClickListener(v -> openHomepage(lab.homepage));
         btnRow.addView(detailBtn, new LinearLayout.LayoutParams(dp(100), dp(38)));
         card.addView(btnRow, brp);
@@ -279,9 +320,9 @@ public class LabActivity extends BaseActivity {
         row.setOrientation(LinearLayout.HORIZONTAL); row.setGravity(Gravity.TOP);
         LinearLayout.LayoutParams rp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
         rp.setMargins(0,dp(5),0,0);
-        TextView lv = makeText(label, "#6E7A9A", 12, true);
+        TextView lv = makeText(label, LAB_LABEL, 12, true);
         lv.setMinWidth(dp(60));
-        TextView vv = makeText(value, "#A0A8C0", 12, false);
+        TextView vv = makeText(value, LAB_VALUE, 12, false);
         vv.setSingleLine(false);
         row.addView(lv, new LinearLayout.LayoutParams(dp(66), LinearLayout.LayoutParams.WRAP_CONTENT));
         row.addView(vv, new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.WRAP_CONTENT, 1f));

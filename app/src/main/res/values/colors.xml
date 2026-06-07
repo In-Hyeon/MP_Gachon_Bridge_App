@@ -1,4 +1,3 @@
-<?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
@@ -11,9 +10,12 @@
     <color name="gb_on_surface">#E1E2EB</color>
     <color name="gb_on_surface_variant">#C2C6D4</color>
     <color name="gb_primary">#AAC7FF</color>
-    <color name="gb_primary_container">#5D9CFF</color>
+    <color name="gb_primary_container">#8AA8F8</color>
     <color name="gb_on_primary">#002F65</color>
     <color name="gb_secondary">#7ADAA1</color>
     <color name="gb_tertiary">#C5C0FF</color>
     <color name="gb_error">#FFB4AB</color>
+    <color name="gb_lab_blue">#8AA8F8</color>
+    <color name="gb_map_search_blue">#4F80C8</color>
+    <color name="gb_map_reset_gray">#666666</color>
 </resources>

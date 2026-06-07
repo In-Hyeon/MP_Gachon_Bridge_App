@@ -153,6 +153,11 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
     private static final int STATUS_GRAY = Color.argb(225, 90, 90, 90);
     private static final int STATUS_ORANGE = Color.argb(235, 218, 132, 57);
 
+    // 지도 검색 버튼은 LAB 버튼 색과 다르게 기존 지도 색상으로 고정합니다.
+    // Material 기본 보라색 tint가 덮이지 않도록 styleSearchButton()에서 tint를 제거합니다.
+    private static final int MAP_SEARCH_BUTTON_BLUE = Color.rgb(79, 128, 200); // #4F80C8
+    private static final int MAP_RESET_BUTTON_GRAY = Color.rgb(102, 102, 102); // #666666
+
     private static final int CAMPUS_STROKE = Color.rgb(218, 76, 76);
     private static final int CAMPUS_FILL = Color.argb(24, 218, 76, 76);
 
@@ -277,8 +282,8 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         buildingSearchButton.setText("검색");
         buildingSearchResetButton.setText("초기화");
 
-        styleSearchButton(buildingSearchButton, STATUS_BLUE);
-        styleSearchButton(buildingSearchResetButton, STATUS_GRAY);
+        styleSearchButton(buildingSearchButton, MAP_SEARCH_BUTTON_BLUE);
+        styleSearchButton(buildingSearchResetButton, MAP_RESET_BUTTON_GRAY);
 
         buildingSearchButton.setOnClickListener(v -> performBuildingSearch());
         buildingSearchResetButton.setOnClickListener(v -> clearBuildingSearch());
@@ -291,12 +296,18 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
     private void styleSearchButton(TextView button, int color) {
         if (button == null) return;
 
+        // Material3 기본 버튼 tint가 보라색으로 덮는 현상을 방지합니다.
+        button.setBackgroundTintList(null);
+        button.setStateListAnimator(null);
+
         button.setTextColor(Color.WHITE);
-        button.setTextSize(12.5f);
+        button.setTextSize(14f);
         button.setTypeface(Typeface.DEFAULT_BOLD);
         button.setGravity(Gravity.CENTER);
         button.setSingleLine(true);
         button.setClickable(true);
+        button.setFocusable(true);
+        button.setPadding(0, 0, 0, 0);
 
         GradientDrawable background = new GradientDrawable();
         background.setColor(color);
