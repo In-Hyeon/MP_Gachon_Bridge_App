@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- 하단에서 위로 올라오는 그라데이션 (배경색과 일치) -->
+    <item>
+        <shape>
+            <gradient
+                android:angle="270"
+                android:endColor="@color/gb_surface"
+                android:startColor="@android:color/transparent"
+                android:centerY="0.4" />
+        </shape>
+    </item>
+
+    <!-- 상단에서 아래로 내려오는 그라데이션 (배경색과 일치) -->
+    <item>
+        <shape>
+            <gradient
+                android:angle="90"
+                android:endColor="@color/gb_surface"
+                android:startColor="@android:color/transparent"
+                android:centerY="0.4" />
+        </shape>
+    </item>
+</layer-list>
