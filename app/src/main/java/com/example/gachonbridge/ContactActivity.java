@@ -1,6 +1,7 @@
 package com.example.gachonbridge;
 
 import android.content.Intent;
+import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.Bundle;
 import android.text.Editable;
@@ -157,17 +158,16 @@ public class ContactActivity extends BaseActivity {
 
         for (String sec : sections) {
             TextView chip = new TextView(this);
+
             LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
                     ViewGroup.LayoutParams.WRAP_CONTENT,
-                    ViewGroup.LayoutParams.WRAP_CONTENT);
-            lp.setMarginEnd(10);
+                    dp(42)
+            );
+            lp.setMarginEnd(dp(14));
             chip.setLayoutParams(lp);
-            chip.setPadding(32, 16, 32, 16);
+
             chip.setText(sec);
-            chip.setTextSize(14f);
-            chip.setClickable(true);
-            chip.setFocusable(true);
-            setChipState(chip, sec.equals(currentFilter));
+            applyContactChipStyle(chip, sec.equals(currentFilter));
 
             chip.setOnClickListener(v -> {
                 currentFilter = sec;
@@ -175,21 +175,37 @@ public class ContactActivity extends BaseActivity {
                     View child = chipGroup.getChildAt(i);
                     if (child instanceof TextView) {
                         String label = ((TextView) child).getText().toString();
-                        setChipState((TextView) child, label.equals(sec));
+                        applyContactChipStyle((TextView) child, label.equals(sec));
                     }
                 }
                 adapter.updateData(getFilteredList());
             });
+
             chipGroup.addView(chip);
         }
     }
 
-    private void setChipState(TextView chip, boolean active) {
+    private void applyContactChipStyle(TextView chip, boolean active) {
+        chip.setMinWidth(dp(78));
+        chip.setGravity(android.view.Gravity.CENTER);
+        chip.setTextSize(14f);
+        chip.setTypeface(null, Typeface.BOLD);
+        chip.setSingleLine(true);
+        chip.setPadding(dp(20), 0, dp(20), 0);
+        chip.setClickable(true);
+        chip.setFocusable(true);
         chip.setBackgroundResource(active ? R.drawable.bg_chip_active : R.drawable.bg_chip_inactive);
         chip.setTextColor(ContextCompat.getColor(
                 this,
-                active ? R.color.gb_on_primary : R.color.gb_on_surface));
+                active ? R.color.gb_on_primary : R.color.gb_on_surface
+        ));
     }
+//    private void setChipState(TextView chip, boolean active) {
+//        chip.setBackgroundResource(active ? R.drawable.bg_chip_active : R.drawable.bg_chip_inactive);
+//        chip.setTextColor(ContextCompat.getColor(
+//                this,
+//                active ? R.color.gb_on_primary : R.color.gb_on_surface));
+//    }
 
     private List<Contact> getFilteredList() {
         List<Contact> result = new ArrayList<>();
@@ -257,5 +273,9 @@ public class ContactActivity extends BaseActivity {
                 btnCall         = v.findViewById(R.id.btnContactCall);
             }
         }
+    }
+
+    private int dp(int value) {
+        return (int) (value * getResources().getDisplayMetrics().density + 0.5f);
     }
 }
