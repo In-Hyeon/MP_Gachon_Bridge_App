@@ -247,24 +247,35 @@
                 android:orientation="vertical" />
 
             <!-- 더보기 버튼 -->
-            <Button
+            <LinearLayout
                 android:id="@+id/btnMoreLabs"
                 android:layout_width="match_parent"
                 android:layout_height="48dp"
                 android:layout_marginTop="4dp"
                 android:layout_marginBottom="16dp"
-                android:background="@null"
-                android:minWidth="0dp"
-                android:minHeight="0dp"
+                android:background="@drawable/bg_primary_card"
+                android:clickable="true"
+                android:focusable="true"
+                android:foreground="?attr/selectableItemBackground"
                 android:gravity="center"
-                android:includeFontPadding="false"
-                android:paddingTop="0dp"
-                android:paddingBottom="0dp"
-                android:text="연구소 더보기"
-                android:textAllCaps="false"
-                android:textSize="14sp"
-                android:textStyle="bold"
-                android:visibility="gone" />
+                android:orientation="horizontal"
+                android:visibility="gone">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="더보기"
+                    android:textColor="@color/gb_on_primary"
+                    android:textSize="14sp"
+                    android:textStyle="bold" />
+
+                <ImageView
+                    android:layout_width="14dp"
+                    android:layout_height="14dp"
+                    android:layout_marginStart="8dp"
+                    android:src="@drawable/chevron"
+                    app:tint="@color/gb_on_primary" />
+            </LinearLayout>
 
         </LinearLayout>
     </ScrollView>

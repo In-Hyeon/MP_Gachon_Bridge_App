@@ -28,7 +28,8 @@ public class LabActivity extends BaseActivity {
     private static final String PREF_FAVORITES = "favorite_professors";
 
     private Button btnTabAi, btnTabBusiness, btnTabChem;
-    private Button btnSearchProfessor, btnMoreLabs, btnViewAll, btnViewFavorites;
+    private Button btnSearchProfessor, btnViewAll, btnViewFavorites;
+    private View btnMoreLabs;
     private EditText editSearchProfessor;
     private TextView txtLabSubtitle;
     private LinearLayout labListLayout;
@@ -63,7 +64,6 @@ public class LabActivity extends BaseActivity {
         labListLayout   = findViewById(R.id.labListLayout);
 
         setActionButtonStyle(btnSearchProfessor);
-        setActionButtonStyle(btnMoreLabs);
 
         btnTabAi.setOnClickListener(v -> showDepartment("AI"));
         btnTabBusiness.setOnClickListener(v -> showDepartment("BUSINESS"));
@@ -175,7 +175,7 @@ public class LabActivity extends BaseActivity {
         button.setBackgroundTintList(null);
         if (selected) {
             button.setTextColor(Color.parseColor("#111318"));
-            button.setBackground(makeRoundRect("#8EA8FF", 16));
+            button.setBackground(makeRoundRect("#7CADFF", 16));
         } else {
             button.setTextColor(Color.WHITE);
             button.setBackground(makeRoundRectWithStroke("#00000000", "#FFFFFF", 16, 1));
@@ -192,7 +192,7 @@ public class LabActivity extends BaseActivity {
         button.setBackgroundTintList(null);
         if (selected) {
             button.setTextColor(Color.parseColor("#111318"));
-            button.setBackground(makeRoundRect("#8EA8FF", 18));
+            button.setBackground(makeRoundRect("#7CADFF", 18));
         } else {
             button.setTextColor(Color.WHITE);
             button.setBackground(makeRoundRectWithStroke("#00000000", "#FFFFFF", 18, 1));
@@ -203,7 +203,7 @@ public class LabActivity extends BaseActivity {
         button.setAllCaps(false); button.setMinWidth(0); button.setMinHeight(0);
         button.setBackgroundTintList(null);
         button.setTextColor(Color.parseColor("#111318"));
-        button.setBackground(makeRoundRect("#8EA8FF", 4));
+        button.setBackground(makeRoundRect("#7CADFF", 4));
     }
 
     private void renderLabs(List<Lab> labs) {
@@ -234,7 +234,7 @@ public class LabActivity extends BaseActivity {
 
         TextView avatar = new TextView(this);
         avatar.setText(lab.badge); avatar.setGravity(Gravity.CENTER);
-        avatar.setTextColor(Color.parseColor("#8EA8FF")); avatar.setTextSize(15);
+        avatar.setTextColor(Color.parseColor("#7CADFF")); avatar.setTextSize(15);
         avatar.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
         avatar.setBackground(makeRoundRect("#24262E", 32));
         LinearLayout.LayoutParams ap = new LinearLayout.LayoutParams(dp(48),dp(48));
@@ -278,7 +278,7 @@ public class LabActivity extends BaseActivity {
         detailBtn.setText("상세보기"); detailBtn.setTextSize(12);
         detailBtn.setTextColor(Color.parseColor("#111318")); detailBtn.setAllCaps(false);
         detailBtn.setMinWidth(0); detailBtn.setMinHeight(0);
-        detailBtn.setBackground(makeRoundRect("#8EA8FF", 6));
+        detailBtn.setBackground(makeRoundRect("#7CADFF", 6));
         detailBtn.setOnClickListener(v -> openHomepage(lab.homepage));
         btnRow.addView(detailBtn, new LinearLayout.LayoutParams(dp(100), dp(38)));
         card.addView(btnRow, brp);
