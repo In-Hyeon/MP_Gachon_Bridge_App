@@ -591,12 +591,6 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
                 new LatLng(37.455741, 127.134925)
         ));
 
-        addSmokingZone("흡연구역", Arrays.asList(
-                new LatLng(37.450699, 127.126927),
-                new LatLng(37.450624, 127.126935),
-                new LatLng(37.450627, 127.127141),
-                new LatLng(37.450683, 127.127095)
-        ));
 
         addSmokingZone("흡연구역", Arrays.asList(
                 new LatLng(37.451613, 127.126976),
@@ -701,7 +695,8 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
                 RESTAURANT_COLOR
         );
 
-        LatLng oliveYoungLocation = new LatLng(37.449716, 127.127745);
+        // 투썸플레이스, 올리브영, 차이나스푼, 봉구스 밥버거, 포밥인 뉴욕을 하나의 점으로 묶기
+        LatLng visionTowerFoodArea = new LatLng(37.449716, 127.127745);
 
         PlaceInfo oliveYoung = new PlaceInfo(
                 "올리브영",
@@ -709,7 +704,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
                 "B3",
                 "지하 3층",
                 "올리브영",
-                oliveYoungLocation,
+                visionTowerFoodArea,
                 RESTAURANT_COLOR
         );
 
@@ -719,19 +714,17 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
                 "B3",
                 "지하 3층",
                 "올리브영과 같은 위치",
-                oliveYoungLocation,
+                visionTowerFoodArea,
                 RESTAURANT_COLOR
         );
-
-        LatLng twosomeLocation = new LatLng(37.449706, 127.127755);
 
         PlaceInfo twosomePlace = new PlaceInfo(
                 "투썸플레이스",
                 "카페",
                 "B3",
                 "지하 3층",
-                "투썸플레이스",
-                twosomeLocation,
+                "올리브영, 차이나스푼과 같은 위치",
+                visionTowerFoodArea,
                 RESTAURANT_COLOR
         );
 
@@ -741,7 +734,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
                 "B1",
                 "지하 1층",
                 "투썸플레이스와 같은 위치",
-                twosomeLocation,
+                visionTowerFoodArea,
                 RESTAURANT_COLOR
         );
 
@@ -751,7 +744,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
                 "B2",
                 "지하 2층",
                 "투썸플레이스와 같은 위치",
-                twosomeLocation,
+                visionTowerFoodArea,
                 RESTAURANT_COLOR
         );
 
