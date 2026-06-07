@@ -591,12 +591,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
                 new LatLng(37.455741, 127.134925)
         ));
 
-        addSmokingZone("흡연구역", Arrays.asList(
-                new LatLng(37.450699, 127.126927),
-                new LatLng(37.450624, 127.126935),
-                new LatLng(37.450627, 127.127141),
-                new LatLng(37.450683, 127.127095)
-        ));
+        // 37.450632, 127.126944 근처 중복 흡연구역 1개 삭제함
 
         addSmokingZone("흡연구역", Arrays.asList(
                 new LatLng(37.451613, 127.126976),
@@ -701,15 +696,17 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
                 RESTAURANT_COLOR
         );
 
-        LatLng oliveYoungLocation = new LatLng(37.449716, 127.127745);
+        // 아래 5개 장소를 하나의 점으로 묶기 위한 공통 좌표입니다.
+        // 투썸플레이스, 올리브영, 차이나스푼, 봉구스 밥버거, 포밥인 뉴욕이 모두 같은 마커에 들어갑니다.
+        LatLng visionTowerConvenienceSpot = new LatLng(37.449706, 127.127755);
 
         PlaceInfo oliveYoung = new PlaceInfo(
                 "올리브영",
                 "편의시설",
                 "B3",
                 "지하 3층",
-                "올리브영",
-                oliveYoungLocation,
+                "투썸플레이스, 차이나스푼, 봉구스 밥버거, 포밥인 뉴욕과 같은 위치",
+                visionTowerConvenienceSpot,
                 RESTAURANT_COLOR
         );
 
@@ -718,20 +715,19 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
                 "식당",
                 "B3",
                 "지하 3층",
-                "올리브영과 같은 위치",
-                oliveYoungLocation,
+                "투썸플레이스, 올리브영, 봉구스 밥버거, 포밥인 뉴욕과 같은 위치",
+                visionTowerConvenienceSpot,
                 RESTAURANT_COLOR
         );
 
-        LatLng twosomeLocation = new LatLng(37.449706, 127.127755);
 
         PlaceInfo twosomePlace = new PlaceInfo(
                 "투썸플레이스",
                 "카페",
                 "B3",
                 "지하 3층",
-                "투썸플레이스",
-                twosomeLocation,
+                "올리브영, 차이나스푼, 봉구스 밥버거, 포밥인 뉴욕과 같은 위치",
+                visionTowerConvenienceSpot,
                 RESTAURANT_COLOR
         );
 
@@ -740,8 +736,8 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
                 "식당",
                 "B1",
                 "지하 1층",
-                "투썸플레이스와 같은 위치",
-                twosomeLocation,
+                "투썸플레이스, 올리브영, 차이나스푼, 포밥인 뉴욕과 같은 위치",
+                visionTowerConvenienceSpot,
                 RESTAURANT_COLOR
         );
 
@@ -750,8 +746,8 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
                 "식당",
                 "B2",
                 "지하 2층",
-                "투썸플레이스와 같은 위치",
-                twosomeLocation,
+                "투썸플레이스, 올리브영, 차이나스푼, 봉구스 밥버거와 같은 위치",
+                visionTowerConvenienceSpot,
                 RESTAURANT_COLOR
         );
 
