@@ -116,6 +116,16 @@ public class ContactActivity extends BaseActivity {
 
         // ── 대외협력처 ──
         add(new Contact("대외협력처", "마스코트", null, "031-750-5827"));
+
+        // ── 메디컬 캠퍼스 ──
+        add(new Contact("메디컬 캠퍼스", "강좌개설/수강신청",   null, "032-820-4052"));
+        add(new Contact("메디컬 캠퍼스", "의과대학 행정", null, "032-458-2520"));
+        add(new Contact("메디컬 캠퍼스", "의과대학 연구/국제",  null, "032-458-2518"));
+        add(new Contact("메디컬 캠퍼스", "의학교육 과정운영",   null, "032-458-2521"));
+        add(new Contact("메디컬 캠퍼스", "ASK센터",             null, "032-458-2538"));
+        add(new Contact("메디컬 캠퍼스", "간호대학 행정",        null, "032-820-4097"));
+        add(new Contact("메디컬 캠퍼스", "약학대학 행정",        null, "032-820-4820"));
+        add(new Contact("메디컬 캠퍼스", "평생교육원",           null, "032-820-4111"));
     }};
 
     private String currentFilter = "전체";
