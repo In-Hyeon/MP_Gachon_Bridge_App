@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- 기본 배경 (기존 bg_notice_featured와 동일) -->
+    <item>
+        <shape>
+            <solid android:color="@color/gb_surface" />
+            <stroke
+                android:width="1dp"
+                android:color="@color/gb_outline_variant" />
+            <corners android:radius="16dp" />
+        </shape>
+    </item>
+
+    <!-- 왼쪽에만 파란색 윤곽선 추가 -->
+    <item android:right="16dp"> <!-- 오른쪽과 라운드 처리를 고려해 왼쪽 강조 영역 설정 -->
+        <shape>
+            <solid android:color="@color/gb_primary" />
+            <corners 
+                android:topLeftRadius="16dp" 
+                android:bottomLeftRadius="16dp"
+                android:topRightRadius="0dp"
+                android:bottomRightRadius="0dp" />
+        </shape>
+    </item>
+
+    <!-- 강조 선의 두께를 조절하기 위해 배경색으로 다시 덮음 (왼쪽 4dp만 남기고) -->
+    <item android:left="4dp">
+        <shape>
+            <solid android:color="@color/gb_surface" />
+            <corners 
+                android:topLeftRadius="0dp" 
+                android:bottomLeftRadius="0dp"
+                android:topRightRadius="16dp" 
+                android:bottomRightRadius="16dp" />
+        </shape>
+    </item>
+</layer-list>

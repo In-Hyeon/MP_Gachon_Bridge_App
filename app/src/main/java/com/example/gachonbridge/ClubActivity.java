@@ -163,15 +163,12 @@ public class ClubActivity extends BaseActivity {
         String[] currentCategories = getCurrentCategories();
         categoryTabs = new TextView[currentCategories.length];
         categoryContainer.removeAllViews();
+
         for (int i = 0; i < currentCategories.length; i++) {
             final int categoryIndex = i;
+
             TextView tab = new TextView(this);
             tab.setText(currentCategories[i]);
-            tab.setGravity(Gravity.CENTER);
-            tab.setTextSize(15);
-            tab.setTypeface(null, Typeface.BOLD);
-            tab.setSingleLine(true);
-            tab.setPadding(dp(24), 0, dp(24), 0);
             tab.setOnClickListener(v -> {
                 selectedCategory = categoryIndex;
                 renderClubScreen();
@@ -179,11 +176,14 @@ public class ClubActivity extends BaseActivity {
 
             LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
                     LinearLayout.LayoutParams.WRAP_CONTENT,
-                    dp(54)
+                    dp(42)
             );
             params.setMarginEnd(dp(14));
+
             categoryContainer.addView(tab, params);
             categoryTabs[i] = tab;
+
+            applyCategoryTabStyle(tab, categoryIndex == selectedCategory);
         }
     }
 
@@ -249,13 +249,22 @@ public class ClubActivity extends BaseActivity {
 
     private void updateCategoryTabs() {
         for (int i = 0; i < categoryTabs.length; i++) {
-            boolean selected = i == selectedCategory;
-            categoryTabs[i].setBackgroundResource(selected ? R.drawable.bg_chip_active : R.drawable.bg_chip_inactive);
-            categoryTabs[i].setTextColor(ContextCompat.getColor(
-                    this,
-                    selected ? R.color.gb_on_primary : R.color.gb_on_surface
-            ));
+            applyCategoryTabStyle(categoryTabs[i], i == selectedCategory);
         }
+    }
+
+    private void applyCategoryTabStyle(TextView tab, boolean selected) {
+        tab.setMinWidth(dp(78));
+        tab.setGravity(Gravity.CENTER);
+        tab.setTextSize(14);
+        tab.setTypeface(null, Typeface.BOLD);
+        tab.setSingleLine(true);
+        tab.setPadding(dp(20), 0, dp(20), 0);
+        tab.setBackgroundResource(selected ? R.drawable.bg_chip_active : R.drawable.bg_chip_inactive);
+        tab.setTextColor(ContextCompat.getColor(
+                this,
+                selected ? R.color.gb_on_primary : R.color.gb_on_surface
+        ));
     }
 
     private void updateFeaturedClubUI(Club featured) {

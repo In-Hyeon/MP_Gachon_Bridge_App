@@ -95,7 +95,7 @@
     <string name="page_wind_card_body">2026 &#xC804;&#xC790;&#xC815;&#xBCF4;&#xBC15;&#xB78C;&#xD68C;\n&#xC2E0;&#xCCAD; 05.10 - 05.29\n&#xB354;&#xBBF8; &#xB370;&#xC774;&#xD130;&#xB85C; &#xAD6C;&#xC131;&#xD55C; WIND &#xD654;&#xBA74;&#xC785;&#xB2C8;&#xB2E4;.</string>
     <string name="wind_recommended_title">추천 프로그램 TOP 3</string>
     <string name="wind_latest_title">최신 프로그램</string>
-    <string name="wind_more_programs">더 많은 프로그램 보기  v</string>
+    <string name="wind_more_programs">더보기</string>
     <string name="wind_recommended_dday_1">D-3</string>
     <string name="wind_recommended_dday_2">D-8</string>
     <string name="wind_recommended_dday_3">D-12</string>

@@ -7,10 +7,13 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.core.content.ContextCompat;
+
+import com.bumptech.glide.Glide;
 
 import java.text.NumberFormat;
 import java.util.Calendar;
@@ -34,7 +37,9 @@ public class MainActivity extends BaseActivity {
     private TextView[] windHomeInstitutions;
     private TextView[] windHomeTitles;
     private TextView[] windHomePeriods;
+    private ImageView[] windHomeImages;
     private int selectedMealIndex;
+    private static final int HOME_NOTICE_PREVIEW_COUNT = 5;
     private static final String[] MEAL_RESTAURANT_URLS = {
             "https://www.gachon.ac.kr/kor/7349/subview.do",
             "https://www.gachon.ac.kr/kor/7347/subview.do",
@@ -50,7 +55,7 @@ public class MainActivity extends BaseActivity {
         }
     };
 
-    private String[][] noticePreviewData = new String[3][9];
+    private String[][] noticePreviewData = new String[3][HOME_NOTICE_PREVIEW_COUNT];
 
     private String[][] mealPreviewData = {
             {
@@ -74,15 +79,13 @@ public class MainActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        
-        // Initialize notice data with loading text
+
         for (int i = 0; i < 3; i++) {
-            for (int j = 0; j < 9; j++) {
-                noticePreviewData[i][j] = "불러오는 중...";
+            for (int j = 0; j < HOME_NOTICE_PREVIEW_COUNT; j++) {
+                noticePreviewData[i][j] = "\uBD88\uB7EC\uC624\uB294 \uC911...";
             }
         }
 
-        // TODO: Replace XML dummy sections with API-backed views or RecyclerViews.
         bindBottomNavigation(R.id.navHome);
         bindSchedulePreviewCards();
         bindHomePreviewTabs();
@@ -131,11 +134,7 @@ public class MainActivity extends BaseActivity {
                 findViewById(R.id.noticePreview2),
                 findViewById(R.id.noticePreview3),
                 findViewById(R.id.noticePreview4),
-                findViewById(R.id.noticePreview5),
-                findViewById(R.id.noticePreview6),
-                findViewById(R.id.noticePreview7),
-                findViewById(R.id.noticePreview8),
-                findViewById(R.id.noticePreview9)
+                findViewById(R.id.noticePreview5)
         };
         mealTabs = new TextView[]{
                 findViewById(R.id.tabMealGraduate),
@@ -187,7 +186,6 @@ public class MainActivity extends BaseActivity {
             ));
             tabs[i].setTypeface(null, selected ? Typeface.BOLD : Typeface.NORMAL);
         }
-
         for (int i = 0; i < items.length; i++) {
             items[i].setText(data[selectedIndex][i]);
         }
@@ -204,10 +202,7 @@ public class MainActivity extends BaseActivity {
     }
 
     private void applyMealTimeHighlight() {
-        if (mealItems == null) {
-            return;
-        }
-
+        if (mealItems == null) return;
         int highlightedIndex = getCurrentMealIndex();
         for (int i = 0; i < mealItems.length; i++) {
             boolean highlighted = i == highlightedIndex;
@@ -221,12 +216,8 @@ public class MainActivity extends BaseActivity {
 
     private int getCurrentMealIndex() {
         int hour = Calendar.getInstance().get(Calendar.HOUR_OF_DAY);
-        if (hour < 10) {
-            return 0;
-        }
-        if (hour < 14) {
-            return 1;
-        }
+        if (hour < 10) return 0;
+        if (hour < 14) return 1;
         return 2;
     }
 
@@ -234,7 +225,6 @@ public class MainActivity extends BaseActivity {
         Calendar now = Calendar.getInstance();
         Calendar nextBoundary = (Calendar) now.clone();
         int hour = now.get(Calendar.HOUR_OF_DAY);
-
         if (hour < 10) {
             nextBoundary.set(Calendar.HOUR_OF_DAY, 10);
         } else if (hour < 14) {
@@ -243,7 +233,6 @@ public class MainActivity extends BaseActivity {
             nextBoundary.add(Calendar.DAY_OF_MONTH, 1);
             nextBoundary.set(Calendar.HOUR_OF_DAY, 0);
         }
-
         nextBoundary.set(Calendar.MINUTE, 0);
         nextBoundary.set(Calendar.SECOND, 0);
         nextBoundary.set(Calendar.MILLISECOND, 0);
@@ -260,7 +249,6 @@ public class MainActivity extends BaseActivity {
             } catch (Exception e) {
                 nextMealData = buildEmptyMealPreviewData();
             }
-
             String[][] finalNextMealData = nextMealData;
             mainHandler.post(() -> {
                 mealPreviewData = finalNextMealData;
@@ -277,7 +265,6 @@ public class MainActivity extends BaseActivity {
             } catch (Exception e) {
                 nextSchedules = new GachonAcademicScheduleCrawler().buildEmptySchedules(new Date(), 3);
             }
-
             List<GachonAcademicScheduleCrawler.DailySchedule> finalNextSchedules = nextSchedules;
             mainHandler.post(() -> updateScheduleCards(finalNextSchedules));
         });
@@ -296,14 +283,12 @@ public class MainActivity extends BaseActivity {
     private String[][] buildMealPreviewData(List<GachonMealCrawler.RestaurantMenu> menus) {
         String[][] data = buildEmptyMealPreviewData();
         int count = Math.min(data.length, menus.size());
-
         for (int i = 0; i < count; i++) {
             GachonMealCrawler.RestaurantMenu menu = menus.get(i);
             data[i][0] = formatMealItem("\uC544\uCE68(\uCC9C\uC6D0\uC758\uC544\uCE68\uBC25)", menu.breakfast);
             data[i][1] = formatMealItem("\uC810\uC2EC", menu.lunch);
             data[i][2] = formatMealItem("\uC800\uB141", menu.dinner);
         }
-
         return data;
     }
 
@@ -332,10 +317,7 @@ public class MainActivity extends BaseActivity {
     }
 
     private String formatMealPreviewMenu(String menu) {
-        if (menu == null || menu.trim().isEmpty()) {
-            return "-";
-        }
-
+        if (menu == null || menu.trim().isEmpty()) return "-";
         String normalized = menu
                 .replace('\u00A0', ' ')
                 .replace("\r", "\n")
@@ -399,12 +381,17 @@ public class MainActivity extends BaseActivity {
                 findViewById(R.id.windHomePeriod2),
                 findViewById(R.id.windHomePeriod3)
         };
+        windHomeImages = new ImageView[]{
+                findViewById(R.id.windHomeImage1),
+                findViewById(R.id.windHomeImage2),
+                findViewById(R.id.windHomeImage3)
+        };
 
         for (int i = 0; i < windHomeRanks.length; i++) {
             windHomeRanks[i].setText("TOP\n" + (i + 1));
-            windHomeHits[i].setText("불러오는 중...");
+            windHomeHits[i].setText("\uBD88\uB7EC\uC624\uB294 \uC911...");
             windHomeInstitutions[i].setText("WIND");
-            windHomeTitles[i].setText("프로그램 불러오는 중...");
+            windHomeTitles[i].setText("\uD504\uB85C\uADF8\uB7A8 \uBD88\uB7EC\uC624\uB294 \uC911...");
             windHomePeriods[i].setText("-");
         }
     }
@@ -430,8 +417,15 @@ public class MainActivity extends BaseActivity {
             windHomeInstitutions[i].setText(orDash(program.institution));
             windHomeTitles[i].setText(orDash(program.title));
             windHomePeriods[i].setText(formatWindHomePeriod(program));
-        }
 
+            if (windHomeImages[i] != null && program.coverUrl != null && !program.coverUrl.isEmpty()) {
+                windHomeImages[i].setVisibility(View.VISIBLE);
+                Glide.with(MainActivity.this)
+                        .load(program.coverUrl)
+                        .centerCrop()
+                        .into(windHomeImages[i]);
+            }
+        }
         for (int i = count; i < windHomeTitles.length; i++) {
             setEmptyHomeWindCard(i);
         }
@@ -452,7 +446,7 @@ public class MainActivity extends BaseActivity {
     }
 
     private String formatWindHomePeriod(GachonWindCrawler.WindProgram program) {
-        return "신청  " + orDash(program.applyPeriod) + "\n운영  " + orDash(program.period);
+        return "\uC2E0\uCCAD  " + orDash(program.applyPeriod) + "\n\uC6B4\uC601  " + orDash(program.period);
     }
 
     private String orDash(String text) {
@@ -478,8 +472,7 @@ public class MainActivity extends BaseActivity {
     private void bindNoticeLinks() {
         int[] ids = {
                 R.id.noticePreview1, R.id.noticePreview2, R.id.noticePreview3,
-                R.id.noticePreview4, R.id.noticePreview5, R.id.noticePreview6,
-                R.id.noticePreview7, R.id.noticePreview8, R.id.noticePreview9
+                R.id.noticePreview4, R.id.noticePreview5
         };
         for (int id : ids) {
             TextView v = findViewById(id);
@@ -499,10 +492,9 @@ public class MainActivity extends BaseActivity {
     private void loadHomeNotices() {
         contentExecutor.execute(() -> {
             try {
-                List<Notice> all = GachonScraper.fetchNotices(GachonScraper.Category.ALL, 9);
-                List<Notice> academic = GachonScraper.fetchNotices(GachonScraper.Category.ACADEMIC, 9);
-                List<Notice> scholarship = GachonScraper.fetchNotices(GachonScraper.Category.SCHOLARSHIP, 9);
-
+                List<Notice> all = GachonScraper.fetchNotices(GachonScraper.Category.ALL, HOME_NOTICE_PREVIEW_COUNT);
+                List<Notice> academic = GachonScraper.fetchNotices(GachonScraper.Category.ACADEMIC, HOME_NOTICE_PREVIEW_COUNT);
+                List<Notice> scholarship = GachonScraper.fetchNotices(GachonScraper.Category.SCHOLARSHIP, HOME_NOTICE_PREVIEW_COUNT);
                 mainHandler.post(() -> {
                     fillNoticeData(0, all);
                     fillNoticeData(1, academic);
@@ -516,10 +508,9 @@ public class MainActivity extends BaseActivity {
     }
 
     private void fillNoticeData(int catIndex, List<Notice> notices) {
-        for (int i = 0; i < 9; i++) {
+        for (int i = 0; i < HOME_NOTICE_PREVIEW_COUNT; i++) {
             if (i < notices.size()) {
-                Notice n = notices.get(i);
-                noticePreviewData[catIndex][i] = n.getTitle();
+                noticePreviewData[catIndex][i] = notices.get(i).getTitle();
             } else {
                 noticePreviewData[catIndex][i] = "-";
             }
@@ -527,12 +518,8 @@ public class MainActivity extends BaseActivity {
     }
 
     private void openSelectedMealRestaurant() {
-        if (selectedMealIndex < 0 || selectedMealIndex >= MEAL_RESTAURANT_URLS.length) {
-            return;
-        }
-
-        Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(MEAL_RESTAURANT_URLS[selectedMealIndex]));
-        startActivity(intent);
+        if (selectedMealIndex < 0 || selectedMealIndex >= MEAL_RESTAURANT_URLS.length) return;
+        startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(MEAL_RESTAURANT_URLS[selectedMealIndex])));
     }
 
     @Override

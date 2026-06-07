@@ -153,11 +153,6 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
     private static final int STATUS_GRAY = Color.argb(225, 90, 90, 90);
     private static final int STATUS_ORANGE = Color.argb(235, 218, 132, 57);
 
-    // 지도 검색 버튼은 LAB 버튼 색과 다르게 기존 지도 색상으로 고정합니다.
-    // Material 기본 보라색 tint가 덮이지 않도록 styleSearchButton()에서 tint를 제거합니다.
-    private static final int MAP_SEARCH_BUTTON_BLUE = Color.rgb(79, 128, 200); // #4F80C8
-    private static final int MAP_RESET_BUTTON_GRAY = Color.rgb(102, 102, 102); // #666666
-
     private static final int CAMPUS_STROKE = Color.rgb(218, 76, 76);
     private static final int CAMPUS_FILL = Color.argb(24, 218, 76, 76);
 
@@ -282,8 +277,8 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         buildingSearchButton.setText("검색");
         buildingSearchResetButton.setText("초기화");
 
-        styleSearchButton(buildingSearchButton, MAP_SEARCH_BUTTON_BLUE);
-        styleSearchButton(buildingSearchResetButton, MAP_RESET_BUTTON_GRAY);
+        styleSearchButton(buildingSearchButton, STATUS_BLUE);
+        styleSearchButton(buildingSearchResetButton, STATUS_GRAY);
 
         buildingSearchButton.setOnClickListener(v -> performBuildingSearch());
         buildingSearchResetButton.setOnClickListener(v -> clearBuildingSearch());
@@ -296,18 +291,12 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
     private void styleSearchButton(TextView button, int color) {
         if (button == null) return;
 
-        // Material3 기본 버튼 tint가 보라색으로 덮는 현상을 방지합니다.
-        button.setBackgroundTintList(null);
-        button.setStateListAnimator(null);
-
         button.setTextColor(Color.WHITE);
-        button.setTextSize(14f);
+        button.setTextSize(12.5f);
         button.setTypeface(Typeface.DEFAULT_BOLD);
         button.setGravity(Gravity.CENTER);
         button.setSingleLine(true);
         button.setClickable(true);
-        button.setFocusable(true);
-        button.setPadding(0, 0, 0, 0);
 
         GradientDrawable background = new GradientDrawable();
         background.setColor(color);
@@ -602,6 +591,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
                 new LatLng(37.455741, 127.134925)
         ));
 
+        // 37.450632, 127.126944 근처 중복 흡연구역 1개 삭제함
 
         addSmokingZone("흡연구역", Arrays.asList(
                 new LatLng(37.451613, 127.126976),
@@ -706,16 +696,17 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
                 RESTAURANT_COLOR
         );
 
-        // 투썸플레이스, 올리브영, 차이나스푼, 봉구스 밥버거, 포밥인 뉴욕을 하나의 점으로 묶기
-        LatLng visionTowerFoodArea = new LatLng(37.449716, 127.127745);
+        // 아래 5개 장소를 하나의 점으로 묶기 위한 공통 좌표입니다.
+        // 투썸플레이스, 올리브영, 차이나스푼, 봉구스 밥버거, 포밥인 뉴욕이 모두 같은 마커에 들어갑니다.
+        LatLng visionTowerConvenienceSpot = new LatLng(37.449706, 127.127755);
 
         PlaceInfo oliveYoung = new PlaceInfo(
                 "올리브영",
                 "편의시설",
                 "B3",
                 "지하 3층",
-                "올리브영",
-                visionTowerFoodArea,
+                "투썸플레이스, 차이나스푼, 봉구스 밥버거, 포밥인 뉴욕과 같은 위치",
+                visionTowerConvenienceSpot,
                 RESTAURANT_COLOR
         );
 
@@ -724,18 +715,19 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
                 "식당",
                 "B3",
                 "지하 3층",
-                "올리브영과 같은 위치",
-                visionTowerFoodArea,
+                "투썸플레이스, 올리브영, 봉구스 밥버거, 포밥인 뉴욕과 같은 위치",
+                visionTowerConvenienceSpot,
                 RESTAURANT_COLOR
         );
+
 
         PlaceInfo twosomePlace = new PlaceInfo(
                 "투썸플레이스",
                 "카페",
                 "B3",
                 "지하 3층",
-                "올리브영, 차이나스푼과 같은 위치",
-                visionTowerFoodArea,
+                "올리브영, 차이나스푼, 봉구스 밥버거, 포밥인 뉴욕과 같은 위치",
+                visionTowerConvenienceSpot,
                 RESTAURANT_COLOR
         );
 
@@ -744,8 +736,8 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
                 "식당",
                 "B1",
                 "지하 1층",
-                "투썸플레이스와 같은 위치",
-                visionTowerFoodArea,
+                "투썸플레이스, 올리브영, 차이나스푼, 포밥인 뉴욕과 같은 위치",
+                visionTowerConvenienceSpot,
                 RESTAURANT_COLOR
         );
 
@@ -754,8 +746,8 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
                 "식당",
                 "B2",
                 "지하 2층",
-                "투썸플레이스와 같은 위치",
-                visionTowerFoodArea,
+                "투썸플레이스, 올리브영, 차이나스푼, 봉구스 밥버거와 같은 위치",
+                visionTowerConvenienceSpot,
                 RESTAURANT_COLOR
         );
 

@@ -9,7 +9,6 @@
     android:background="@drawable/bg_app"
     tools:context=".MainActivity">
 
-    <!-- 상단 앱 바: 로고, 앱 이름, 사용자 영역을 표시 -->
     <LinearLayout
         android:id="@+id/topBar"
         android:layout_width="0dp"
@@ -31,7 +30,7 @@
             android:contentDescription="@null"
             android:padding="11dp"
             android:scaleType="centerInside"
-            android:src="@drawable/ic_home"
+            android:src="@drawable/ic_gachon_logo"
             android:tint="@color/gb_primary" />
 
         <LinearLayout
@@ -69,7 +68,6 @@
             android:tint="@color/gb_on_surface_variant" />
     </LinearLayout>
 
-    <!-- 홈 스크롤 영역: 하단 네비게이션을 제외한 메인 콘텐츠 전체 -->
     <ScrollView
         android:id="@+id/homeScroll"
         android:layout_width="0dp"
@@ -120,20 +118,6 @@
                     android:textStyle="bold" />
             </LinearLayout>
 
-            <TextView
-                style="@style/DummyBadge"
-                android:layout_marginTop="12dp"
-                android:text="@string/dummy_data_badge" />
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:text="@string/dummy_data_notice"
-                android:textColor="@color/gb_on_surface_variant"
-                android:textSize="12sp" />
-
-            <!-- 학사일정 섹션: 홈 설정에서 학사일정 영역 전체 on/off용 -->
             <LinearLayout
                 android:id="@+id/sectionSchedule"
                 android:layout_width="match_parent"
@@ -232,7 +216,6 @@
                 </LinearLayout>
             </LinearLayout>
 
-            <!-- 가천 MAP 섹션: 홈 설정에서 지도 영역 전체 on/off용 -->
             <FrameLayout
                 android:id="@+id/sectionMap"
                 android:layout_width="match_parent"
@@ -248,7 +231,6 @@
                         style="@style/SectionTitle"
                         android:text="@string/section_map" />
 
-                    <!-- DUMMY DATA: Replace map labels/places with campus map service data later. -->
                     <FrameLayout
                         android:layout_width="match_parent"
                         android:layout_height="220dp"
@@ -297,7 +279,6 @@
                 </LinearLayout>
             </FrameLayout>
 
-            <!-- 학사공지 섹션: 홈 설정에서 공지 미리보기 영역 전체 on/off용 -->
             <LinearLayout
                 android:id="@+id/sectionNotice"
                 android:layout_width="match_parent"
@@ -310,7 +291,6 @@
                     style="@style/SectionTitle"
                     android:text="@string/section_notice" />
 
-                <!-- DUMMY DATA: Replace notice preview rows with latest notice API data later. -->
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -371,38 +351,10 @@
                         android:id="@+id/noticePreview5"
                         style="@style/NoticeItem"
                         android:text="공지사항 항목 5" />
-
-                    <View style="@style/Divider" />
-
-                    <TextView
-                        android:id="@+id/noticePreview6"
-                        style="@style/NoticeItem"
-                        android:text="공지사항 항목 6" />
-
-                    <View style="@style/Divider" />
-
-                    <TextView
-                        android:id="@+id/noticePreview7"
-                        style="@style/NoticeItem"
-                        android:text="공지사항 항목 7" />
-
-                    <View style="@style/Divider" />
-
-                    <TextView
-                        android:id="@+id/noticePreview8"
-                        style="@style/NoticeItem"
-                        android:text="공지사항 항목 8" />
-
-                    <View style="@style/Divider" />
-
-                    <TextView
-                        android:id="@+id/noticePreview9"
-                        style="@style/NoticeItem"
-                        android:text="공지사항 항목 9" />
                 </LinearLayout>
             </LinearLayout>
 
-            <!-- WIND 섹션: 홈 설정에서 WIND 프로그램 영역 전체 on/off용 -->
+            <!-- WIND 섹션 -->
             <LinearLayout
                 android:id="@+id/sectionWind"
                 android:layout_width="match_parent"
@@ -414,7 +366,6 @@
                     style="@style/SectionTitle"
                     android:text="@string/section_wind" />
 
-                <!-- DUMMY DATA: Replace WIND cards with backend program list later. -->
                 <HorizontalScrollView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -426,7 +377,7 @@
                         android:layout_height="wrap_content"
                         android:orientation="horizontal">
 
-                        <!-- WIND 더미 카드 1: 팀원이 cardWindDummyProgram1에 사이트 이동 클릭 리스너 연결 -->
+                        <!-- WIND 카드 1 -->
                         <LinearLayout
                             android:id="@+id/cardWindDummyProgram1"
                             android:layout_width="300dp"
@@ -441,12 +392,22 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="148dp"
                                 android:background="@drawable/bg_wind_image"
-                                android:padding="16dp">
+                                android:clipToOutline="true">
+
+                                <ImageView
+                                    android:id="@+id/windHomeImage1"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    android:contentDescription="@null"
+                                    android:scaleType="centerCrop"
+                                    android:visibility="gone" />
 
                                 <TextView
                                     android:id="@+id/windHomeRank1"
                                     android:layout_width="58dp"
                                     android:layout_height="52dp"
+                                    android:layout_marginStart="16dp"
+                                    android:layout_marginTop="16dp"
                                     android:background="@drawable/bg_primary_card"
                                     android:gravity="center"
                                     android:text="@string/wind_status"
@@ -456,14 +417,22 @@
 
                                 <TextView
                                     android:id="@+id/windHomeHits1"
-                                    android:layout_width="160dp"
+                                    android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:layout_gravity="bottom|end"
+                                    android:layout_marginEnd="16dp"
+                                    android:layout_marginBottom="16dp"
+                                    android:background="@drawable/bg_wind_hits_badge"
                                     android:ellipsize="end"
-                                    android:gravity="end"
+                                    android:gravity="center"
+                                    android:maxWidth="160dp"
+                                    android:paddingStart="8dp"
+                                    android:paddingTop="4dp"
+                                    android:paddingEnd="8dp"
+                                    android:paddingBottom="4dp"
                                     android:singleLine="true"
                                     android:text="@string/wind_hits"
-                                    android:textColor="@color/gb_on_surface"
+                                    android:textColor="@color/white"
                                     android:textSize="12sp"
                                     android:textStyle="bold" />
                             </FrameLayout>
@@ -523,7 +492,7 @@
                             </LinearLayout>
                         </LinearLayout>
 
-                        <!-- WIND 더미 카드 2: 팀원이 cardWindDummyProgram2에 사이트 이동 클릭 리스너 연결 -->
+                        <!-- WIND 카드 2 -->
                         <LinearLayout
                             android:id="@+id/cardWindDummyProgram2"
                             android:layout_width="300dp"
@@ -538,12 +507,22 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="148dp"
                                 android:background="@drawable/bg_wind_image"
-                                android:padding="16dp">
+                                android:clipToOutline="true">
+
+                                <ImageView
+                                    android:id="@+id/windHomeImage2"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    android:contentDescription="@null"
+                                    android:scaleType="centerCrop"
+                                    android:visibility="gone" />
 
                                 <TextView
                                     android:id="@+id/windHomeRank2"
                                     android:layout_width="58dp"
                                     android:layout_height="52dp"
+                                    android:layout_marginStart="16dp"
+                                    android:layout_marginTop="16dp"
                                     android:background="@drawable/bg_primary_card"
                                     android:gravity="center"
                                     android:text="@string/wind_status_2"
@@ -553,14 +532,22 @@
 
                                 <TextView
                                     android:id="@+id/windHomeHits2"
-                                    android:layout_width="160dp"
+                                    android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:layout_gravity="bottom|end"
+                                    android:layout_marginEnd="16dp"
+                                    android:layout_marginBottom="16dp"
+                                    android:background="@drawable/bg_wind_hits_badge"
                                     android:ellipsize="end"
-                                    android:gravity="end"
+                                    android:gravity="center"
+                                    android:maxWidth="160dp"
+                                    android:paddingStart="8dp"
+                                    android:paddingTop="4dp"
+                                    android:paddingEnd="8dp"
+                                    android:paddingBottom="4dp"
                                     android:singleLine="true"
                                     android:text="@string/wind_hits_2"
-                                    android:textColor="@color/gb_on_surface"
+                                    android:textColor="@color/white"
                                     android:textSize="12sp"
                                     android:textStyle="bold" />
                             </FrameLayout>
@@ -620,7 +607,7 @@
                             </LinearLayout>
                         </LinearLayout>
 
-                        <!-- WIND 더미 카드 3: 팀원이 cardWindDummyProgram3에 사이트 이동 클릭 리스너 연결 -->
+                        <!-- WIND 카드 3 -->
                         <LinearLayout
                             android:id="@+id/cardWindDummyProgram3"
                             android:layout_width="300dp"
@@ -634,12 +621,22 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="148dp"
                                 android:background="@drawable/bg_wind_image"
-                                android:padding="16dp">
+                                android:clipToOutline="true">
+
+                                <ImageView
+                                    android:id="@+id/windHomeImage3"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    android:contentDescription="@null"
+                                    android:scaleType="centerCrop"
+                                    android:visibility="gone" />
 
                                 <TextView
                                     android:id="@+id/windHomeRank3"
                                     android:layout_width="58dp"
                                     android:layout_height="52dp"
+                                    android:layout_marginStart="16dp"
+                                    android:layout_marginTop="16dp"
                                     android:background="@drawable/bg_primary_card"
                                     android:gravity="center"
                                     android:text="@string/wind_status_3"
@@ -649,14 +646,22 @@
 
                                 <TextView
                                     android:id="@+id/windHomeHits3"
-                                    android:layout_width="160dp"
+                                    android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:layout_gravity="bottom|end"
+                                    android:layout_marginEnd="16dp"
+                                    android:layout_marginBottom="16dp"
+                                    android:background="@drawable/bg_wind_hits_badge"
                                     android:ellipsize="end"
-                                    android:gravity="end"
+                                    android:gravity="center"
+                                    android:maxWidth="160dp"
+                                    android:paddingStart="8dp"
+                                    android:paddingTop="4dp"
+                                    android:paddingEnd="8dp"
+                                    android:paddingBottom="4dp"
                                     android:singleLine="true"
                                     android:text="@string/wind_hits_3"
-                                    android:textColor="@color/gb_on_surface"
+                                    android:textColor="@color/white"
                                     android:textSize="12sp"
                                     android:textStyle="bold" />
                             </FrameLayout>
@@ -719,7 +724,7 @@
                 </HorizontalScrollView>
             </LinearLayout>
 
-            <!-- 동아리 섹션: 홈 설정에서 동아리 목록 영역 전체 on/off용 -->
+            <!-- 동아리 섹션 -->
             <LinearLayout
                 android:id="@+id/sectionClub"
                 android:layout_width="match_parent"
@@ -731,7 +736,6 @@
                     style="@style/SectionTitle"
                     android:text="@string/section_club" />
 
-                <!-- DUMMY DATA: Replace club chips with club category/list API data later. -->
                 <HorizontalScrollView
                     android:layout_width="match_parent"
                     android:layout_height="92dp"
@@ -776,7 +780,7 @@
                 </HorizontalScrollView>
             </LinearLayout>
 
-            <!-- 오늘의 학식 섹션: 홈 설정에서 학식 영역 전체 on/off용 -->
+            <!-- 오늘의 학식 섹션 -->
             <LinearLayout
                 android:id="@+id/sectionMeal"
                 android:layout_width="match_parent"
@@ -789,7 +793,6 @@
                     style="@style/SectionTitle"
                     android:text="@string/section_meal" />
 
-                <!-- DUMMY DATA: Replace meal tabs and menu text with cafeteria API data later. -->
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -819,13 +822,11 @@
                     </LinearLayout>
 
                     <LinearLayout style="@style/MealRow">
-
                         <ImageView
                             android:id="@+id/mealIconBreakfast"
                             style="@style/MealIconSlot"
                             android:contentDescription="@null"
                             android:src="@drawable/ic_sunset" />
-
                         <TextView
                             android:id="@+id/mealPreview1"
                             style="@style/MealItem"
@@ -835,13 +836,11 @@
                     <View style="@style/Divider" />
 
                     <LinearLayout style="@style/MealRow">
-
                         <ImageView
                             android:id="@+id/mealIconLunch"
                             style="@style/MealIconSlot"
                             android:contentDescription="@null"
                             android:src="@drawable/ic_sun" />
-
                         <TextView
                             android:id="@+id/mealPreview2"
                             style="@style/MealItemHighlight"
@@ -851,13 +850,11 @@
                     <View style="@style/Divider" />
 
                     <LinearLayout style="@style/MealRow">
-
                         <ImageView
                             android:id="@+id/mealIconDinner"
                             style="@style/MealIconSlot"
                             android:contentDescription="@null"
                             android:src="@drawable/ic_moon" />
-
                         <TextView
                             android:id="@+id/mealPreview3"
                             style="@style/MealItem"
@@ -868,7 +865,6 @@
         </LinearLayout>
     </ScrollView>
 
-    <!-- 하단 네비게이션: 홈, WIND, 학과연락, 동아리, 학사공지, LAB 이동 버튼 영역 -->
     <include
         android:id="@+id/bottomNav"
         layout="@layout/view_bottom_nav"
