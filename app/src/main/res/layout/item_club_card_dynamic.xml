@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="16dp"
+    android:background="@drawable/bg_card"
+    android:clickable="true"
+    android:focusable="true"
+    android:gravity="center_vertical"
+    android:orientation="horizontal"
+    android:padding="18dp">
+
+    <!-- 아이콘 영역 (고정 크기 86dp) -->
+    <FrameLayout
+        android:layout_width="86dp"
+        android:layout_height="86dp"
+        android:layout_marginEnd="18dp">
+
+        <!-- 대체 텍스트 아이콘 (이름별 고유 배경색 적용) -->
+        <TextView
+            android:id="@+id/clubIconFallback"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:textColor="#FFFFFF"
+            android:textSize="26sp"
+            android:textStyle="bold" />
+
+        <!-- 실제 동아리 사진 (로딩 성공 시에만 보임) -->
+        <ImageView
+            android:id="@+id/clubIconImage"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@drawable/bg_club_photo"
+            android:clipToOutline="true"
+            android:scaleType="centerCrop"
+            android:visibility="invisible" />
+    </FrameLayout>
+
+    <!-- 텍스트 정보 영역 -->
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/clubCategory"
+            android:layout_width="wrap_content"
+            android:layout_height="32dp"
+            android:background="@drawable/bg_chip_inactive"
+            android:gravity="center"
+            android:paddingStart="12dp"
+            android:paddingEnd="12dp"
+            android:textColor="@color/gb_on_surface_variant"
+            android:textSize="13sp" />
+
+        <TextView
+            android:id="@+id/clubTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:ellipsize="end"
+            android:singleLine="true"
+            android:textColor="@color/gb_on_surface"
+            android:textSize="20sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/clubDesc"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="6dp"
+            android:ellipsize="end"
+            android:singleLine="true"
+            android:textColor="@color/gb_on_surface_variant"
+            android:textSize="14sp" />
+    </LinearLayout>
+
+</LinearLayout>

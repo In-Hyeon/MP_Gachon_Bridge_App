@@ -138,6 +138,17 @@
                     android:scaleType="centerCrop"
                     android:alpha="0.8" />
 
+                <!-- 대형 대체 아이콘: 사진 로딩 전 또는 사진 없을 때 표시 -->
+                <TextView
+                    android:id="@+id/featuredClubFallback"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:textColor="#33FFFFFF"
+                    android:textSize="120sp"
+                    android:textStyle="bold"
+                    android:visibility="gone" />
+
                 <!-- 그라데이션 오버레이: 텍스트 영역 가독성 확보 -->
                 <View
                     android:layout_width="match_parent"

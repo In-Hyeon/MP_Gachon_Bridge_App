@@ -76,13 +76,22 @@ public class ClubDetailActivity extends BaseActivity {
         ImageView photoMain = findViewById(R.id.clubDetailPhotoMain);
         ImageView photoSide = findViewById(R.id.clubDetailPhotoSide);
 
-        if (imageUrl != null && !imageUrl.isEmpty()) {
-            // Load from drawable if it's just a filename
+        int resIdFromIntent = getIntent().getIntExtra("club_res_id", 0);
+
+        if (resIdFromIntent != 0) {
+            // Priority 1: Use the absolute ID passed from the list (guaranteed sync)
+            heroImage.setImageResource(resIdFromIntent);
+            photoMain.setImageResource(resIdFromIntent);
+            photoSide.setImageResource(resIdFromIntent);
+            heroImage.setAlpha(0.9f);
+        } else if (imageUrl != null && !imageUrl.isEmpty()) {
+            // Priority 2: Fallback to string-based identifier
             int resId = getResources().getIdentifier(imageUrl, "drawable", getPackageName());
             if (resId != 0) {
-                Glide.with(this).load(resId).into(heroImage);
-                Glide.with(this).load(resId).into(photoMain);
-                Glide.with(this).load(resId).into(photoSide);
+                heroImage.setImageResource(resId);
+                photoMain.setImageResource(resId);
+                photoSide.setImageResource(resId);
+                heroImage.setAlpha(0.9f);
             } else if (imageUrl.startsWith("http")) {
                 Glide.with(this).load(imageUrl).into(heroImage);
                 Glide.with(this).load(imageUrl).into(photoMain);
