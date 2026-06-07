@@ -6,18 +6,22 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
-import android.view.MotionEvent;
+import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.HorizontalScrollView;
+import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.PagerSnapHelper;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 
 import java.text.NumberFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -34,26 +38,12 @@ public class MainActivity extends BaseActivity {
     private TextView[] scheduleDates;
     private TextView[] scheduleTitles;
     private TextView[] scheduleDdays;
-    private TextView[] windHomeRanks;
-    private TextView[] windHomeHits;
-    private TextView[] windHomeInstitutions;
-    private TextView[] windHomeTitles;
-    private TextView[] windHomePeriods;
-    private ImageView[] windHomeImages;
-    private String[] windHomeDetailUrls = new String[3];
-    private HorizontalScrollView homeWindScroll;
-    private int homeWindSnapStartX;
-    private boolean homeWindUserTouching;
+    private RecyclerView homeWindRecyclerView;
+    private HomeWindAdapter homeWindAdapter;
+    private final ArrayList<GachonWindCrawler.WindProgram> homeWindPrograms = new ArrayList<>();
     private int selectedMealIndex;
-    private final Runnable homeWindSnapRunnable = this::snapHomeWindScroll;
-    private final int[] homeWindCardIds = {
-            R.id.cardWindDummyProgram1,
-            R.id.cardWindDummyProgram2,
-            R.id.cardWindDummyProgram3
-    };
     private static final int HOME_NOTICE_PREVIEW_COUNT = 5;
-    private static final int HOME_WIND_SNAP_DELAY_MS = 120;
-    private static final int HOME_WIND_SWIPE_THRESHOLD_DP = 48;
+    private static final int HOME_WIND_PREVIEW_COUNT = 3;
     private static final String[] MEAL_RESTAURANT_URLS = {
             "https://www.gachon.ac.kr/kor/7349/subview.do",
             "https://www.gachon.ac.kr/kor/7347/subview.do",
@@ -105,9 +95,7 @@ public class MainActivity extends BaseActivity {
         bindHomePreviewTabs();
         startMealHighlightUpdates();
         bindNoticeLinks();
-        bindHomeWindLinks();
-        bindHomeWindCards();
-        bindHomeWindSnap();
+        bindHomeWindCarousel();
         bindMapLink();
         bindClubCategoryLinks();
         loadAcademicSchedules();
@@ -116,84 +104,21 @@ public class MainActivity extends BaseActivity {
         loadHomeNotices();
     }
 
-    private void bindHomeWindSnap() {
-        homeWindScroll = findViewById(R.id.homeWindScroll);
-        if (homeWindScroll == null) return;
+    private void bindHomeWindCarousel() {
+        homeWindRecyclerView = findViewById(R.id.homeWindRecyclerView);
+        if (homeWindRecyclerView == null) return;
 
-        homeWindScroll.setOnScrollChangeListener((v, scrollX, scrollY, oldScrollX, oldScrollY) -> {
-            if (!homeWindUserTouching) {
-                scheduleHomeWindSnap();
-            }
-        });
-
-        homeWindScroll.setOnTouchListener((v, event) -> {
-            switch (event.getActionMasked()) {
-                case MotionEvent.ACTION_DOWN:
-                    homeWindUserTouching = true;
-                    homeWindSnapStartX = homeWindScroll.getScrollX();
-                    mainHandler.removeCallbacks(homeWindSnapRunnable);
-                    break;
-                case MotionEvent.ACTION_UP:
-                case MotionEvent.ACTION_CANCEL:
-                    homeWindUserTouching = false;
-                    scheduleHomeWindSnap();
-                    break;
-                default:
-                    break;
-            }
-            return false;
-        });
-    }
-
-    private void scheduleHomeWindSnap() {
-        mainHandler.removeCallbacks(homeWindSnapRunnable);
-        mainHandler.postDelayed(homeWindSnapRunnable, HOME_WIND_SNAP_DELAY_MS);
-    }
-
-    private void snapHomeWindScroll() {
-        if (homeWindScroll == null) return;
-
-        int currentX = homeWindScroll.getScrollX();
-        int startIndex = findNearestHomeWindCardIndex(homeWindSnapStartX);
-        int targetIndex = findNearestHomeWindCardIndex(currentX);
-        int movedDistance = currentX - homeWindSnapStartX;
-        int threshold = dpToPx(HOME_WIND_SWIPE_THRESHOLD_DP);
-
-        if (Math.abs(movedDistance) >= threshold) {
-            targetIndex = startIndex + (movedDistance > 0 ? 1 : -1);
-            targetIndex = Math.max(0, Math.min(targetIndex, homeWindCardIds.length - 1));
+        homeWindPrograms.clear();
+        for (int i = 0; i < HOME_WIND_PREVIEW_COUNT; i++) {
+            homeWindPrograms.add(null);
         }
 
-        homeWindScroll.smoothScrollTo(getHomeWindSnapX(targetIndex), 0);
-    }
-
-    private int findNearestHomeWindCardIndex(int scrollX) {
-        int nearestIndex = 0;
-        int minDistance = Integer.MAX_VALUE;
-
-        for (int i = 0; i < homeWindCardIds.length; i++) {
-            int distance = Math.abs(scrollX - getHomeWindSnapX(i));
-            if (distance < minDistance) {
-                minDistance = distance;
-                nearestIndex = i;
-            }
-        }
-
-        return nearestIndex;
-    }
-
-    private int getHomeWindSnapX(int index) {
-        View card = findViewById(homeWindCardIds[index]);
-        if (card == null || homeWindScroll == null || homeWindScroll.getChildCount() == 0) {
-            return 0;
-        }
-
-        int maxScrollX = Math.max(0, homeWindScroll.getChildAt(0).getWidth() - homeWindScroll.getWidth());
-        return Math.max(0, Math.min(card.getLeft(), maxScrollX));
-    }
-
-    private int dpToPx(int dp) {
-        return Math.round(dp * getResources().getDisplayMetrics().density);
+        homeWindAdapter = new HomeWindAdapter(homeWindPrograms);
+        homeWindRecyclerView.setLayoutManager(
+                new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
+        );
+        homeWindRecyclerView.setAdapter(homeWindAdapter);
+        new PagerSnapHelper().attachToRecyclerView(homeWindRecyclerView);
     }
 
     private void bindSchedulePreviewCards() {
@@ -444,58 +369,11 @@ public class MainActivity extends BaseActivity {
         startActivity(intent);
     }
 
-    private void bindHomeWindLinks() {
-        bindHomeWindLink(R.id.cardWindDummyProgram1, 0);
-        bindHomeWindLink(R.id.cardWindDummyProgram2, 1);
-        bindHomeWindLink(R.id.cardWindDummyProgram3, 2);
-    }
-
-    private void bindHomeWindCards() {
-        windHomeRanks = new TextView[]{
-                findViewById(R.id.windHomeRank1),
-                findViewById(R.id.windHomeRank2),
-                findViewById(R.id.windHomeRank3)
-        };
-        windHomeHits = new TextView[]{
-                findViewById(R.id.windHomeHits1),
-                findViewById(R.id.windHomeHits2),
-                findViewById(R.id.windHomeHits3)
-        };
-        windHomeInstitutions = new TextView[]{
-                findViewById(R.id.windHomeInstitution1),
-                findViewById(R.id.windHomeInstitution2),
-                findViewById(R.id.windHomeInstitution3)
-        };
-        windHomeTitles = new TextView[]{
-                findViewById(R.id.windHomeTitle1),
-                findViewById(R.id.windHomeTitle2),
-                findViewById(R.id.windHomeTitle3)
-        };
-        windHomePeriods = new TextView[]{
-                findViewById(R.id.windHomePeriod1),
-                findViewById(R.id.windHomePeriod2),
-                findViewById(R.id.windHomePeriod3)
-        };
-        windHomeImages = new ImageView[]{
-                findViewById(R.id.windHomeImage1),
-                findViewById(R.id.windHomeImage2),
-                findViewById(R.id.windHomeImage3)
-        };
-
-        for (int i = 0; i < windHomeRanks.length; i++) {
-            windHomeRanks[i].setText("TOP\n" + (i + 1));
-            windHomeHits[i].setText("\uBD88\uB7EC\uC624\uB294 \uC911...");
-            windHomeInstitutions[i].setText("WIND");
-            windHomeTitles[i].setText("\uD504\uB85C\uADF8\uB7A8 \uBD88\uB7EC\uC624\uB294 \uC911...");
-            windHomePeriods[i].setText("-");
-        }
-    }
-
     private void loadHomeWindTopPrograms() {
         contentExecutor.execute(() -> {
             try {
                 List<GachonWindCrawler.WindProgram> topPrograms =
-                        new GachonWindCrawler().fetchTopPrograms(3);
+                        new GachonWindCrawler().fetchTopPrograms(HOME_WIND_PREVIEW_COUNT);
                 mainHandler.post(() -> updateHomeWindCards(topPrograms));
             } catch (Exception e) {
                 mainHandler.post(this::showEmptyHomeWindCards);
@@ -504,42 +382,27 @@ public class MainActivity extends BaseActivity {
     }
 
     private void updateHomeWindCards(List<GachonWindCrawler.WindProgram> programs) {
-        int count = Math.min(windHomeTitles.length, programs.size());
+        homeWindPrograms.clear();
+        int count = Math.min(HOME_WIND_PREVIEW_COUNT, programs.size());
         for (int i = 0; i < count; i++) {
-            GachonWindCrawler.WindProgram program = programs.get(i);
-            windHomeRanks[i].setText("TOP\n" + (i + 1));
-            windHomeHits[i].setText(NumberFormat.getNumberInstance(Locale.KOREA).format(program.hits) + " HITS");
-            windHomeInstitutions[i].setText(orDash(program.institution));
-            windHomeTitles[i].setText(orDash(program.title));
-            windHomePeriods[i].setText(formatWindHomePeriod(program));
-            windHomeDetailUrls[i] = program.detailUrl;
-
-            if (windHomeImages[i] != null && program.coverUrl != null && !program.coverUrl.isEmpty()) {
-                windHomeImages[i].setVisibility(View.VISIBLE);
-                Glide.with(MainActivity.this)
-                        .load(program.coverUrl)
-                        .centerCrop()
-                        .into(windHomeImages[i]);
-            }
+            homeWindPrograms.add(programs.get(i));
         }
-        for (int i = count; i < windHomeTitles.length; i++) {
-            setEmptyHomeWindCard(i);
+        for (int i = count; i < HOME_WIND_PREVIEW_COUNT; i++) {
+            homeWindPrograms.add(null);
+        }
+        if (homeWindAdapter != null) {
+            homeWindAdapter.notifyDataSetChanged();
         }
     }
 
     private void showEmptyHomeWindCards() {
-        for (int i = 0; i < windHomeTitles.length; i++) {
-            setEmptyHomeWindCard(i);
+        homeWindPrograms.clear();
+        for (int i = 0; i < HOME_WIND_PREVIEW_COUNT; i++) {
+            homeWindPrograms.add(null);
         }
-    }
-
-    private void setEmptyHomeWindCard(int index) {
-        windHomeRanks[index].setText("TOP\n" + (index + 1));
-        windHomeHits[index].setText("-");
-        windHomeInstitutions[index].setText("-");
-        windHomeTitles[index].setText("-");
-        windHomePeriods[index].setText("-");
-        windHomeDetailUrls[index] = null;
+        if (homeWindAdapter != null) {
+            homeWindAdapter.notifyDataSetChanged();
+        }
     }
 
     private String formatWindHomePeriod(GachonWindCrawler.WindProgram program) {
@@ -555,16 +418,7 @@ public class MainActivity extends BaseActivity {
         mapSection.setOnClickListener(v -> startActivity(new Intent(this, MapActivity.class)));
     }
 
-    private void bindHomeWindLink(int viewId, int index) {
-        View view = findViewById(viewId);
-        view.setOnClickListener(v -> openHomeWindDetail(index));
-    }
-
-    private void openHomeWindDetail(int index) {
-        String detailUrl = index >= 0 && index < windHomeDetailUrls.length
-                ? windHomeDetailUrls[index]
-                : null;
-
+    private void openHomeWindDetail(String detailUrl) {
         if (detailUrl == null || detailUrl.trim().isEmpty()) {
             openWindPage();
             return;
@@ -634,6 +488,85 @@ public class MainActivity extends BaseActivity {
     private void openSelectedMealRestaurant() {
         if (selectedMealIndex < 0 || selectedMealIndex >= MEAL_RESTAURANT_URLS.length) return;
         startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(MEAL_RESTAURANT_URLS[selectedMealIndex])));
+    }
+
+    private class HomeWindAdapter extends RecyclerView.Adapter<HomeWindAdapter.HomeWindViewHolder> {
+        private final List<GachonWindCrawler.WindProgram> programs;
+
+        HomeWindAdapter(List<GachonWindCrawler.WindProgram> programs) {
+            this.programs = programs;
+        }
+
+        @NonNull
+        @Override
+        public HomeWindViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+            View view = LayoutInflater.from(parent.getContext())
+                    .inflate(R.layout.item_home_wind_card, parent, false);
+            view.setLayoutParams(new RecyclerView.LayoutParams(
+                    ViewGroup.LayoutParams.MATCH_PARENT,
+                    ViewGroup.LayoutParams.MATCH_PARENT
+            ));
+            return new HomeWindViewHolder(view);
+        }
+
+        @Override
+        public void onBindViewHolder(@NonNull HomeWindViewHolder holder, int position) {
+            GachonWindCrawler.WindProgram program = programs.get(position);
+            holder.rank.setText("TOP\n" + (position + 1));
+
+            if (program == null) {
+                holder.image.setImageDrawable(null);
+                holder.image.setVisibility(View.GONE);
+                holder.hits.setText("\uBD88\uB7EC\uC624\uB294 \uC911...");
+                holder.institution.setText("WIND");
+                holder.title.setText("\uD504\uB85C\uADF8\uB7A8 \uBD88\uB7EC\uC624\uB294 \uC911...");
+                holder.period.setText("-");
+                holder.itemView.setOnClickListener(v -> openWindPage());
+                return;
+            }
+
+            holder.hits.setText(NumberFormat.getNumberInstance(Locale.KOREA).format(program.hits) + " HITS");
+            holder.institution.setText(orDash(program.institution));
+            holder.title.setText(orDash(program.title));
+            holder.period.setText(formatWindHomePeriod(program));
+
+            if (program.coverUrl != null && !program.coverUrl.isEmpty()) {
+                holder.image.setVisibility(View.VISIBLE);
+                Glide.with(MainActivity.this)
+                        .load(program.coverUrl)
+                        .centerCrop()
+                        .into(holder.image);
+            } else {
+                holder.image.setImageDrawable(null);
+                holder.image.setVisibility(View.GONE);
+            }
+
+            holder.itemView.setOnClickListener(v -> openHomeWindDetail(program.detailUrl));
+        }
+
+        @Override
+        public int getItemCount() {
+            return programs.size();
+        }
+
+        class HomeWindViewHolder extends RecyclerView.ViewHolder {
+            final ImageView image;
+            final TextView rank;
+            final TextView hits;
+            final TextView institution;
+            final TextView title;
+            final TextView period;
+
+            HomeWindViewHolder(@NonNull View itemView) {
+                super(itemView);
+                image = itemView.findViewById(R.id.windHomeImage);
+                rank = itemView.findViewById(R.id.windHomeRank);
+                hits = itemView.findViewById(R.id.windHomeHits);
+                institution = itemView.findViewById(R.id.windHomeInstitution);
+                title = itemView.findViewById(R.id.windHomeTitle);
+                period = itemView.findViewById(R.id.windHomePeriod);
+            }
+        }
     }
 
     @Override
