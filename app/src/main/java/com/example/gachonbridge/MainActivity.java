@@ -6,7 +6,9 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
+import android.view.MotionEvent;
 import android.view.View;
+import android.widget.HorizontalScrollView;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -38,8 +40,20 @@ public class MainActivity extends BaseActivity {
     private TextView[] windHomeTitles;
     private TextView[] windHomePeriods;
     private ImageView[] windHomeImages;
+    private String[] windHomeDetailUrls = new String[3];
+    private HorizontalScrollView homeWindScroll;
+    private int homeWindSnapStartX;
+    private boolean homeWindUserTouching;
     private int selectedMealIndex;
+    private final Runnable homeWindSnapRunnable = this::snapHomeWindScroll;
+    private final int[] homeWindCardIds = {
+            R.id.cardWindDummyProgram1,
+            R.id.cardWindDummyProgram2,
+            R.id.cardWindDummyProgram3
+    };
     private static final int HOME_NOTICE_PREVIEW_COUNT = 5;
+    private static final int HOME_WIND_SNAP_DELAY_MS = 120;
+    private static final int HOME_WIND_SWIPE_THRESHOLD_DP = 48;
     private static final String[] MEAL_RESTAURANT_URLS = {
             "https://www.gachon.ac.kr/kor/7349/subview.do",
             "https://www.gachon.ac.kr/kor/7347/subview.do",
@@ -93,12 +107,93 @@ public class MainActivity extends BaseActivity {
         bindNoticeLinks();
         bindHomeWindLinks();
         bindHomeWindCards();
+        bindHomeWindSnap();
         bindMapLink();
         bindClubCategoryLinks();
         loadAcademicSchedules();
         loadTodayMeals();
         loadHomeWindTopPrograms();
         loadHomeNotices();
+    }
+
+    private void bindHomeWindSnap() {
+        homeWindScroll = findViewById(R.id.homeWindScroll);
+        if (homeWindScroll == null) return;
+
+        homeWindScroll.setOnScrollChangeListener((v, scrollX, scrollY, oldScrollX, oldScrollY) -> {
+            if (!homeWindUserTouching) {
+                scheduleHomeWindSnap();
+            }
+        });
+
+        homeWindScroll.setOnTouchListener((v, event) -> {
+            switch (event.getActionMasked()) {
+                case MotionEvent.ACTION_DOWN:
+                    homeWindUserTouching = true;
+                    homeWindSnapStartX = homeWindScroll.getScrollX();
+                    mainHandler.removeCallbacks(homeWindSnapRunnable);
+                    break;
+                case MotionEvent.ACTION_UP:
+                case MotionEvent.ACTION_CANCEL:
+                    homeWindUserTouching = false;
+                    scheduleHomeWindSnap();
+                    break;
+                default:
+                    break;
+            }
+            return false;
+        });
+    }
+
+    private void scheduleHomeWindSnap() {
+        mainHandler.removeCallbacks(homeWindSnapRunnable);
+        mainHandler.postDelayed(homeWindSnapRunnable, HOME_WIND_SNAP_DELAY_MS);
+    }
+
+    private void snapHomeWindScroll() {
+        if (homeWindScroll == null) return;
+
+        int currentX = homeWindScroll.getScrollX();
+        int startIndex = findNearestHomeWindCardIndex(homeWindSnapStartX);
+        int targetIndex = findNearestHomeWindCardIndex(currentX);
+        int movedDistance = currentX - homeWindSnapStartX;
+        int threshold = dpToPx(HOME_WIND_SWIPE_THRESHOLD_DP);
+
+        if (Math.abs(movedDistance) >= threshold) {
+            targetIndex = startIndex + (movedDistance > 0 ? 1 : -1);
+            targetIndex = Math.max(0, Math.min(targetIndex, homeWindCardIds.length - 1));
+        }
+
+        homeWindScroll.smoothScrollTo(getHomeWindSnapX(targetIndex), 0);
+    }
+
+    private int findNearestHomeWindCardIndex(int scrollX) {
+        int nearestIndex = 0;
+        int minDistance = Integer.MAX_VALUE;
+
+        for (int i = 0; i < homeWindCardIds.length; i++) {
+            int distance = Math.abs(scrollX - getHomeWindSnapX(i));
+            if (distance < minDistance) {
+                minDistance = distance;
+                nearestIndex = i;
+            }
+        }
+
+        return nearestIndex;
+    }
+
+    private int getHomeWindSnapX(int index) {
+        View card = findViewById(homeWindCardIds[index]);
+        if (card == null || homeWindScroll == null || homeWindScroll.getChildCount() == 0) {
+            return 0;
+        }
+
+        int maxScrollX = Math.max(0, homeWindScroll.getChildAt(0).getWidth() - homeWindScroll.getWidth());
+        return Math.max(0, Math.min(card.getLeft(), maxScrollX));
+    }
+
+    private int dpToPx(int dp) {
+        return Math.round(dp * getResources().getDisplayMetrics().density);
     }
 
     private void bindSchedulePreviewCards() {
@@ -350,9 +445,9 @@ public class MainActivity extends BaseActivity {
     }
 
     private void bindHomeWindLinks() {
-        bindHomeWindLink(R.id.cardWindDummyProgram1);
-        bindHomeWindLink(R.id.cardWindDummyProgram2);
-        bindHomeWindLink(R.id.cardWindDummyProgram3);
+        bindHomeWindLink(R.id.cardWindDummyProgram1, 0);
+        bindHomeWindLink(R.id.cardWindDummyProgram2, 1);
+        bindHomeWindLink(R.id.cardWindDummyProgram3, 2);
     }
 
     private void bindHomeWindCards() {
@@ -417,6 +512,7 @@ public class MainActivity extends BaseActivity {
             windHomeInstitutions[i].setText(orDash(program.institution));
             windHomeTitles[i].setText(orDash(program.title));
             windHomePeriods[i].setText(formatWindHomePeriod(program));
+            windHomeDetailUrls[i] = program.detailUrl;
 
             if (windHomeImages[i] != null && program.coverUrl != null && !program.coverUrl.isEmpty()) {
                 windHomeImages[i].setVisibility(View.VISIBLE);
@@ -443,6 +539,7 @@ public class MainActivity extends BaseActivity {
         windHomeInstitutions[index].setText("-");
         windHomeTitles[index].setText("-");
         windHomePeriods[index].setText("-");
+        windHomeDetailUrls[index] = null;
     }
 
     private String formatWindHomePeriod(GachonWindCrawler.WindProgram program) {
@@ -458,9 +555,26 @@ public class MainActivity extends BaseActivity {
         mapSection.setOnClickListener(v -> startActivity(new Intent(this, MapActivity.class)));
     }
 
-    private void bindHomeWindLink(int viewId) {
+    private void bindHomeWindLink(int viewId, int index) {
         View view = findViewById(viewId);
-        view.setOnClickListener(v -> openWindPage());
+        view.setOnClickListener(v -> openHomeWindDetail(index));
+    }
+
+    private void openHomeWindDetail(int index) {
+        String detailUrl = index >= 0 && index < windHomeDetailUrls.length
+                ? windHomeDetailUrls[index]
+                : null;
+
+        if (detailUrl == null || detailUrl.trim().isEmpty()) {
+            openWindPage();
+            return;
+        }
+
+        try {
+            startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(detailUrl)));
+        } catch (Exception e) {
+            openWindPage();
+        }
     }
 
     private void openWindPage() {
