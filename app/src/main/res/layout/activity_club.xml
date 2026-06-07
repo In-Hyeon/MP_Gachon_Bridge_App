@@ -121,20 +121,40 @@
                     android:orientation="horizontal" />
             </HorizontalScrollView>
 
-            <LinearLayout
+            <FrameLayout
                 android:id="@+id/featuredClubCard"
                 android:layout_width="match_parent"
                 android:layout_height="230dp"
                 android:layout_marginTop="26dp"
-                android:background="@drawable/bg_club_featured"
-                android:gravity="bottom"
-                android:orientation="vertical"
-                android:padding="20dp">
+                android:background="@drawable/bg_card"
+                android:clipToOutline="true"
+                android:clickable="true"
+                android:focusable="true">
+
+                <ImageView
+                    android:id="@+id/featuredClubImage"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:scaleType="centerCrop"
+                    android:alpha="0.8" />
+
+                <!-- 그라데이션 오버레이: 텍스트 영역 가독성 확보 -->
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/bg_featured_overlay" />
 
                 <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="36dp"
-                    android:orientation="horizontal">
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="bottom"
+                    android:orientation="vertical"
+                    android:padding="20dp">
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="36dp"
+                        android:orientation="horizontal">
 
                     <TextView
                         android:id="@+id/featuredClubBadge"
@@ -183,8 +203,8 @@
                     android:maxLines="2"
                     android:textColor="@color/gb_on_surface_variant"
                     android:textSize="16sp" />
-            </LinearLayout>
-
+                </LinearLayout>
+                </FrameLayout>
             <LinearLayout
                 android:id="@+id/clubList"
                 android:layout_width="match_parent"

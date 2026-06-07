@@ -64,25 +64,30 @@
 
             <FrameLayout
                 android:layout_width="match_parent"
-                android:layout_height="300dp"
-                android:background="@drawable/bg_club_detail_hero"
-                android:padding="24dp">
+                android:layout_height="320dp"
+                android:background="@drawable/bg_card"
+                android:clipToOutline="true">
 
-                <TextView
-                    android:id="@+id/clubDetailHeroIcon"
-                    android:layout_width="132dp"
-                    android:layout_height="132dp"
-                    android:layout_gravity="top|end"
-                    android:alpha="0.38"
-                    android:gravity="center"
-                    android:textColor="@color/gb_on_surface"
-                    android:textSize="56sp"
-                    android:textStyle="bold" />
+                <!-- 1단계 (맨 뒤): 원본 사진 -->
+                <ImageView
+                    android:id="@+id/clubDetailHeroImage"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:scaleType="centerCrop"
+                    android:alpha="0.9" />
 
+                <!-- 2단계 (중간): 테두리 및 그라데이션 오버레이 (부드러운 블렌딩) -->
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/bg_hero_overlay_v2" />
+
+                <!-- 3단계 (맨 앞): 텍스트 정보 (여백 확보) -->
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="bottom"
+                    android:layout_height="match_parent"
+                    android:gravity="bottom"
+                    android:padding="22dp"
                     android:orientation="vertical">
 
                     <TextView
@@ -163,6 +168,96 @@
                     android:textSize="18sp" />
             </LinearLayout>
 
+            <!-- 주요 활동 섹션 -->
+            <LinearLayout
+                android:id="@+id/clubDetailActivitySection"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="28dp"
+                android:background="@drawable/bg_card"
+                android:orientation="vertical"
+                android:padding="24dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:gravity="center"
+                        android:text="&#x25C8;"
+                        android:textColor="@color/gb_primary"
+                        android:textSize="24sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="12dp"
+                        android:text="주요 활동"
+                        android:textColor="@color/gb_on_surface"
+                        android:textSize="26sp"
+                        android:textStyle="bold" />
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/clubDetailActivityBody"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="28dp"
+                    android:lineSpacingExtra="8dp"
+                    android:textColor="@color/gb_on_surface_variant"
+                    android:textSize="18sp" />
+            </LinearLayout>
+
+            <!-- 위치 섹션 -->
+            <LinearLayout
+                android:id="@+id/clubDetailLocationSection"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="28dp"
+                android:background="@drawable/bg_card"
+                android:orientation="vertical"
+                android:padding="24dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:gravity="center"
+                        android:text="&#x25CE;"
+                        android:textColor="@color/gb_primary"
+                        android:textSize="24sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="12dp"
+                        android:text="동아리방 위치"
+                        android:textColor="@color/gb_on_surface"
+                        android:textSize="26sp"
+                        android:textStyle="bold" />
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/clubDetailLocationBody"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="28dp"
+                    android:lineSpacingExtra="8dp"
+                    android:textColor="@color/gb_on_surface_variant"
+                    android:textSize="18sp" />
+            </LinearLayout>
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -208,26 +303,20 @@
                         android:layout_height="190dp"
                         android:orientation="horizontal">
 
-                        <TextView
+                        <ImageView
                             android:id="@+id/clubDetailPhotoMain"
                             android:layout_width="320dp"
                             android:layout_height="match_parent"
                             android:background="@drawable/bg_club_photo"
-                            android:gravity="center"
-                            android:textColor="@color/gb_on_primary"
-                            android:textSize="54sp"
-                            android:textStyle="bold" />
+                            android:scaleType="centerCrop" />
 
-                        <TextView
+                        <ImageView
                             android:id="@+id/clubDetailPhotoSide"
                             android:layout_width="124dp"
                             android:layout_height="match_parent"
                             android:layout_marginStart="20dp"
                             android:background="@drawable/bg_chip_inactive"
-                            android:gravity="center"
-                            android:textColor="@color/gb_on_surface"
-                            android:textSize="18sp"
-                            android:textStyle="bold" />
+                            android:scaleType="centerCrop" />
                     </LinearLayout>
                 </HorizontalScrollView>
             </LinearLayout>
