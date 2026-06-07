@@ -176,8 +176,9 @@
 
                 <Button
                     android:id="@+id/btnSearchProfessor"
-                    android:layout_width="72dp"
+                    android:layout_width="wrap_content"
                     android:layout_height="48dp"
+                    android:singleLine="true"
                     android:layout_marginStart="8dp"
                     android:background="@null"
                     android:minWidth="0dp"
