@@ -1,7 +1,9 @@
 package com.example.gachonbridge;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.graphics.Typeface;
+import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
 import android.view.Gravity;
 import android.view.View;
@@ -48,8 +50,8 @@ public class ClubActivity extends BaseActivity {
     private int selectedCampus = CAMPUS_GLOBAL;
     private int selectedCategory = 0;
 
+    private Club currentlyFeaturedClub = null;
     private android.os.Handler carouselHandler = new android.os.Handler(android.os.Looper.getMainLooper());
-    private int currentFeaturedIndex = 0;
     private Runnable carouselRunnable;
 
     @Override
@@ -67,6 +69,7 @@ public class ClubActivity extends BaseActivity {
 
     private void loadClubsFromJson() {
         try {
+            globalClubs.clear(); medicalClubs.clear();
             loadCampusClubs("clubs_global.json", globalClubs);
             loadCampusClubs("clubs_medical.json", medicalClubs);
         } catch (Exception e) { e.printStackTrace(); }
@@ -81,11 +84,11 @@ public class ClubActivity extends BaseActivity {
         JSONArray jsonArray = new JSONArray(json);
         for (int i = 0; i < jsonArray.length(); i++) {
             JSONObject obj = jsonArray.getJSONObject(i);
-            String imageUrl = obj.optString("image_url", "");
             targetList.add(new Club(
                     obj.optString("name", ""), obj.optString("division", ""),
                     obj.optString("short_description", ""), obj.optString("long_description", ""),
-                    obj.optString("activity", ""), obj.optString("location", ""), imageUrl, i == 0
+                    obj.optString("activity", ""), obj.optString("location", ""), 
+                    obj.optString("image_url", "")
             ));
         }
     }
@@ -135,30 +138,37 @@ public class ClubActivity extends BaseActivity {
     }
 
     private void renderClubScreen() {
-        List<Club> clubListRef = selectedCampus == CAMPUS_GLOBAL ? globalClubs : medicalClubs;
+        final List<Club> allClubs = selectedCampus == CAMPUS_GLOBAL ? globalClubs : medicalClubs;
         updateCampusTabs(); updateCategoryTabs();
         if (carouselRunnable != null) carouselHandler.removeCallbacks(carouselRunnable);
-        List<Club> visibleClubs = new ArrayList<>();
-        for (Club c : clubListRef) if (isVisible(c)) visibleClubs.add(c);
+
+        final List<Club> visibleClubs = new ArrayList<>();
+        for (Club c : allClubs) if (isVisible(c)) visibleClubs.add(c);
+
         if (selectedCategory == 0 && !visibleClubs.isEmpty()) {
             featuredClubCard.setVisibility(View.VISIBLE);
             Random random = new Random();
-            currentFeaturedIndex = random.nextInt(visibleClubs.size());
-            updateFeaturedClubUI(visibleClubs.get(currentFeaturedIndex));
+            currentlyFeaturedClub = visibleClubs.get(random.nextInt(visibleClubs.size()));
+            updateFeaturedClubUI(currentlyFeaturedClub);
             carouselRunnable = new Runnable() {
                 @Override
                 public void run() {
                     if (visibleClubs.size() > 1) {
-                        int next; do { next = random.nextInt(visibleClubs.size()); } while (next == currentFeaturedIndex);
-                        currentFeaturedIndex = next;
+                        Club next;
+                        do { next = visibleClubs.get(random.nextInt(visibleClubs.size())); } while (next == currentlyFeaturedClub);
+                        currentlyFeaturedClub = next;
                     }
-                    updateFeaturedClubUI(visibleClubs.get(currentFeaturedIndex));
+                    updateFeaturedClubUI(currentlyFeaturedClub);
+                    // Removed updateClubList call to prevent flickering, as the list is now constant
                     carouselHandler.postDelayed(this, 6000);
                 }
             };
             carouselHandler.postDelayed(carouselRunnable, 6000);
-        } else { featuredClubCard.setVisibility(View.GONE); }
-        updateClubList(clubListRef);
+        } else {
+            featuredClubCard.setVisibility(View.GONE);
+            currentlyFeaturedClub = null;
+        }
+        updateClubList(allClubs);
     }
 
     private void updateCampusTabs() {
@@ -182,9 +192,11 @@ public class ClubActivity extends BaseActivity {
     }
 
     private void updateFeaturedClubUI(Club featured) {
-        featuredBadge.setText(featured.badge); featuredCategory.setText(featured.category);
+        if (featured == null) return;
+        featuredBadge.setText(featured.category); featuredCategory.setText(featured.category);
         featuredTitle.setText(featured.name); featuredBody.setText(featured.shortDescription);
         featuredClubCard.setOnClickListener(v -> openClubDetail(featured));
+        featuredClubImage.setImageDrawable(null);
         if (featured.imageUrl != null && !featured.imageUrl.isEmpty()) {
             int resId = getResources().getIdentifier(featured.imageUrl, "drawable", getPackageName());
             if (resId != 0) Glide.with(this).load(resId).into(featuredClubImage);
@@ -202,7 +214,6 @@ public class ClubActivity extends BaseActivity {
         clubList.removeAllViews();
         for (Club club : clubs) {
             if (!isVisible(club)) continue;
-            if (selectedCategory == 0 && club.featured) continue;
             clubList.addView(createClubCard(club));
         }
     }
@@ -223,33 +234,43 @@ public class ClubActivity extends BaseActivity {
         card.setGravity(Gravity.CENTER_VERTICAL); card.setPadding(dp(18), dp(18), dp(18), dp(18));
         card.setBackgroundResource(R.drawable.bg_card); card.setClickable(true); card.setFocusable(true);
         card.setOnClickListener(v -> openClubDetail(club));
-        card.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT) {{ setMargins(0, 0, 0, dp(16)); }});
+        card.setLayoutParams(new LinearLayout.LayoutParams(-1, -2) {{ setMargins(0, 0, 0, dp(16)); }});
 
         FrameLayout imageArea = new FrameLayout(this);
         LinearLayout.LayoutParams iaParams = new LinearLayout.LayoutParams(dp(86), dp(86));
         iaParams.setMarginEnd(dp(18)); card.addView(imageArea, iaParams);
 
-        // Fallback Letter
+        // Fallback Letter Area
         TextView fallback = new TextView(this); fallback.setText(club.icon); fallback.setGravity(Gravity.CENTER);
-        fallback.setTextSize(24); fallback.setTypeface(null, Typeface.BOLD);
-        fallback.setTextColor(ContextCompat.getColor(this, R.color.gb_on_primary));
-        fallback.setBackgroundResource(R.drawable.bg_chip_active);
+        fallback.setTextSize(26); fallback.setTypeface(null, Typeface.BOLD);
+        fallback.setTextColor(Color.WHITE);
+        
+        // Generate unique colored background for fallback based on name
+        GradientDrawable gd = new GradientDrawable();
+        gd.setCornerRadius(dp(16));
+        int hashColor = Color.HSVToColor(new float[]{ Math.abs(club.name.hashCode() % 360), 0.6f, 0.8f });
+        gd.setColor(hashColor);
+        fallback.setBackground(gd);
         imageArea.addView(fallback, new FrameLayout.LayoutParams(-1, -1));
 
-        // Actual Image
+        // Actual Image (Only visible if loaded)
         ImageView icon = new ImageView(this); icon.setScaleType(ImageView.ScaleType.CENTER_CROP);
         icon.setBackgroundResource(R.drawable.bg_club_photo); icon.setClipToOutline(true);
+        icon.setVisibility(View.GONE);
+        
         if (club.imageUrl != null && !club.imageUrl.isEmpty()) {
             int resId = getResources().getIdentifier(club.imageUrl, "drawable", getPackageName());
-            if (resId != 0) Glide.with(this).load(resId).into(icon);
-            else if (club.imageUrl.startsWith("http")) Glide.with(this).load(club.imageUrl).into(icon);
+            if (resId != 0 || club.imageUrl.startsWith("http")) {
+                icon.setVisibility(View.VISIBLE);
+                Glide.with(this).load(resId != 0 ? resId : club.imageUrl).into(icon);
+            }
         }
         imageArea.addView(icon, new FrameLayout.LayoutParams(-1, -1));
 
         LinearLayout body = new LinearLayout(this); body.setOrientation(LinearLayout.VERTICAL);
         card.addView(body, new LinearLayout.LayoutParams(0, -2, 1));
 
-        TextView category = new TextView(this); category.setText(club.badge); category.setGravity(Gravity.CENTER);
+        TextView category = new TextView(this); category.setText(club.category); category.setGravity(Gravity.CENTER);
         category.setTextSize(13); category.setPadding(dp(12), 0, dp(12), 0);
         category.setTextColor(ContextCompat.getColor(this, R.color.gb_on_surface_variant));
         category.setBackgroundResource(R.drawable.bg_chip_inactive);
@@ -276,7 +297,6 @@ public class ClubActivity extends BaseActivity {
         intent.putExtra(ClubDetailActivity.EXTRA_CATEGORY, club.category);
         intent.putExtra("club_short_description", club.shortDescription);
         intent.putExtra(ClubDetailActivity.EXTRA_DESCRIPTION, club.longDescription);
-        intent.putExtra(ClubDetailActivity.EXTRA_BADGE, club.badge);
         intent.putExtra(ClubDetailActivity.EXTRA_IMAGE_URL, club.imageUrl);
         intent.putExtra("club_activity", club.activity);
         intent.putExtra("club_location", club.location);
@@ -286,14 +306,12 @@ public class ClubActivity extends BaseActivity {
     private int dp(int value) { return (int) (value * getResources().getDisplayMetrics().density + 0.5f); }
 
     public static class Club {
-        public final String name, category, shortDescription, longDescription, activity, location, imageUrl, badge, status, icon;
-        public final boolean featured;
-        public Club(String name, String category, String shortDescription, String longDescription, String activity, String location, String imageUrl, boolean featured) {
+        public final String name, category, shortDescription, longDescription, activity, location, imageUrl, icon;
+        public Club(String name, String category, String shortDescription, String longDescription, String activity, String location, String imageUrl) {
             this.name = name; this.category = category; this.shortDescription = shortDescription;
             this.longDescription = longDescription; this.activity = activity; this.location = location;
-            this.imageUrl = imageUrl; this.badge = category; this.status = "모집 중";
-            this.icon = category.isEmpty() ? "G" : category.substring(0, 1);
-            this.featured = featured;
+            this.imageUrl = imageUrl;
+            this.icon = (name != null && !name.isEmpty()) ? name.substring(0, 1) : "G";
         }
     }
 }
