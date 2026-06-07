@@ -26,7 +26,7 @@
             android:contentDescription="@null"
             android:padding="11dp"
             android:scaleType="centerInside"
-            android:src="@drawable/gachon_logo_black"
+            android:src="@drawable/ic_gachon_logo_black"
             android:tint="@color/gb_primary" />
 
         <TextView
