@@ -2,6 +2,7 @@ package com.example.gachonbridge;
 
 import android.content.Intent;
 import android.graphics.Typeface;
+import android.graphics.drawable.GradientDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
@@ -37,6 +38,8 @@ public class MainActivity extends BaseActivity {
     private TextView[] mealItems;
     private TextView[] scheduleDates;
     private TextView[] scheduleTitles;
+    private View[] homeWindIndicators;
+    private PagerSnapHelper homeWindSnapHelper;
     private TextView[] scheduleDdays;
     private RecyclerView homeWindRecyclerView;
     private HomeWindAdapter homeWindAdapter;
@@ -108,6 +111,12 @@ public class MainActivity extends BaseActivity {
         homeWindRecyclerView = findViewById(R.id.homeWindRecyclerView);
         if (homeWindRecyclerView == null) return;
 
+        homeWindIndicators = new View[]{
+                findViewById(R.id.homeWindIndicator1),
+                findViewById(R.id.homeWindIndicator2),
+                findViewById(R.id.homeWindIndicator3)
+        };
+
         homeWindPrograms.clear();
         for (int i = 0; i < HOME_WIND_PREVIEW_COUNT; i++) {
             homeWindPrograms.add(null);
@@ -118,7 +127,42 @@ public class MainActivity extends BaseActivity {
                 new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
         );
         homeWindRecyclerView.setAdapter(homeWindAdapter);
-        new PagerSnapHelper().attachToRecyclerView(homeWindRecyclerView);
+
+        homeWindSnapHelper = new PagerSnapHelper();
+        homeWindSnapHelper.attachToRecyclerView(homeWindRecyclerView);
+
+        homeWindRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+                if (newState == RecyclerView.SCROLL_STATE_IDLE) {
+                    updateHomeWindIndicator();
+                }
+            }
+        });
+
+        updateHomeWindIndicator();
+    }
+    private void updateHomeWindIndicator() {
+        if (homeWindRecyclerView == null || homeWindIndicators == null) return;
+
+        RecyclerView.LayoutManager layoutManager = homeWindRecyclerView.getLayoutManager();
+        View snapView = homeWindSnapHelper.findSnapView(layoutManager);
+        int position = snapView == null ? 0 : homeWindRecyclerView.getChildAdapterPosition(snapView);
+
+        for (int i = 0; i < homeWindIndicators.length; i++) {
+            homeWindIndicators[i].setBackground(makeIndicatorDrawable(i == position));
+        }
+    }
+
+    private GradientDrawable makeIndicatorDrawable(boolean active) {
+        GradientDrawable drawable = new GradientDrawable();
+        drawable.setShape(GradientDrawable.OVAL);
+        drawable.setColor(ContextCompat.getColor(
+                this,
+                active ? R.color.gb_primary : R.color.gb_outline_variant
+        ));
+        return drawable;
     }
 
     private void bindSchedulePreviewCards() {

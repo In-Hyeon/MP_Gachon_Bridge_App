@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!-- 메인 화면 루트 레이아웃: 전체 홈 화면의 기준 View -->
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main"
@@ -31,7 +32,7 @@
             android:padding="11dp"
             android:scaleType="centerInside"
             android:src="@drawable/ic_gachon_logo"
-            android:tint="@color/gb_primary" />
+            app:tint="@color/gb_primary" />
 
         <LinearLayout
             android:layout_width="0dp"
@@ -65,7 +66,7 @@
             android:padding="10dp"
             android:scaleType="centerInside"
             android:src="@drawable/ic_user"
-            android:tint="@color/gb_on_surface_variant" />
+            app:tint="@color/gb_on_surface_variant" />
     </LinearLayout>
 
     <ScrollView
@@ -733,6 +734,33 @@
                         </LinearLayout>
                     </LinearLayout>
                 </HorizontalScrollView>
+
+                <LinearLayout
+                    android:id="@+id/homeWindIndicator"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="10dp"
+                    android:orientation="horizontal">
+
+                    <View
+                        android:id="@+id/homeWindIndicator1"
+                        android:layout_width="8dp"
+                        android:layout_height="8dp"
+                        android:layout_marginHorizontal="4dp" />
+
+                    <View
+                        android:id="@+id/homeWindIndicator2"
+                        android:layout_width="8dp"
+                        android:layout_height="8dp"
+                        android:layout_marginHorizontal="4dp" />
+
+                    <View
+                        android:id="@+id/homeWindIndicator3"
+                        android:layout_width="8dp"
+                        android:layout_height="8dp"
+                        android:layout_marginHorizontal="4dp" />
+                </LinearLayout>
             </LinearLayout>
 
             <!-- 동아리 섹션 -->
