@@ -84,7 +84,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="8dp"
                 android:text="인기 프로그램 TOP 3"
-                android:textColor="@color/gb_on_surface"
+                android:textColor="@color/gb_primary_container"
                 android:textSize="18sp"
                 android:textStyle="bold" />
 
@@ -124,7 +124,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="8dp"
                     android:text="최신 프로그램"
-                    android:textColor="@color/gb_on_surface"
+                    android:textColor="@color/gb_primary_container"
                     android:textSize="18sp"
                     android:textStyle="bold" />
 

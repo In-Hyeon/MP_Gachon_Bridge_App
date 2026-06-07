@@ -1,6 +1,7 @@
 package com.example.gachonbridge;
 
 import android.content.Intent;
+import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.Bundle;
 import android.text.Editable;
@@ -157,14 +158,20 @@ public class ContactActivity extends BaseActivity {
 
         for (String sec : sections) {
             TextView chip = new TextView(this);
+
             LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
                     ViewGroup.LayoutParams.WRAP_CONTENT,
-                    ViewGroup.LayoutParams.WRAP_CONTENT);
-            lp.setMarginEnd(10);
+                    dp(52)
+            );
+            lp.setMarginEnd(dp(14));
             chip.setLayoutParams(lp);
-            chip.setPadding(32, 16, 32, 16);
+
+            chip.setPadding(dp(24), 0, dp(24), 0);
+            chip.setGravity(android.view.Gravity.CENTER);
             chip.setText(sec);
-            chip.setTextSize(14f);
+            chip.setTextSize(15f);
+            chip.setTypeface(null, Typeface.BOLD);
+            chip.setSingleLine(true);
             chip.setClickable(true);
             chip.setFocusable(true);
             setChipState(chip, sec.equals(currentFilter));
@@ -180,6 +187,7 @@ public class ContactActivity extends BaseActivity {
                 }
                 adapter.updateData(getFilteredList());
             });
+
             chipGroup.addView(chip);
         }
     }
@@ -257,5 +265,9 @@ public class ContactActivity extends BaseActivity {
                 btnCall         = v.findViewById(R.id.btnContactCall);
             }
         }
+    }
+
+    private int dp(int value) {
+        return (int) (value * getResources().getDisplayMetrics().density + 0.5f);
     }
 }
