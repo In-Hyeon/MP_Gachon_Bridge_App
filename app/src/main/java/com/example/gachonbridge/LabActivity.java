@@ -171,32 +171,30 @@ public class LabActivity extends BaseActivity {
     }
 
     private void setFavoriteModeButtonStyle(Button button, boolean selected) {
-        button.setAllCaps(false); button.setMinWidth(0); button.setMinHeight(0);
-        button.setBackgroundTintList(null);
-        if (selected) {
-            button.setTextColor(Color.parseColor("#111318"));
-            button.setBackground(makeRoundRect("#7CADFF", 16));
-        } else {
-            button.setTextColor(Color.WHITE);
-            button.setBackground(makeRoundRectWithStroke("#00000000", "#FFFFFF", 16, 1));
-        }
+        applyLabChipStyle(button, selected);
     }
 
     private void setSelectedTab(Button sel) {
-        setTabStyle(btnTabAi, false); setTabStyle(btnTabBusiness, false); setTabStyle(btnTabChem, false);
+        setTabStyle(btnTabAi, false);
+        setTabStyle(btnTabBusiness, false);
+        setTabStyle(btnTabChem, false);
         setTabStyle(sel, true);
     }
 
     private void setTabStyle(Button button, boolean selected) {
-        button.setAllCaps(false); button.setMinWidth(0); button.setMinHeight(0);
+        applyLabChipStyle(button, selected);
+    }
+
+    private void applyLabChipStyle(Button button, boolean selected) {
+        button.setAllCaps(false);
+        button.setMinWidth(dp(78));
+        button.setMinHeight(0);
         button.setBackgroundTintList(null);
-        if (selected) {
-            button.setTextColor(Color.parseColor("#111318"));
-            button.setBackground(makeRoundRect("#7CADFF", 18));
-        } else {
-            button.setTextColor(Color.WHITE);
-            button.setBackground(makeRoundRectWithStroke("#00000000", "#FFFFFF", 18, 1));
-        }
+        button.setTextSize(14);
+        button.setTypeface(null, Typeface.BOLD);
+        button.setPadding(dp(20), 0, dp(20), 0);
+        button.setBackgroundResource(selected ? R.drawable.bg_chip_active : R.drawable.bg_chip_inactive);
+        button.setTextColor(getColor(selected ? R.color.gb_on_primary : R.color.gb_on_surface));
     }
 
     private void setActionButtonStyle(Button button) {
@@ -224,8 +222,8 @@ public class LabActivity extends BaseActivity {
     private View createLabCard(Lab lab) {
         LinearLayout card = new LinearLayout(this);
         card.setOrientation(LinearLayout.VERTICAL);
+        card.setBackgroundResource(R.drawable.bg_card);
         card.setPadding(dp(16), dp(16), dp(16), dp(16));
-        card.setBackground(makeRoundRect("#1E2029", 12));
         LinearLayout.LayoutParams cp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
         cp.setMargins(0,0,0,dp(14)); card.setLayoutParams(cp);
 

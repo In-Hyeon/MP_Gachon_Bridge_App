@@ -33,17 +33,6 @@
             android:tint="@color/gb_primary" />
 
         <TextView
-            android:layout_width="48dp"
-            android:layout_height="48dp"
-            android:layout_marginStart="4dp"
-            android:background="@drawable/bg_icon_circle"
-            android:gravity="center"
-            android:text="@string/home_logo"
-            android:textColor="@color/gb_primary"
-            android:textSize="16sp"
-            android:textStyle="bold" />
-
-        <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="12dp"

@@ -161,20 +161,13 @@ public class ContactActivity extends BaseActivity {
 
             LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
                     ViewGroup.LayoutParams.WRAP_CONTENT,
-                    dp(52)
+                    dp(42)
             );
             lp.setMarginEnd(dp(14));
             chip.setLayoutParams(lp);
 
-            chip.setPadding(dp(24), 0, dp(24), 0);
-            chip.setGravity(android.view.Gravity.CENTER);
             chip.setText(sec);
-            chip.setTextSize(15f);
-            chip.setTypeface(null, Typeface.BOLD);
-            chip.setSingleLine(true);
-            chip.setClickable(true);
-            chip.setFocusable(true);
-            setChipState(chip, sec.equals(currentFilter));
+            applyContactChipStyle(chip, sec.equals(currentFilter));
 
             chip.setOnClickListener(v -> {
                 currentFilter = sec;
@@ -182,7 +175,7 @@ public class ContactActivity extends BaseActivity {
                     View child = chipGroup.getChildAt(i);
                     if (child instanceof TextView) {
                         String label = ((TextView) child).getText().toString();
-                        setChipState((TextView) child, label.equals(sec));
+                        applyContactChipStyle((TextView) child, label.equals(sec));
                     }
                 }
                 adapter.updateData(getFilteredList());
@@ -192,12 +185,27 @@ public class ContactActivity extends BaseActivity {
         }
     }
 
-    private void setChipState(TextView chip, boolean active) {
+    private void applyContactChipStyle(TextView chip, boolean active) {
+        chip.setMinWidth(dp(78));
+        chip.setGravity(android.view.Gravity.CENTER);
+        chip.setTextSize(14f);
+        chip.setTypeface(null, Typeface.BOLD);
+        chip.setSingleLine(true);
+        chip.setPadding(dp(20), 0, dp(20), 0);
+        chip.setClickable(true);
+        chip.setFocusable(true);
         chip.setBackgroundResource(active ? R.drawable.bg_chip_active : R.drawable.bg_chip_inactive);
         chip.setTextColor(ContextCompat.getColor(
                 this,
-                active ? R.color.gb_on_primary : R.color.gb_on_surface));
+                active ? R.color.gb_on_primary : R.color.gb_on_surface
+        ));
     }
+//    private void setChipState(TextView chip, boolean active) {
+//        chip.setBackgroundResource(active ? R.drawable.bg_chip_active : R.drawable.bg_chip_inactive);
+//        chip.setTextColor(ContextCompat.getColor(
+//                this,
+//                active ? R.color.gb_on_primary : R.color.gb_on_surface));
+//    }
 
     private List<Contact> getFilteredList() {
         List<Contact> result = new ArrayList<>();
