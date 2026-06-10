@@ -6,6 +6,7 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Build;
 import android.util.Log;
@@ -95,7 +96,8 @@ public class NoticeWorker extends Worker {
         PendingIntent pi = PendingIntent.getActivity(context, notice.getUrl().hashCode(), intent, PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
 
         NotificationCompat.Builder builder = new NotificationCompat.Builder(context, CHANNEL_ID)
-                .setSmallIcon(R.drawable.bg_icon_circle) // Placeholder, ideally a bell icon
+                .setSmallIcon(R.drawable.ic_launcher)
+                .setLargeIcon(BitmapFactory.decodeResource(context.getResources(), R.drawable.ic_launcher))
                 .setContentTitle("키워드 공지 알림: [" + keyword + "]")
                 .setContentText(notice.getTitle())
                 .setAutoCancel(true)
